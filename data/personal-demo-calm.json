@@ -1,0 +1,262 @@
+{
+  "schemaVersion": 1,
+  "id": "personal-demo-calm",
+  "profileId": "demo-a",
+  "title": "示範·需要／舒緩",
+  "rev": "batch3-2026-09-17",
+  "source": "public demo template",
+  "defaultDisplayPreset": "2x2",
+  "mergeGeneral": true,
+  "categories": [
+    {
+      "id": "need",
+      "label": "我需要",
+      "color": "#2b6cb0",
+      "order": 1
+    },
+    {
+      "id": "calm",
+      "label": "我要舒緩",
+      "color": "#319795",
+      "order": 2
+    },
+    {
+      "id": "want",
+      "label": "我要",
+      "color": "#3182ce",
+      "order": 3
+    },
+    {
+      "id": "routine",
+      "label": "常規",
+      "color": "#b7791f",
+      "order": 4
+    }
+  ],
+  "cells": [
+    {
+      "id": "ckh-drink",
+      "category": "need",
+      "order": 1,
+      "label": "飲水",
+      "speak": "我要飲水",
+      "image": "assets/img/drink.jpg"
+    },
+    {
+      "id": "ckh-toilet",
+      "category": "need",
+      "order": 2,
+      "label": "廁所",
+      "speak": "我要去廁所",
+      "image": "assets/img/toilet.jpg"
+    },
+    {
+      "id": "ckh-hot",
+      "category": "need",
+      "order": 3,
+      "label": "熱",
+      "speak": "我好熱",
+      "image": "assets/img/hot.jpg"
+    },
+    {
+      "id": "ckh-help",
+      "category": "need",
+      "order": 4,
+      "label": "幫我",
+      "speak": "請幫我",
+      "image": "assets/img/help-me.jpg"
+    },
+    {
+      "id": "ckh-bag",
+      "category": "need",
+      "order": 5,
+      "label": "書包",
+      "speak": "書包",
+      "image": "assets/img/bag.jpg"
+    },
+    {
+      "id": "ckh-cup",
+      "category": "need",
+      "order": 6,
+      "label": "水杯",
+      "speak": "水杯",
+      "image": "assets/img/cup.jpg"
+    },
+    {
+      "id": "ckh-eat",
+      "category": "need",
+      "order": 7,
+      "label": "食嘢",
+      "speak": "我要食嘢",
+      "image": "assets/img/eat.jpg"
+    },
+    {
+      "id": "ckh-rest",
+      "category": "need",
+      "order": 8,
+      "label": "休息",
+      "speak": "我要休息",
+      "image": "assets/img/calm.jpg"
+    },
+    {
+      "id": "ckh-calm",
+      "category": "calm",
+      "order": 1,
+      "label": "舒緩",
+      "speak": "我要舒緩",
+      "image": "assets/img/calm.jpg"
+    },
+    {
+      "id": "ckh-quiet",
+      "category": "calm",
+      "order": 2,
+      "label": "靜一靜",
+      "speak": "我要靜一靜",
+      "image": "assets/img/quiet.jpg"
+    },
+    {
+      "id": "ckh-breathe",
+      "category": "calm",
+      "order": 3,
+      "label": "深呼吸",
+      "speak": "深呼吸",
+      "image": "assets/img/breathe.jpg"
+    },
+    {
+      "id": "ckh-pause",
+      "category": "calm",
+      "order": 4,
+      "label": "停一停",
+      "speak": "停一停",
+      "image": "assets/img/pause.jpg"
+    },
+    {
+      "id": "ckh-space",
+      "category": "calm",
+      "order": 5,
+      "label": "私人位",
+      "speak": "我要私人位",
+      "image": "assets/img/space.jpg"
+    },
+    {
+      "id": "ckh-music",
+      "category": "calm",
+      "order": 6,
+      "label": "聽歌",
+      "speak": "我想聽歌",
+      "image": "assets/img/music.jpg"
+    },
+    {
+      "id": "ckh-walk",
+      "category": "calm",
+      "order": 7,
+      "label": "行下",
+      "speak": "我要行下",
+      "image": "assets/img/walk.jpg"
+    },
+    {
+      "id": "ckh-hug",
+      "category": "calm",
+      "order": 8,
+      "label": "攬一攬",
+      "speak": "攬一攬",
+      "image": "assets/img/hug.jpg"
+    },
+    {
+      "id": "ckh-i-want",
+      "category": "want",
+      "order": 1,
+      "label": "我要",
+      "speak": "我要",
+      "image": "assets/img/want.jpg"
+    },
+    {
+      "id": "ckh-no",
+      "category": "want",
+      "order": 2,
+      "label": "唔要",
+      "speak": "唔要",
+      "image": "assets/img/no-want.jpg"
+    },
+    {
+      "id": "ckh-yes",
+      "category": "want",
+      "order": 3,
+      "label": "係",
+      "speak": "係",
+      "image": "assets/img/yes.jpg"
+    },
+    {
+      "id": "ckh-no2",
+      "category": "want",
+      "order": 4,
+      "label": "唔係",
+      "speak": "唔係",
+      "image": "assets/img/no.jpg"
+    },
+    {
+      "id": "ckh-sit",
+      "category": "routine",
+      "order": 1,
+      "label": "坐好",
+      "speak": "坐好",
+      "image": "assets/img/sit.jpg"
+    },
+    {
+      "id": "ckh-clap",
+      "category": "routine",
+      "order": 2,
+      "label": "拍手",
+      "speak": "拍手",
+      "image": "assets/img/clap.jpg"
+    },
+    {
+      "id": "ckh-hand",
+      "category": "routine",
+      "order": 3,
+      "label": "舉手",
+      "speak": "舉手",
+      "image": "assets/img/hand-up.jpg"
+    },
+    {
+      "id": "ckh-put",
+      "category": "routine",
+      "order": 4,
+      "label": "放返",
+      "speak": "放返原位",
+      "image": "assets/img/put-back.jpg"
+    },
+    {
+      "id": "ckh-hi",
+      "category": "routine",
+      "order": 5,
+      "label": "早晨",
+      "speak": "早晨",
+      "image": "assets/img/morning.jpg"
+    },
+    {
+      "id": "ckh-bye",
+      "category": "routine",
+      "order": 6,
+      "label": "拜拜",
+      "speak": "拜拜",
+      "image": "assets/img/bye.jpg"
+    },
+    {
+      "id": "ckh-teacher",
+      "category": "routine",
+      "order": 7,
+      "label": "老師",
+      "speak": "老師",
+      "image": "assets/img/teacher.jpg"
+    },
+    {
+      "id": "ckh-hello",
+      "category": "routine",
+      "order": 8,
+      "label": "你好",
+      "speak": "你好",
+      "image": "assets/img/hello.jpg"
+    }
+  ]
+}

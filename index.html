@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <title>SEN AAC P0 · 4選1 demo</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%; overflow: hidden; overscroll-behavior: none;
+      touch-action: manipulation;
+      -webkit-user-select: none; user-select: none;
+      -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang HK", "Noto Sans TC", sans-serif;
+      background: #c5d0dc; color: #1a2330;
+    }
+    .stage { height: 100dvh; width: 100vw; display: grid; place-items: center; padding: 6px; }
+    .app {
+      width: min(100vw - 8px, 1180px);
+      height: min(100dvh - 8px, 780px);
+      aspect-ratio: 16/10; max-height: calc(100dvh - 8px);
+      display: grid; grid-template-rows: auto 1fr;
+      background: #f4f7fb; border: 3px solid #2c3e50; border-radius: 14px;
+      overflow: hidden; box-shadow: 0 10px 32px rgba(0,0,0,.18);
+    }
+    .msg-bar {
+      display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: stretch;
+      padding: 8px 10px; background: #fff; border-bottom: 3px solid #2b6cb0; min-height: 72px;
+    }
+    .msg-strip {
+      display: flex; align-items: center; gap: 8px; overflow-x: auto;
+      padding: 4px 8px; background: #eef4fb; border: 2px solid #b8cce3; border-radius: 12px; min-height: 56px;
+    }
+    .msg-empty { color: #6b7c90; font-weight: 800; font-size: 1rem; }
+    .chip {
+      flex: 0 0 auto; width: 52px; height: 52px; border-radius: 10px;
+      border: 2px solid #2b6cb0; background: #fff; overflow: hidden;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .chip img { width: 100%; height: 70%; object-fit: cover; }
+    .chip span { font-size: .65rem; font-weight: 900; line-height: 1; }
+    .actions { display: flex; gap: 8px; }
+    .btn {
+      border: 0; border-radius: 12px; font-weight: 900; font-size: 1.2rem;
+      min-width: 72px; padding: 0 12px; cursor: pointer; touch-action: manipulation;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn-speak { background: #1f7a4c; color: #fff; min-width: 92px; font-size: 1.4rem; }
+    .btn-del { background: #ffe8a3; color: #5a4300; }
+    .btn-clr { background: #ffd0d0; color: #7a1f1f; }
+    .body { display: grid; grid-template-columns: 132px 1fr; min-height: 0; }
+    .side {
+      display: flex; flex-direction: column; gap: 6px; padding: 8px 6px;
+      background: #e8eef5; border-right: 3px solid #c5d0dc; min-height: 0;
+    }
+    .tabs { flex: 1; display: flex; flex-direction: column; gap: 6px; overflow-y: auto; }
+    .tab {
+      border: 3px solid #9aafc4; background: #f0f4f8; border-radius: 12px;
+      padding: 10px 4px; font-size: 1.05rem; font-weight: 900; cursor: pointer;
+      text-align: center; min-height: 48px; color: #1a2330;
+    }
+    .tab.on { color: #fff; border-color: #1a2330; }
+    .side-foot { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+    .pager { display: flex; align-items: center; gap: 4px; }
+    .pg-btn {
+      width: 46px; height: 46px; border-radius: 10px; border: 3px solid #2c3e50;
+      background: #fff; font-size: 1.2rem; font-weight: 900; cursor: pointer;
+    }
+    .pg-btn:disabled { opacity: .35; }
+    .pg-label { min-width: 42px; text-align: center; font-weight: 900; }
+    .lock {
+      width: 100%; height: 40px; border-radius: 10px; border: 2px dashed #a0b0c0;
+      background: #f7f9fc; color: #5a6b7d; font-weight: 800; font-size: .8rem; cursor: pointer;
+    }
+    .lock.on { border-style: solid; border-color: #2b6cb0; background: #e3f0ff; color: #1e4e82; }
+    .teacher-box {
+      display: none; width: 100%; padding: 6px; background: #fff;
+      border: 2px solid #2b6cb0; border-radius: 10px;
+    }
+    .teacher-box.show { display: block; }
+    .teacher-box .ttl { font-size: .7rem; font-weight: 800; color: #2b6cb0; text-align: center; margin-bottom: 4px; }
+    .row-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+    .mini {
+      border: 2px solid #9aafc4; background: #f0f4f8; border-radius: 8px;
+      padding: 8px 2px; font-size: .78rem; font-weight: 900; cursor: pointer;
+    }
+    .mini.on { background: #1f7a4c; border-color: #155c39; color: #fff; }
+    .grid-wrap { padding: 8px 10px 10px; min-height: 0; display: flex; flex-direction: column; gap: 4px; }
+    .hint { text-align: center; font-size: .75rem; color: #5a6b7d; font-weight: 700; }
+    .grid { flex: 1; display: grid; gap: 10px; min-height: 0; }
+    /* 橫向格：圖 bleed 填滿，字底欄 — 減少白位 */
+    .cell {
+      display: grid;
+      grid-template-rows: 1fr auto;
+      background: #1a2330; border: 4px solid #2c3e50; border-radius: 16px; cursor: pointer;
+      touch-action: manipulation; min-height: 0; padding: 0; position: relative;
+      overflow: hidden;
+      box-shadow: 0 2px 0 #c5d0dc; transition: transform .08s, box-shadow .08s, border-color .08s;
+    }
+    .cell:active, .cell.sel {
+      border-color: #1f7a4c;
+      box-shadow: 0 0 0 4px rgba(31,122,76,.35); transform: scale(.985);
+    }
+    .cell .pic {
+      width: 100%; height: 100%; min-height: 0; margin: 0; border: 0; border-radius: 0;
+      background: #dfe6ee; overflow: hidden; align-self: stretch;
+    }
+    .cell .pic img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center;
+      display: block;
+    }
+    .cell .lab {
+      font-size: clamp(1.15rem, 2.4vw, 1.9rem); font-weight: 900;
+      text-align: center; line-height: 1.15;
+      padding: 8px 6px 10px;
+      background: #fff; color: #1a2330;
+      border-top: 2px solid #c5d0dc;
+      width: 100%;
+    }
+    /* 2選1：字更大；圖仍填滿 */
+    .grid[data-preset="1x2"] .lab { font-size: clamp(1.6rem, 3.2vw, 2.5rem); padding: 12px 8px; }
+    /* 8／16 選1：字略細，圖仍 1fr 全高 */
+    .grid[data-preset="2x4"] .lab,
+    .grid[data-preset="4x4"] .lab {
+      font-size: clamp(.85rem, 1.5vw, 1.15rem); padding: 4px 2px 6px;
+    }
+    /* 橫向超寬格（2選1）：可改圖+字左右排，圖佔大 */
+    .grid[data-preset="1x2"] .cell {
+      grid-template-rows: none;
+      grid-template-columns: 1.35fr 0.65fr;
+    }
+    .grid[data-preset="1x2"] .cell .lab {
+      border-top: 0; border-left: 2px solid #c5d0dc;
+      display: grid; place-items: center; padding: 12px;
+    }
+    .banner {
+      position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
+      background: #1a2330; color: #fff; padding: 10px 16px; border-radius: 12px;
+      font-weight: 700; opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 30;
+      max-width: 90vw; text-align: center;
+    }
+    .banner.show { opacity: 1; }
+    .flash {
+      position: fixed; inset: 0; pointer-events: none; z-index: 25;
+      background: rgba(31,122,76,.12); opacity: 0; transition: opacity .15s;
+    }
+    .flash.on { opacity: 1; }
+    .tag {
+      position: fixed; top: 6px; right: 8px; z-index: 40;
+      background: #1f7a4c; color: #fff; font-size: .68rem; font-weight: 800;
+      padding: 4px 8px; border-radius: 6px;
+    }
+    .who {
+      position: fixed; top: 6px; left: 8px; z-index: 40;
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.95); border: 2px solid #2c3e50;
+      border-radius: 999px; padding: 4px 10px 4px 4px;
+      font-weight: 900; font-size: .85rem;
+    }
+    .who img {
+      width: 36px; height: 36px; border-radius: 50%; object-fit: cover;
+      border: 2px solid #2b6cb0; background: #e8eef5;
+    }
+    .who.guest img { display: none; }
+    .who .dot {
+      width: 36px; height: 36px; border-radius: 50%; background: #9aafc4;
+      display: grid; place-items: center; font-size: .75rem; color: #fff;
+    }
+    .who.guest .dot { display: grid; }
+    .who:not(.guest) .dot { display: none; }
+    .overlay {
+      display: none; position: fixed; inset: 0; z-index: 60;
+      background: rgba(26,35,48,.88); place-items: center; padding: 16px;
+    }
+    .overlay.show { display: grid; }
+    .panel {
+      width: min(920px, 96vw); max-height: 90dvh; overflow: auto;
+      background: #f4f7fb; border-radius: 16px; border: 3px solid #fff;
+      padding: 16px; box-shadow: 0 16px 48px rgba(0,0,0,.35);
+    }
+    .panel h2 { font-size: 1.25rem; margin-bottom: 10px; text-align: center; }
+    .panel .sub { text-align: center; color: #5a6b7d; font-weight: 700; margin-bottom: 12px; font-size: .9rem; }
+    .pin-row { display: flex; gap: 8px; justify-content: center; margin: 12px 0; flex-wrap: wrap; }
+    .pin-row input {
+      font-size: 1.4rem; letter-spacing: .2em; text-align: center;
+      padding: 10px 14px; border-radius: 12px; border: 3px solid #2b6cb0;
+      width: min(220px, 70vw); font-weight: 900;
+    }
+    .pin-row button, .panel .xbtn {
+      border: 0; border-radius: 12px; background: #2b6cb0; color: #fff;
+      font-weight: 900; font-size: 1.1rem; padding: 10px 18px; cursor: pointer;
+    }
+    .panel .xbtn.ghost { background: #e8eef5; color: #1a2330; border: 2px solid #9aafc4; }
+    .profiles {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px; margin-top: 8px;
+    }
+    .prof {
+      border: 4px solid #2c3e50; border-radius: 16px; background: #fff;
+      padding: 8px; cursor: pointer; text-align: center;
+      display: flex; flex-direction: column; gap: 8px; align-items: center;
+    }
+    .prof:active, .prof.on { border-color: #1f7a4c; box-shadow: 0 0 0 3px rgba(31,122,76,.3); }
+    .prof img {
+      width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px;
+      background: #eef2f6;
+    }
+    .prof .nm { font-weight: 900; font-size: 1.1rem; }
+    .prof .meta { font-size: .75rem; color: #5a6b7d; font-weight: 700; }
+    .prof.guest-card {
+      background: #e8eef5; justify-content: center; min-height: 160px;
+    }
+    .prof.guest-card .big { font-size: 2.2rem; }
+    .panel-actions { display: flex; gap: 8px; justify-content: center; margin-top: 14px; flex-wrap: wrap; }
+    .rotate-hint {
+      display: none; position: fixed; inset: 0; z-index: 50;
+      background: rgba(26,35,48,.92); color: #fff; place-items: center;
+      text-align: center; padding: 24px; font-size: 1.35rem; font-weight: 800;
+    }
+    @media (orientation: portrait) and (max-width: 900px) {
+      .rotate-hint { display: grid; }
+      .app { filter: blur(2px); pointer-events: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="who guest" id="who">
+      <span class="dot">訪</span>
+      <img id="whoImg" alt="" />
+      <span id="whoLabel">訪客</span>
+    </div>
+    <div class="tag">P0 public demo · 一點即講</div>
+    <div class="rotate-hint">請將裝置轉橫（iPad 橫向）</div>
+    <div class="flash" id="flash"></div>
+
+    <!-- 密碼閘 -->
+    <div class="overlay" id="pinOverlay">
+      <div class="panel">
+        <h2>老師密碼</h2>
+        <div class="sub">過閘先可以揀學生真相片 · 否則只用訪客</div>
+        <div class="pin-row">
+          <input id="pinInput" type="password" inputmode="numeric" maxlength="12" placeholder="••••••" autocomplete="off" />
+          <button type="button" id="pinOk">確認</button>
+        </div>
+        <div class="panel-actions">
+          <button type="button" class="xbtn ghost" id="pinCancel">取消 · 繼續訪客</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 真相片 profile 牆 -->
+    <div class="overlay" id="profileOverlay">
+      <div class="panel">
+        <h2>揀學生</h2>
+        <div class="sub">撳真相片切換 · 訪客無個人設定</div>
+        <div class="profiles" id="profileWall"></div>
+        <div class="panel-actions">
+          <button type="button" class="xbtn ghost" id="profileClose">完成</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="app">
+        <header class="msg-bar">
+          <div class="msg-strip" id="msg"><span class="msg-empty" id="msgEmpty">撳大格組句…</span></div>
+          <div class="actions">
+            <button type="button" class="btn btn-speak" id="btnSpeak">講</button>
+            <button type="button" class="btn btn-del" id="btnDel">⌫</button>
+            <button type="button" class="btn btn-clr" id="btnClr">清</button>
+          </div>
+        </header>
+        <div class="body">
+          <aside class="side">
+            <div class="tabs" id="tabs"></div>
+            <div class="side-foot">
+              <div class="pager">
+                <button type="button" class="pg-btn" id="prev">◀</button>
+                <div class="pg-label" id="pageLabel">1/1</div>
+                <button type="button" class="pg-btn" id="next">▶</button>
+              </div>
+              <button type="button" class="lock" id="lock">🔒 老師／轉人</button>
+              <div class="teacher-box" id="teacherBox">
+                <div class="ttl">PROFILE</div>
+                <div class="row-btns">
+                  <button type="button" class="mini" id="btnPickProfile">揀學生相</button>
+                  <button type="button" class="mini" id="btnGuest">訪客</button>
+                </div>
+                <div class="ttl" style="margin-top:6px">DISPLAY</div>
+                <div class="row-btns" id="dispBtns"></div>
+                <div class="ttl" style="margin-top:6px">出聲</div>
+                <div class="row-btns">
+                  <button type="button" class="mini" id="modeCompose">組句後講</button>
+                  <button type="button" class="mini" id="modeInstant">即點即講</button>
+                </div>
+                <div class="row-btns" style="margin-top:6px">
+                  <button type="button" class="mini" id="btnLockDone" style="grid-column:1/-1">返學生模式</button>
+                </div>
+              </div>
+            </div>
+          </aside>
+          <main class="grid-wrap">
+            <div class="hint" id="hint">P0 試用</div>
+            <div class="grid" id="grid" data-preset="2x2"></div>
+          </main>
+        </div>
+      </div>
+    </div>
+    <div class="banner" id="banner"></div>
+
+  <script>
+    document.addEventListener("contextmenu", e => e.preventDefault());
+    document.addEventListener("selectstart", e => e.preventDefault());
+
+    const PRESETS = {
+      "1x2": { rows: 1, cols: 2, label: "2選1" },
+      "2x2": { rows: 2, cols: 2, label: "4選1" },
+      "2x4": { rows: 2, cols: 4, label: "8選1" },
+      "4x4": { rows: 4, cols: 4, label: "16選1" }
+    };
+
+    let board = null;
+    let generalBoard = null;
+    let personalBoards = {}; // id -> board
+    let profilesData = null;
+    let preset = "2x2";
+    let teacher = false;
+    let gateOk = false;
+    let instantSpeak = true;
+    let cat = null;
+    let page = 0;
+    let sentence = [];
+    let activeProfileId = "guest";
+
+    // salt + pin → sha256；JS 只存 hash
+    const PIN_SALT = "tkops-aac-v1";
+    const PIN_HASH = "6cecd5c6eafcace439d4d48ea9c2ce5def4d253aa2ffb72007cb994cd3853444";
+
+    // profileId → personal board file
+    const PERSONAL_FILES = {
+      "demo-a": "data/personal-demo-calm.json",
+      "personal-demo-calm": "data/personal-demo-calm.json"
+    };
+
+    const grid = document.getElementById("grid");
+    const tabs = document.getElementById("tabs");
+    const msg = document.getElementById("msg");
+    const msgEmpty = document.getElementById("msgEmpty");
+    const pageLabel = document.getElementById("pageLabel");
+    const prev = document.getElementById("prev");
+    const next = document.getElementById("next");
+    const banner = document.getElementById("banner");
+    const hint = document.getElementById("hint");
+    const lockBtn = document.getElementById("lock");
+    const teacherBox = document.getElementById("teacherBox");
+    const dispBtns = document.getElementById("dispBtns");
+    const flash = document.getElementById("flash");
+    const modeCompose = document.getElementById("modeCompose");
+    const modeInstant = document.getElementById("modeInstant");
+    const who = document.getElementById("who");
+    const whoImg = document.getElementById("whoImg");
+    const whoLabel = document.getElementById("whoLabel");
+    const pinOverlay = document.getElementById("pinOverlay");
+    const profileOverlay = document.getElementById("profileOverlay");
+    const pinInput = document.getElementById("pinInput");
+    const profileWall = document.getElementById("profileWall");
+
+    async function sha256Hex(str) {
+      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+      return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    function currentProfile() {
+      if (!profilesData || activeProfileId === "guest") return profilesData?.guest || { id: "guest", label: "訪客", displayPreset: "2x2" };
+      return profilesData.profiles.find(p => p.id === activeProfileId) || profilesData.guest;
+    }
+
+    async function applyProfile(id) {
+      activeProfileId = id || "guest";
+      const p = currentProfile();
+      const isGuest = activeProfileId === "guest";
+      who.classList.toggle("guest", isGuest);
+      whoLabel.textContent = p.label || "訪客";
+      if (!isGuest && p.avatarPath) {
+        whoImg.src = p.avatarPath;
+        whoImg.alt = p.label;
+      } else {
+        whoImg.removeAttribute("src");
+      }
+      if (p.displayPreset && PRESETS[p.displayPreset]) {
+        preset = p.displayPreset;
+      } else if (isGuest && profilesData?.defaultDisplayPreset) {
+        preset = profilesData.defaultDisplayPreset;
+      }
+      page = 0;
+      cat = null;
+      sentence = [];
+
+      // 切板：有個人板 → 用個人；否則 General
+      const pbId = p.personalBoardId || activeProfileId;
+      if (!isGuest && personalBoards[pbId]) {
+        board = personalBoards[pbId];
+      } else if (!isGuest && PERSONAL_FILES[activeProfileId]) {
+        try {
+          const r = await fetch(PERSONAL_FILES[activeProfileId]);
+          const pb = await r.json();
+          personalBoards[pb.id || pbId] = pb;
+          board = pb;
+        } catch (e) {
+          console.warn(e);
+          board = generalBoard;
+        }
+      } else {
+        board = generalBoard;
+      }
+
+      try {
+        if (!isGuest) sessionStorage.setItem("aac_active_profile", activeProfileId);
+        else sessionStorage.removeItem("aac_active_profile");
+      } catch (_) {}
+      render();
+      const boardName = board?.title || "General";
+      toast(isGuest ? "訪客 · General" : (p.label + " · " + boardName));
+    }
+
+    function renderWhoOnly() {
+      const p = currentProfile();
+      const isGuest = activeProfileId === "guest";
+      who.classList.toggle("guest", isGuest);
+      whoLabel.textContent = p.label || "訪客";
+      if (!isGuest && p.avatarPath) whoImg.src = p.avatarPath;
+    }
+
+    function openPin() {
+      pinOverlay.classList.add("show");
+      pinInput.value = "";
+      setTimeout(() => pinInput.focus(), 50);
+    }
+    function closePin() { pinOverlay.classList.remove("show"); }
+
+    function openProfileWall() {
+      if (!gateOk) { openPin(); return; }
+      renderProfileWall();
+      profileOverlay.classList.add("show");
+    }
+    function closeProfileWall() { profileOverlay.classList.remove("show"); }
+
+    function renderProfileWall() {
+      if (!profilesData) return;
+      profileWall.innerHTML = "";
+      // guest card
+      const g = document.createElement("button");
+      g.type = "button";
+      g.className = "prof guest-card" + (activeProfileId === "guest" ? " on" : "");
+      g.innerHTML = `<div class="big">👤</div><div class="nm">訪客</div><div class="meta">無個人進度</div>`;
+      g.onclick = () => { applyProfile("guest"); closeProfileWall(); };
+      profileWall.appendChild(g);
+
+      profilesData.profiles.forEach(p => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "prof" + (activeProfileId === p.id ? " on" : "");
+        const disp = PRESETS[p.displayPreset]?.label || p.displayPreset || "";
+        b.innerHTML = `<img src="${p.avatarPath}" alt="${p.label}"><div class="nm">${p.label}</div><div class="meta">${disp}</div>`;
+        b.onclick = () => { applyProfile(p.id); closeProfileWall(); };
+        profileWall.appendChild(b);
+      });
+    }
+
+    function toast(t) {
+      banner.textContent = t;
+      banner.classList.add("show");
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => banner.classList.remove("show"), 1400);
+    }
+
+    function flashOk() {
+      flash.classList.add("on");
+      setTimeout(() => flash.classList.remove("on"), 180);
+    }
+
+    function pageSize() {
+      const p = PRESETS[preset];
+      return p.rows * p.cols;
+    }
+
+    function cellsOfCat(id) {
+      return board.cells
+        .filter(c => c.category === id)
+        .sort((a, b) => a.order - b.order);
+    }
+
+    function pagesOf(items) {
+      const n = pageSize();
+      const out = [];
+      for (let i = 0; i < items.length; i += n) out.push(items.slice(i, i + n));
+      return out.length ? out : [[]];
+    }
+
+    function speakText(text) {
+      return new Promise((resolve) => {
+        if (!window.speechSynthesis) {
+          toast("呢部機無 TTS");
+          resolve();
+          return;
+        }
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = "zh-HK";
+        // prefer zh-HK / zh-TW / yue
+        const voices = window.speechSynthesis.getVoices();
+        const v = voices.find(x => /zh-HK|yue/i.test(x.lang) || /Hong Kong|Yue/i.test(x.name))
+          || voices.find(x => /zh-TW|zh-CN|zh/i.test(x.lang));
+        if (v) u.voice = v;
+        u.rate = 0.92;
+        u.onend = () => resolve();
+        u.onerror = () => resolve();
+        window.speechSynthesis.speak(u);
+      });
+    }
+
+    // unlock voices on some browsers
+    if (window.speechSynthesis) {
+      window.speechSynthesis.getVoices();
+      window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+    }
+
+    function renderMsg() {
+      [...msg.querySelectorAll(".chip")].forEach(n => n.remove());
+      if (!sentence.length) { msgEmpty.style.display = ""; return; }
+      msgEmpty.style.display = "none";
+      sentence.forEach(c => {
+        const d = document.createElement("div");
+        d.className = "chip";
+        d.innerHTML = `<img src="${c.image}" alt=""><span>${c.label}</span>`;
+        msg.appendChild(d);
+      });
+    }
+
+    function renderDisp() {
+      dispBtns.innerHTML = "";
+      Object.keys(PRESETS).forEach(k => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "mini" + (k === preset ? " on" : "");
+        b.textContent = PRESETS[k].label;
+        b.onclick = () => {
+          if (!teacher) return;
+          preset = k; page = 0; render(); toast("Display → " + PRESETS[k].label);
+        };
+        dispBtns.appendChild(b);
+      });
+      modeCompose.classList.toggle("on", !instantSpeak);
+      modeInstant.classList.toggle("on", instantSpeak);
+    }
+
+    function renderTabs() {
+      const cats = [...board.categories].sort((a, b) => a.order - b.order);
+      if (!cat) cat = cats[0].id;
+      tabs.innerHTML = "";
+      cats.forEach(c => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "tab" + (c.id === cat ? " on" : "");
+        b.textContent = c.label;
+        if (c.id === cat) b.style.background = c.color || "#2b6cb0";
+        else b.style.background = "#f0f4f8";
+        b.onclick = () => { cat = c.id; page = 0; render(); };
+        tabs.appendChild(b);
+      });
+    }
+
+    function renderGrid() {
+      const items = cellsOfCat(cat);
+      const pages = pagesOf(items);
+      if (page >= pages.length) page = Math.max(0, pages.length - 1);
+      const cells = pages[page] || [];
+      const conf = PRESETS[preset];
+      grid.style.gridTemplateColumns = `repeat(${conf.cols}, 1fr)`;
+      grid.style.gridTemplateRows = `repeat(${conf.rows}, 1fr)`;
+      grid.dataset.preset = preset;
+      grid.innerHTML = "";
+
+      cells.forEach(cell => {
+        const el = document.createElement("button");
+        el.type = "button";
+        el.className = "cell";
+        el.innerHTML = `<div class="pic"><img src="${cell.image}" alt="${cell.label}" loading="eager"></div><div class="lab">${cell.label}</div>`;
+        el.addEventListener("click", async () => {
+          el.classList.add("sel");
+          setTimeout(() => el.classList.remove("sel"), 200);
+          flashOk();
+          if (sentence.length >= 8) sentence.shift();
+          sentence.push(cell);
+          renderMsg();
+          // 預設／即點即講：一點就有聲
+          if (instantSpeak) {
+            speakText(cell.speak || cell.label);
+          }
+        });
+        grid.appendChild(el);
+      });
+
+      const need = conf.rows * conf.cols;
+      while (grid.children.length < need) {
+        const f = document.createElement("div");
+        f.className = "cell"; f.style.visibility = "hidden"; f.setAttribute("aria-hidden", "true");
+        grid.appendChild(f);
+      }
+
+      pageLabel.textContent = `${page + 1}/${pages.length}`;
+      prev.disabled = page <= 0;
+      next.disabled = page >= pages.length - 1;
+      hint.textContent = `${whoLabel.textContent} · ${PRESETS[preset].label} · ${instantSpeak ? "一點即講" : "組句後撳「講」"} · 禁 swipe`;
+    }
+
+    function render() {
+      if (!board) return;
+      renderTabs();
+      renderDisp();
+      renderGrid();
+      renderMsg();
+      renderWhoOnly();
+      lockBtn.classList.toggle("on", teacher);
+      lockBtn.textContent = teacher ? "🔓 老師中" : "🔒 老師／轉人";
+      teacherBox.classList.toggle("show", teacher);
+    }
+
+    prev.onclick = () => { if (page > 0) { page--; renderGrid(); } };
+    next.onclick = () => {
+      const pages = pagesOf(cellsOfCat(cat));
+      if (page < pages.length - 1) { page++; renderGrid(); }
+    };
+    document.getElementById("btnDel").onclick = () => { sentence.pop(); renderMsg(); };
+    document.getElementById("btnClr").onclick = () => { sentence = []; renderMsg(); };
+    document.getElementById("btnSpeak").onclick = async () => {
+      if (!sentence.length) { toast("未有詞"); return; }
+      const t = sentence.map(c => c.speak || c.label).join("，");
+      flashOk();
+      await speakText(t);
+    };
+
+    lockBtn.onclick = () => {
+      if (teacher) {
+        teacher = false;
+        render();
+        toast("返學生模式");
+        return;
+      }
+      // 要轉人／老師設定 → 先密碼（若未過閘）
+      if (!gateOk) openPin();
+      else {
+        teacher = true;
+        render();
+        toast("老師模式");
+      }
+    };
+
+    document.getElementById("pinOk").onclick = async () => {
+      const pin = pinInput.value.trim();
+      if (!pin) { toast("請入密碼"); return; }
+      const h = await sha256Hex(PIN_SALT + pin);
+      if (h !== PIN_HASH) {
+        toast("密碼錯");
+        pinInput.value = "";
+        pinInput.focus();
+        return;
+      }
+      gateOk = true;
+      try { sessionStorage.setItem("aac_gate_ok", "1"); } catch (_) {}
+      closePin();
+      teacher = true;
+      render();
+      openProfileWall();
+      toast("密碼 OK · 揀學生");
+    };
+    document.getElementById("pinCancel").onclick = () => {
+      closePin();
+      toast("繼續訪客");
+    };
+    pinInput.addEventListener("keydown", e => {
+      if (e.key === "Enter") document.getElementById("pinOk").click();
+    });
+
+    document.getElementById("btnPickProfile").onclick = () => openProfileWall();
+    document.getElementById("btnGuest").onclick = () => {
+      applyProfile("guest");
+    };
+    document.getElementById("profileClose").onclick = () => closeProfileWall();
+    document.getElementById("btnLockDone").onclick = () => {
+      teacher = false;
+      closeProfileWall();
+      render();
+      toast("返學生模式");
+    };
+
+    modeCompose.onclick = () => {
+      if (!teacher) return;
+      instantSpeak = false;
+      renderDisp();
+      toast("只組句（點格唔出聲）— 少用");
+    };
+    modeInstant.onclick = () => {
+      if (!teacher) return;
+      instantSpeak = true;
+      renderDisp();
+      toast("一點即講（預設）");
+    };
+
+    // anti-swipe nav
+    let touchStart = null;
+    document.addEventListener("touchstart", e => {
+      const t = e.changedTouches[0];
+      touchStart = { x: t.clientX, y: t.clientY };
+    }, { passive: true });
+    document.addEventListener("touchend", e => {
+      if (!touchStart) return;
+      const t = e.changedTouches[0];
+      const dx = t.clientX - touchStart.x;
+      const dy = t.clientY - touchStart.y;
+      if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+        toast("已擋：swipe 唔會翻頁，用 ◀ ▶");
+      }
+      touchStart = null;
+    }, { passive: true });
+    document.addEventListener("wheel", e => {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 8) {
+        e.preventDefault();
+        toast("已擋：橫滑唔翻頁");
+      }
+    }, { passive: false });
+
+    // restore session gate (唔跨瀏覽器重開自動過閘 — session only)
+    try {
+      if (sessionStorage.getItem("aac_gate_ok") === "1") gateOk = true;
+      const ap = sessionStorage.getItem("aac_active_profile");
+      if (ap) activeProfileId = ap;
+    } catch (_) {}
+
+    Promise.all([
+      fetch("data/board.p0.json").then(r => r.json()),
+      fetch("data/profiles.json").then(r => r.json()),
+      fetch("data/personal-demo-calm.json").then(r => r.json()).catch(() => null)
+    ]).then(([b, p, chanBoard]) => {
+      generalBoard = b;
+      board = b;
+      profilesData = p;
+      if (chanBoard) {
+        personalBoards[chanBoard.id || "personal-demo-calm"] = chanBoard;
+        personalBoards["demo-a"] = chanBoard;
+      }
+      if (p.defaultDisplayPreset) preset = p.defaultDisplayPreset;
+      return applyProfile(activeProfileId === "guest" ? "guest" : activeProfileId);
+    }).catch(err => {
+      toast("載入 board/profiles 失敗（請用本地 server）");
+      console.error(err);
+    });
+  </script>
+</body>
+</html>

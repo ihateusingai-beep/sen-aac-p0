@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "packId": "sen-aac-p0-public-demo",
+  "rev": "public-demo-2026-09-17",
+  "title": "SEN AAC P0 public demo",
+  "note": "Public demo only. No real student photos. School local uses private profiles.",
+  "defaultDisplayPreset": "2x2",
+  "guest": {
+    "id": "guest",
+    "label": "訪客",
+    "displayPreset": "2x2",
+    "writeProgress": false,
+    "showPhotoWall": false
+  },
+  "profiles": [
+    {
+      "id": "demo-a",
+      "label": "示範 A",
+      "avatarPath": "",
+      "displayPreset": "2x2",
+      "personalBoardId": "personal-demo-calm"
+    },
+    {
+      "id": "demo-b",
+      "label": "示範 B",
+      "avatarPath": "",
+      "displayPreset": "2x2"
+    },
+    {
+      "id": "demo-c",
+      "label": "示範 C",
+      "avatarPath": "",
+      "displayPreset": "2x4"
+    }
+  ]
+}
