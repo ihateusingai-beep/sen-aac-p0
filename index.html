@@ -215,6 +215,28 @@
     .secret.tr { top: 0; right: 0; }
     .secret.bl { bottom: 0; left: 0; }
     .secret.br { bottom: 0; right: 0; }
+    /* 老師入口：細 ⚙️ 長按（學生唔易誤觸） */
+    .gear {
+      position: fixed; z-index: 46;
+      right: 10px; bottom: 10px;
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 2px solid rgba(44,62,80,.25);
+      background: rgba(255,255,255,.55);
+      color: rgba(26,35,48,.45);
+      font-size: 1.25rem; cursor: pointer;
+      display: grid; place-items: center;
+      backdrop-filter: blur(2px);
+      touch-action: manipulation;
+      overflow: hidden;
+    }
+    .gear:active, .gear.holding {
+      background: rgba(43,108,176,.9); color: #fff; border-color: #2b6cb0;
+    }
+    .gear .gbar {
+      position: absolute; left: 0; bottom: 0; height: 4px; width: 0%;
+      background: #fff; pointer-events: none;
+    }
+    body.teacher-on .gear { display: none; }
     .overlay {
       display: none; position: fixed; inset: 0; z-index: 60;
       background: rgba(26,35,48,.88); place-items: center; padding: 16px;
@@ -295,6 +317,7 @@
   <button type="button" class="secret tr" id="secTR" aria-label=""></button>
   <button type="button" class="secret bl" id="secBL" aria-label=""></button>
   <button type="button" class="secret br" id="secBR" aria-label=""></button>
+  <button type="button" class="gear" id="gearBtn" aria-label="老師設定（長按）">⚙️<span class="gbar" id="gearBar"></span></button>
 
   <div class="who guest" id="who">
     <span class="dot">訪</span>
@@ -785,6 +808,7 @@
       teacherBox.classList.toggle("show", teacher);
       tag.classList.toggle("show", teacher);
       who.classList.toggle("show", teacher);
+      document.body.classList.toggle("teacher-on", teacher);
     }
 
     function render() {
@@ -800,12 +824,14 @@
     function enterTeacher() {
       if (!gateOk) { openPin(); return; }
       teacher = true;
+      document.body.classList.add("teacher-on");
       render();
       toast("老師模式");
     }
 
     function exitTeacher() {
       teacher = false;
+      document.body.classList.remove("teacher-on");
       closeProfileWall();
       closeVocab();
       render();
@@ -828,6 +854,44 @@
     ["secTL", "secTR", "secBL", "secBR"].forEach(id => {
       document.getElementById(id).addEventListener("click", secretHit);
     });
+
+    // —— 右下 ⚙️ 長按 1.2s ——
+    const gearBtn = document.getElementById("gearBtn");
+    const gearBar = document.getElementById("gearBar");
+    let gearRaf = null;
+    let gearT0 = 0;
+    function gearDown(e) {
+      if (teacher) return;
+      e.preventDefault();
+      gearT0 = Date.now();
+      gearBtn.classList.add("holding");
+      gearBar.style.width = "0%";
+      const tick = () => {
+        const p = Math.min(1, (Date.now() - gearT0) / 1200);
+        gearBar.style.width = (p * 100) + "%";
+        if (p >= 1) {
+          gearUp(true);
+          enterTeacher();
+          return;
+        }
+        gearRaf = requestAnimationFrame(tick);
+      };
+      gearRaf = requestAnimationFrame(tick);
+    }
+    function gearUp(done) {
+      gearBtn.classList.remove("holding");
+      gearBar.style.width = "0%";
+      if (gearRaf) cancelAnimationFrame(gearRaf);
+      gearRaf = null;
+      if (!done && gearT0 && Date.now() - gearT0 < 1200) {
+        toast("長按 ⚙️ 入老師設定");
+      }
+      gearT0 = 0;
+    }
+    gearBtn.addEventListener("pointerdown", gearDown);
+    gearBtn.addEventListener("pointerup", () => gearUp(false));
+    gearBtn.addEventListener("pointerleave", () => gearUp(false));
+    gearBtn.addEventListener("pointercancel", () => gearUp(false));
 
     prev.onclick = () => { if (page > 0) { page--; renderGrid(); } };
     next.onclick = () => {
