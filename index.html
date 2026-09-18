@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-  <title>SEN AAC P0 · 4選1 demo</title>
+  <title>SEN AAC P0 demo · 4選1</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
@@ -310,6 +310,26 @@
       .rotate-hint { display: grid; }
       .app { filter: blur(2px); pointer-events: none; }
     }
+
+    /* N3 改格 · N4 Pack */
+    .edit-form { display: grid; gap: 10px; max-width: 420px; margin: 0 auto; }
+    .edit-form label { font-weight: 800; font-size: .9rem; color: #2c3e50; display: grid; gap: 4px; }
+    .edit-form input[type=text] {
+      font-size: 1.15rem; font-weight: 900; padding: 10px 12px;
+      border: 3px solid #2b6cb0; border-radius: 12px;
+    }
+    .edit-preview {
+      width: 160px; height: 160px; margin: 0 auto; border-radius: 14px;
+      border: 3px solid #2c3e50; overflow: hidden; background: #eef2f6;
+    }
+    .edit-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .cell.edit-mode { outline: 3px dashed #e53e3e; outline-offset: -3px; }
+    .cell .edit-badge {
+      position: absolute; top: 4px; right: 4px; background: #e53e3e; color: #fff;
+      font-size: .65rem; font-weight: 900; padding: 2px 6px; border-radius: 8px;
+      pointer-events: none;
+    }
+    .cell { position: relative; }
   </style>
 </head>
 <body>
@@ -368,6 +388,30 @@
     </div>
   </div>
 
+
+  <div class="overlay" id="editOverlay">
+    <div class="panel">
+      <h2>改呢格</h2>
+      <div class="sub" id="editSub">改顯示字／講法／圖 · 存本機</div>
+      <div class="edit-form">
+        <div class="edit-preview"><img id="editPreview" alt="" /></div>
+        <label>顯示字<input type="text" id="editLabel" maxlength="20" autocomplete="off" /></label>
+        <label>講（粵）<input type="text" id="editSpeak" maxlength="40" autocomplete="off" /></label>
+        <div class="panel-actions" style="margin:0">
+          <button type="button" class="xbtn ghost" id="editPickImg">換圖</button>
+          <button type="button" class="xbtn ghost" id="editResetCell">還原呢格</button>
+        </div>
+        <input type="file" id="editFile" accept="image/*" style="display:none" />
+      </div>
+      <div class="panel-actions">
+        <button type="button" class="xbtn ghost" id="editCancel">取消</button>
+        <button type="button" class="xbtn ok" id="editSave">儲存</button>
+      </div>
+    </div>
+  </div>
+
+  <input type="file" id="packFile" accept="application/json,.json" style="display:none" />
+
   <div class="stage">
     <div class="app">
       <header class="msg-bar">
@@ -404,6 +448,15 @@
               <div class="row-btns">
                 <button type="button" class="mini" id="genderM">男學生</button>
                 <button type="button" class="mini" id="genderF">女學生</button>
+              </div>
+              <div class="ttl" style="margin-top:6px">改格</div>
+              <div class="row-btns">
+                <button type="button" class="mini wide" id="btnEditMode">長按格改</button>
+              </div>
+              <div class="ttl" style="margin-top:6px">PACK</div>
+              <div class="row-btns">
+                <button type="button" class="mini" id="btnPackExport">匯出</button>
+                <button type="button" class="mini" id="btnPackImport">匯入</button>
               </div>
               <div class="row-btns" style="margin-top:6px">
                 <button type="button" class="mini wide" id="btnLockDone">返學生</button>
@@ -460,13 +513,19 @@
     let sentence = [];
     let activeProfileId = "guest";
     let hiddenIds = new Set(); // 當前 profile 隱藏嘅 cell id
+    let editMode = false; // N3：老師改格
+    let cellOverrides = {}; // id -> {label,speak,image}
+    let editingCellId = null;
+    let editImageData = null; // dataURL or null keep
 
     const PIN_SALT = "tkops-aac-v1";
     const PIN_HASH = "6cecd5c6eafcace439d4d48ea9c2ce5def4d253aa2ffb72007cb994cd3853444";
 
     const PERSONAL_FILES = {
       "demo-a": "data/personal-demo-calm.json",
-      "personal-demo-calm": "data/personal-demo-calm.json"
+      "personal-demo-calm": "data/personal-demo-calm.json",
+      "demo-c": "data/personal-demo-story.json",
+      "personal-demo-story": "data/personal-demo-story.json"
     };
 
     const grid = document.getElementById("grid");
@@ -534,10 +593,15 @@
       "hello","bye","morning","thanks","please","sit","clap","hand-up","put-back","wait",
       "help-me","no-do","want","no-want","happy","sad","angry","scared","tired","pain",
       "stop","eat","hot","cold","ok",
+      "me","brother",
       "walk","hug","calm","quiet","breathe","pause","music","space","homework",
       "what-doing","ckh-hi","ckh-hello","ckh-bye","ckh-sit","ckh-clap","ckh-hand",
       "ckh-put","ckh-help","ckh-calm","ckh-quiet","ckh-breathe","ckh-pause",
-      "ckh-space","ckh-music","ckh-walk","ckh-hug","ckh-i-want","ckh-no","ckh-rest"
+      "ckh-space","ckh-music","ckh-walk","ckh-hug","ckh-i-want","ckh-no","ckh-rest",
+      "jwh-want","jwh-no","jwh-help","jwh-no-do","jwh-homework","jwh-sit","jwh-wait",
+      "jwh-me","jwh-hi","jwh-bye","jwh-doing",
+      "lkt-wait","lkt-happy","lkt-sad","lkt-hi","lkt-hello","lkt-bye","lkt-help",
+      "lkt-now","lkt-thanks","lkt-want"
     ]);
 
     function cellImage(cell) {
@@ -556,7 +620,17 @@
         "ckh-help": "help-me", "ckh-calm": "calm", "ckh-quiet": "quiet",
         "ckh-breathe": "breathe", "ckh-pause": "pause", "ckh-space": "space",
         "ckh-music": "music", "ckh-walk": "walk", "ckh-hug": "hug",
-        "ckh-i-want": "want", "ckh-no": "no-want", "ckh-rest": "calm"
+        "ckh-i-want": "want", "ckh-no": "no-want", "ckh-rest": "calm",
+        "jwh-want": "want", "jwh-no": "no-want", "jwh-help": "help-me", "jwh-no-do": "no-do",
+        "jwh-homework": "homework", "jwh-sit": "sit", "jwh-wait": "wait",
+        "jwh-me": "me", "jwh-teacher": "teacher", "jwh-class-t": "class-teacher",
+        "jwh-driver": "driver", "jwh-staff": "staff", "jwh-boy": "brother", "jwh-girl": "sister",
+        "jwh-friend": "friend", "jwh-hi": "morning", "jwh-bye": "bye", "jwh-doing": "what-doing",
+        "jwh-yes": "yes", "jwh-no2": "no", "jwh-same": "same", "jwh-diff": "diff",
+        "lkt-wait": "wait", "lkt-happy": "happy", "lkt-sad": "sad",
+        "lkt-hi": "morning", "lkt-hello": "hello", "lkt-bye": "bye",
+        "lkt-help": "help-me", "lkt-now": "what-doing", "lkt-thanks": "thanks",
+        "lkt-want": "want"
       };
       const stem = stemMap[id] || baseId;
       const tryPack = `assets/img/${imgGender}/${stem}.jpg`;
@@ -588,6 +662,165 @@
         localStorage.setItem(hideKey(), JSON.stringify([...hiddenIds]));
       } catch (_) {}
     }
+
+    // —— N3 cell overrides · N4 pack ——
+    function overrideKey() {
+      return "aac_cellov_" + (board?.id || "general") + "_" + activeProfileId;
+    }
+    function loadOverrides() {
+      cellOverrides = {};
+      try {
+        const raw = localStorage.getItem(overrideKey());
+        if (raw) cellOverrides = JSON.parse(raw) || {};
+      } catch (_) { cellOverrides = {}; }
+      applyOverridesToBoard();
+    }
+    function saveOverrides() {
+      try {
+        localStorage.setItem(overrideKey(), JSON.stringify(cellOverrides));
+      } catch (e) {
+        toast("存唔到（空間可能滿）");
+        console.warn(e);
+      }
+    }
+    function applyOverridesToBoard() {
+      if (!board || !board.cells) return;
+      board.cells.forEach(c => {
+        if (!c._orig) {
+          c._orig = { label: c.label, speak: c.speak, image: c.image };
+        } else {
+          c.label = c._orig.label;
+          c.speak = c._orig.speak;
+          c.image = c._orig.image;
+        }
+        const ov = cellOverrides[c.id];
+        if (!ov) return;
+        if (ov.label != null) c.label = ov.label;
+        if (ov.speak != null) c.speak = ov.speak;
+        if (ov.image) c.image = ov.image;
+      });
+    }
+    function cellDisplayImage(cell) {
+      const ov = cellOverrides[cell.id];
+      if (ov && ov.image) return ov.image;
+      return cellImage(cell);
+    }
+
+    function openEditCell(cell) {
+      if (!teacher || !cell) return;
+      editingCellId = cell.id;
+      editImageData = null;
+      document.getElementById("editSub").textContent =
+        `${whoLabel.textContent} · ${cell.id}`;
+      document.getElementById("editLabel").value = cell.label || "";
+      document.getElementById("editSpeak").value = cell.speak || cell.label || "";
+      const prev = document.getElementById("editPreview");
+      prev.src = cellDisplayImage(cell);
+      prev.onerror = () => { prev.onerror = null; prev.src = cell._orig?.image || cell.image || ""; };
+      document.getElementById("editOverlay").classList.add("show");
+    }
+    function closeEditCell() {
+      document.getElementById("editOverlay").classList.remove("show");
+      editingCellId = null;
+      editImageData = null;
+    }
+    function compressImageTo512(file) {
+      return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = () => {
+          const side = Math.min(img.width, img.height);
+          const sx = (img.width - side) / 2;
+          const sy = (img.height - side) / 2;
+          const canvas = document.createElement("canvas");
+          canvas.width = 512;
+          canvas.height = 512;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, sx, sy, side, side, 0, 0, 512, 512);
+          URL.revokeObjectURL(url);
+          resolve(canvas.toDataURL("image/jpeg", 0.85));
+        };
+        img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("img")); };
+        img.src = url;
+      });
+    }
+
+    function packExport() {
+      if (!teacher) return;
+      if (!generalBoard) { toast("無 General 板"); return; }
+      const pack = {
+        schemaVersion: 1,
+        type: "general-pack",
+        packId: "tkops-aac-general",
+        rev: "export-" + new Date().toISOString().slice(0, 19).replace(/[:T]/g, ""),
+        exportedAt: new Date().toISOString(),
+        board: JSON.parse(JSON.stringify(generalBoard)),
+        note: "Import 會整板覆蓋 General。訪客 override 會 bake 入 board。"
+      };
+      (pack.board.cells || []).forEach(c => { delete c._orig; delete c._imgFallback; });
+      try {
+        const k1 = "aac_cellov_" + (generalBoard.id || "general") + "_guest";
+        const raw = localStorage.getItem(k1);
+        if (raw) {
+          const ov = JSON.parse(raw);
+          pack.cellOverridesGuest = ov;
+          (pack.board.cells || []).forEach(c => {
+            const o = ov[c.id];
+            if (!o) return;
+            if (o.label != null) c.label = o.label;
+            if (o.speak != null) c.speak = o.speak;
+            if (o.image) c.image = o.image;
+          });
+        }
+      } catch (_) {}
+      const blob = new Blob([JSON.stringify(pack, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = (pack.rev || "general-pack") + ".json";
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+      toast("已匯出 Pack");
+    }
+
+    function packImportFile(file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const pack = JSON.parse(reader.result);
+          const b = pack.board || pack;
+          if (!b || !Array.isArray(b.cells) || !Array.isArray(b.categories)) {
+            toast("Pack 格式唔啱");
+            return;
+          }
+          if (!confirm("匯入會整板覆蓋 General 板。確定？")) return;
+          b.cells.forEach(c => { delete c._orig; delete c._imgFallback; });
+          if (!b.id) b.id = "general-p0-trial";
+          generalBoard = b;
+          if (pack.cellOverridesGuest) {
+            try {
+              localStorage.setItem(
+                "aac_cellov_" + (b.id || "general") + "_guest",
+                JSON.stringify(pack.cellOverridesGuest)
+              );
+            } catch (_) {}
+          }
+          const p = currentProfile();
+          const hasPersonal = !!(p && p.personalBoardId && personalBoards[p.personalBoardId]);
+          if (activeProfileId === "guest" || !hasPersonal) {
+            board = generalBoard;
+            loadOverrides();
+          }
+          page = 0; cat = null; sentence = [];
+          render();
+          toast("已匯入 General · " + (b.cells?.length || 0) + " 格");
+        } catch (e) {
+          console.error(e);
+          toast("匯入失敗");
+        }
+      };
+      reader.readAsText(file);
+    }
+
 
     function currentProfile() {
       if (!profilesData || activeProfileId === "guest") {
@@ -629,6 +862,7 @@
       } else board = generalBoard;
 
       loadHidden();
+      loadOverrides();
       loadGender();
       try {
         if (!isGuest) sessionStorage.setItem("aac_active_profile", activeProfileId);
@@ -753,7 +987,7 @@
       sentence.forEach(c => {
         const d = document.createElement("div");
         d.className = "chip";
-        d.innerHTML = `<img src="${cellImage(c)}" alt="" onerror="this.onerror=null;this.src='${c.image}'"><span>${c.label}</span>`;
+        d.innerHTML = `<img src="${cellDisplayImage(c)}" alt="" onerror="this.onerror=null;this.src='${c.image}'"><span>${c.label}</span>`;
         msg.appendChild(d);
       });
     }
@@ -779,6 +1013,8 @@
         gM.classList.toggle("on", imgGender === "m");
         gF.classList.toggle("on", imgGender === "f");
       }
+      const bem = document.getElementById("btnEditMode");
+      if (bem) bem.classList.toggle("on", editMode);
     }
 
     function renderTabs() {
@@ -844,11 +1080,29 @@
       cells.forEach(cell => {
         const el = document.createElement("button");
         el.type = "button";
-        el.className = "cell";
-        const src = cellImage(cell);
-        const fb = cell.image || src;
-        el.innerHTML = `<div class="pic"><img src="${src}" alt="${cell.label}" loading="eager" onerror="this.onerror=null;this.src='${fb}'"></div><div class="lab">${cell.label}</div>`;
-        el.addEventListener("click", () => {
+        el.className = "cell" + (editMode && teacher ? " edit-mode" : "");
+        const src = cellDisplayImage(cell);
+        const fb = (cellOverrides[cell.id] && cellOverrides[cell.id].image) || cell.image || src;
+        const hasOv = !!cellOverrides[cell.id];
+        el.innerHTML = `${hasOv && teacher ? '<span class="edit-badge">改</span>' : ''}<div class="pic"><img src="${src}" alt="${cell.label}" loading="eager" onerror="this.onerror=null;this.src='${fb}'"></div><div class="lab">${cell.label}</div>`;
+        let holdT = null, held = false;
+        const clearHold = () => { clearTimeout(holdT); holdT = null; };
+        if (teacher && editMode) {
+          const startHold = () => {
+            held = false;
+            holdT = setTimeout(() => { held = true; openEditCell(cell); }, 550);
+          };
+          el.addEventListener("pointerdown", startHold);
+          el.addEventListener("pointerup", clearHold);
+          el.addEventListener("pointerleave", clearHold);
+          el.addEventListener("pointercancel", clearHold);
+        }
+        el.addEventListener("click", (e) => {
+          if (held) { e.preventDefault(); held = false; return; }
+          if (teacher && editMode) {
+            openEditCell(cell);
+            return;
+          }
           el.classList.add("sel");
           setTimeout(() => el.classList.remove("sel"), 200);
           flashOk();
@@ -914,9 +1168,11 @@
 
     function exitTeacher() {
       teacher = false;
+      editMode = false;
       document.body.classList.remove("teacher-on");
       closeProfileWall();
       closeVocab();
+      closeEditCell();
       render();
       toast("返學生模式");
     }
@@ -1150,6 +1406,67 @@
       toast("全部關（記得再開幾格）");
     };
 
+
+    // —— N3 edit · N4 pack wires ——
+    document.getElementById("btnEditMode").onclick = () => {
+      if (!teacher) return;
+      editMode = !editMode;
+      render();
+      toast(editMode ? "改格 ON：撳格即可改" : "改格 OFF");
+    };
+    document.getElementById("editCancel").onclick = () => closeEditCell();
+    document.getElementById("editPickImg").onclick = () => document.getElementById("editFile").click();
+    document.getElementById("editFile").onchange = async (e) => {
+      const f = e.target.files && e.target.files[0];
+      e.target.value = "";
+      if (!f) return;
+      try {
+        editImageData = await compressImageTo512(f);
+        document.getElementById("editPreview").src = editImageData;
+        toast("圖已壓 512");
+      } catch (err) {
+        toast("換圖失敗");
+      }
+    };
+    document.getElementById("editSave").onclick = () => {
+      if (!editingCellId) return;
+      const label = document.getElementById("editLabel").value.trim();
+      const speak = document.getElementById("editSpeak").value.trim();
+      if (!label) { toast("要有顯示字"); return; }
+      const prev = cellOverrides[editingCellId] || {};
+      const ov = {
+        label,
+        speak: speak || label,
+        image: editImageData != null ? editImageData : (prev.image || undefined)
+      };
+      if (!ov.image) delete ov.image;
+      cellOverrides[editingCellId] = ov;
+      saveOverrides();
+      applyOverridesToBoard();
+      closeEditCell();
+      render();
+      toast("已改 · " + label);
+    };
+    document.getElementById("editResetCell").onclick = () => {
+      if (!editingCellId) return;
+      delete cellOverrides[editingCellId];
+      saveOverrides();
+      applyOverridesToBoard();
+      closeEditCell();
+      render();
+      toast("已還原呢格");
+    };
+    document.getElementById("btnPackExport").onclick = () => packExport();
+    document.getElementById("btnPackImport").onclick = () => {
+      if (!teacher) return;
+      document.getElementById("packFile").click();
+    };
+    document.getElementById("packFile").onchange = (e) => {
+      const f = e.target.files && e.target.files[0];
+      e.target.value = "";
+      if (f) packImportFile(f);
+    };
+
     // anti-swipe
     let touchStart = null;
     document.addEventListener("touchstart", e => {
@@ -1181,17 +1498,23 @@
     Promise.all([
       fetch("data/board.p0.json").then(r => r.json()),
       fetch("data/profiles.json").then(r => r.json()),
-      fetch("data/personal-demo-calm.json").then(r => r.json()).catch(() => null)
-    ]).then(([b, p, chanBoard]) => {
+      fetch("data/personal-demo-calm.json").then(r => r.json()).catch(() => null),
+      fetch("data/personal-demo-story.json").then(r => r.json()).catch(() => null)
+    ]).then(([b, p, calmBoard, storyBoard]) => {
       generalBoard = b;
       board = b;
       profilesData = p;
-      if (chanBoard) {
-        personalBoards[chanBoard.id || "personal-demo-calm"] = chanBoard;
-        personalBoards["demo-a"] = chanBoard;
+      if (calmBoard) {
+        personalBoards[calmBoard.id || "personal-demo-calm"] = calmBoard;
+        personalBoards["demo-a"] = calmBoard;
+      }
+      if (storyBoard) {
+        personalBoards[storyBoard.id || "personal-demo-story"] = storyBoard;
+        personalBoards["demo-c"] = storyBoard;
       }
       if (p.defaultDisplayPreset) preset = p.defaultDisplayPreset;
       loadHidden();
+      loadOverrides();
       loadGender();
       return applyProfile(activeProfileId === "guest" ? "guest" : activeProfileId);
     }).catch(err => {

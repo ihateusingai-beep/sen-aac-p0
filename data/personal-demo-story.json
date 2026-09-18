@@ -1,0 +1,315 @@
+{
+  "schemaVersion": 1,
+  "id": "personal-demo-story",
+  "profileId": "demo-c",
+  "title": "示範·先後／描述",
+  "rev": "public-demo-story-2026-09-19",
+  "source": "2026/27 計劃：短句故事／描述活動／社交發問／分辨",
+  "defaultDisplayPreset": "2x4",
+  "categories": [
+    {
+      "id": "story",
+      "label": "先後",
+      "color": "#2b6cb0",
+      "order": 1
+    },
+    {
+      "id": "desc",
+      "label": "描述",
+      "color": "#1f7a4c",
+      "order": 2
+    },
+    {
+      "id": "social",
+      "label": "社交",
+      "color": "#6b46c1",
+      "order": 3
+    },
+    {
+      "id": "think",
+      "label": "分辨",
+      "color": "#c05621",
+      "order": 4
+    }
+  ],
+  "cells": [
+    {
+      "id": "lkt-first",
+      "category": "story",
+      "order": 1,
+      "label": "先",
+      "speak": "先",
+      "image": "assets/img/first.jpg",
+      "gendered": false
+    },
+    {
+      "id": "lkt-then",
+      "category": "story",
+      "order": 2,
+      "label": "然後",
+      "speak": "然後",
+      "image": "assets/img/then.jpg",
+      "gendered": false
+    },
+    {
+      "id": "lkt-after",
+      "category": "story",
+      "order": 3,
+      "label": "之後",
+      "speak": "之後",
+      "image": "assets/img/after.jpg",
+      "gendered": false
+    },
+    {
+      "id": "lkt-last",
+      "category": "story",
+      "order": 4,
+      "label": "最後",
+      "speak": "最後",
+      "image": "assets/img/last.jpg",
+      "gendered": false
+    },
+    {
+      "id": "lkt-begin",
+      "category": "story",
+      "order": 5,
+      "label": "開始",
+      "speak": "開始",
+      "image": "assets/img/begin.jpg",
+      "gendered": false
+    },
+    {
+      "id": "lkt-end",
+      "category": "story",
+      "order": 6,
+      "label": "完",
+      "speak": "完咗",
+      "image": "assets/img/end.jpg",
+      "gendered": false
+    },
+    {
+      "id": "lkt-wait",
+      "category": "story",
+      "order": 7,
+      "label": "等陣",
+      "speak": "等陣",
+      "image": "assets/img/wait.jpg"
+    },
+    {
+      "id": "lkt-again",
+      "category": "story",
+      "order": 8,
+      "label": "再嚟",
+      "speak": "再嚟一次",
+      "image": "assets/img/again.jpg",
+      "gendered": false
+    },
+    {
+      "id": "lkt-where",
+      "category": "desc",
+      "order": 1,
+      "label": "喺邊",
+      "speak": "喺邊度",
+      "image": "assets/img/where.jpg",
+      "gendered": false
+    },
+    {
+      "id": "lkt-did",
+      "category": "desc",
+      "order": 2,
+      "label": "做咗咩",
+      "speak": "做咗咩",
+      "image": "assets/img/did.jpg",
+      "gendered": false
+    },
+    {
+      "id": "lkt-feel",
+      "category": "desc",
+      "order": 3,
+      "label": "覺得點",
+      "speak": "我覺得",
+      "image": "assets/img/feel.jpg",
+      "gendered": false
+    },
+    {
+      "id": "lkt-happy",
+      "category": "desc",
+      "order": 4,
+      "label": "開心",
+      "speak": "我好開心",
+      "image": "assets/img/happy.jpg"
+    },
+    {
+      "id": "lkt-sad",
+      "category": "desc",
+      "order": 5,
+      "label": "唔開心",
+      "speak": "我唔開心",
+      "image": "assets/img/sad.jpg"
+    },
+    {
+      "id": "lkt-ate",
+      "category": "desc",
+      "order": 6,
+      "label": "食咗",
+      "speak": "我食咗",
+      "image": "assets/img/ate.jpg",
+      "gendered": false
+    },
+    {
+      "id": "lkt-went",
+      "category": "desc",
+      "order": 7,
+      "label": "去咗",
+      "speak": "我去咗",
+      "image": "assets/img/went.jpg",
+      "gendered": false
+    },
+    {
+      "id": "lkt-saw",
+      "category": "desc",
+      "order": 8,
+      "label": "見到",
+      "speak": "我見到",
+      "image": "assets/img/saw.jpg",
+      "gendered": false
+    },
+    {
+      "id": "lkt-hi",
+      "category": "social",
+      "order": 1,
+      "label": "早晨",
+      "speak": "早晨",
+      "image": "assets/img/morning.jpg"
+    },
+    {
+      "id": "lkt-hello",
+      "category": "social",
+      "order": 2,
+      "label": "你好",
+      "speak": "你好",
+      "image": "assets/img/hello.jpg"
+    },
+    {
+      "id": "lkt-bye",
+      "category": "social",
+      "order": 3,
+      "label": "拜拜",
+      "speak": "拜拜",
+      "image": "assets/img/bye.jpg"
+    },
+    {
+      "id": "lkt-help",
+      "category": "social",
+      "order": 4,
+      "label": "幫我",
+      "speak": "可唔可以幫我",
+      "image": "assets/img/help-me.jpg"
+    },
+    {
+      "id": "lkt-where-go",
+      "category": "social",
+      "order": 5,
+      "label": "去邊度",
+      "speak": "去邊度",
+      "image": "assets/img/where-go.jpg",
+      "gendered": false
+    },
+    {
+      "id": "lkt-now",
+      "category": "social",
+      "order": 6,
+      "label": "而家做咩",
+      "speak": "而家做咩",
+      "image": "assets/img/what-doing.jpg"
+    },
+    {
+      "id": "lkt-thanks",
+      "category": "social",
+      "order": 7,
+      "label": "多謝",
+      "speak": "多謝",
+      "image": "assets/img/thanks.jpg"
+    },
+    {
+      "id": "lkt-name",
+      "category": "social",
+      "order": 8,
+      "label": "我叫…",
+      "speak": "我叫小明",
+      "image": "assets/img/name-tag.jpg",
+      "gendered": false
+    },
+    {
+      "id": "lkt-yes",
+      "category": "think",
+      "order": 1,
+      "label": "係",
+      "speak": "係",
+      "image": "assets/img/yes.jpg",
+      "gendered": false
+    },
+    {
+      "id": "lkt-no",
+      "category": "think",
+      "order": 2,
+      "label": "唔係",
+      "speak": "唔係",
+      "image": "assets/img/no.jpg",
+      "gendered": false
+    },
+    {
+      "id": "lkt-same",
+      "category": "think",
+      "order": 3,
+      "label": "一樣",
+      "speak": "一樣",
+      "image": "assets/img/same.jpg",
+      "gendered": false
+    },
+    {
+      "id": "lkt-diff",
+      "category": "think",
+      "order": 4,
+      "label": "唔同",
+      "speak": "唔同",
+      "image": "assets/img/diff.jpg",
+      "gendered": false
+    },
+    {
+      "id": "lkt-big",
+      "category": "think",
+      "order": 5,
+      "label": "大",
+      "speak": "大",
+      "image": "assets/img/big.jpg",
+      "gendered": false
+    },
+    {
+      "id": "lkt-small",
+      "category": "think",
+      "order": 6,
+      "label": "細",
+      "speak": "細",
+      "image": "assets/img/small.jpg",
+      "gendered": false
+    },
+    {
+      "id": "lkt-want",
+      "category": "think",
+      "order": 7,
+      "label": "我要",
+      "speak": "我要",
+      "image": "assets/img/want.jpg"
+    },
+    {
+      "id": "lkt-toilet",
+      "category": "think",
+      "order": 8,
+      "label": "廁所",
+      "speak": "我要去廁所",
+      "image": "assets/img/toilet.jpg",
+      "gendered": false
+    }
+  ]
+}

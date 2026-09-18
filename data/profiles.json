@@ -1,15 +1,17 @@
 {
   "schemaVersion": 1,
   "packId": "sen-aac-p0-public-demo",
-  "rev": "p0-44cells-2026-09-18",
+  "rev": "n3n4-2026-09-19",
   "title": "SEN AAC P0 public demo",
+  "note": "No real student PII. Demo PIN 000000. N3 edit cell + N4 pack I/O.",
   "defaultDisplayPreset": "2x2",
   "guest": {
     "id": "guest",
     "label": "訪客",
     "sex": "m",
     "displayPreset": "2x2",
-    "writeProgress": false
+    "writeProgress": false,
+    "showPhotoWall": false
   },
   "profiles": [
     {
@@ -31,7 +33,8 @@
       "id": "demo-c",
       "label": "示範 C",
       "sex": "m",
-      "displayPreset": "2x4"
+      "displayPreset": "2x4",
+      "personalBoardId": "personal-demo-story"
     }
   ]
 }
