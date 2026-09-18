@@ -400,6 +400,11 @@
               <div class="row-btns">
                 <button type="button" class="mini wide" id="btnVocab">自訂詞</button>
               </div>
+              <div class="ttl" style="margin-top:6px">學生圖套</div>
+              <div class="row-btns">
+                <button type="button" class="mini" id="genderM">男學生</button>
+                <button type="button" class="mini" id="genderF">女學生</button>
+              </div>
               <div class="row-btns" style="margin-top:6px">
                 <button type="button" class="mini wide" id="btnLockDone">返學生</button>
               </div>
@@ -435,7 +440,8 @@
     };
 
     const TAB_ICON = {
-      need: "🙋", place: "📍", routine: "✋", social: "👋",
+      need: "🙋", place: "📍", routine: "✋",
+      greet: "👋", reply: "💬", social: "👋",
       people: "👤", ask: "❓", feel: "😊", calm: "🌿", want: "💬",
       say: "💬", help: "🆘"
     };
@@ -448,6 +454,7 @@
     let teacher = false;
     let gateOk = false;
     let instantSpeak = true;
+    let imgGender = "m"; // m=男學生 default · f=女學生
     let cat = null;
     let page = 0;
     let sentence = [];
@@ -495,6 +502,72 @@
     async function sha256Hex(str) {
       const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
       return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    function genderKey() {
+      return "aac_img_gender_" + activeProfileId;
+    }
+    function loadGender() {
+      // 訪客／quest：永遠男
+      if (activeProfileId === "guest") {
+        imgGender = "m";
+        return;
+      }
+      try {
+        const ov = localStorage.getItem(genderKey());
+        if (ov === "m" || ov === "f") {
+          imgGender = ov;
+          return;
+        }
+      } catch (_) {}
+      // default 跟 profile.sex
+      const p = currentProfile();
+      imgGender = (p && p.sex === "f") ? "f" : "m";
+    }
+    function saveGender() {
+      if (activeProfileId === "guest") return; // 訪客不持久女套
+      try { localStorage.setItem(genderKey(), imgGender); } catch (_) {}
+    }
+
+    // 人像／動作詞：跟 gender pack；實物唔走套
+    const GENDERED_IDS = new Set([
+      "hello","bye","morning","thanks","sit","clap","hand-up","put-back",
+      "help-me","no-do","want","no-want","happy","sad","angry","stop","eat","hot",
+      "walk","hug","calm","quiet","breathe","pause","music","space","homework",
+      "what-doing","ckh-hi","ckh-hello","ckh-bye","ckh-sit","ckh-clap","ckh-hand",
+      "ckh-put","ckh-help","ckh-calm","ckh-quiet","ckh-breathe","ckh-pause",
+      "ckh-space","ckh-music","ckh-walk","ckh-hug","ckh-i-want","ckh-no","ckh-rest"
+    ]);
+
+    function cellImage(cell) {
+      if (!cell) return "";
+      if (cell.gendered === false) return cell.image;
+      const id = cell.id || "";
+      const baseId = id.replace(/^ckh-/, "").replace(/^jwh-/, "").replace(/^lkt-/, "");
+      const gendered = cell.gendered === true || GENDERED_IDS.has(id) || GENDERED_IDS.has(baseId);
+      if (!gendered) return cell.image;
+      // prefer pack path
+      const pack = `assets/img/${imgGender}/${baseId}.jpg`;
+      // known map for personal ids → file stem
+      const stemMap = {
+        "ckh-hi": "morning", "ckh-hello": "hello", "ckh-bye": "bye",
+        "ckh-sit": "sit", "ckh-clap": "clap", "ckh-hand": "hand-up", "ckh-put": "put-back",
+        "ckh-help": "help-me", "ckh-calm": "calm", "ckh-quiet": "quiet",
+        "ckh-breathe": "breathe", "ckh-pause": "pause", "ckh-space": "space",
+        "ckh-music": "music", "ckh-walk": "walk", "ckh-hug": "hug",
+        "ckh-i-want": "want", "ckh-no": "no-want", "ckh-rest": "calm"
+      };
+      const stem = stemMap[id] || baseId;
+      const tryPack = `assets/img/${imgGender}/${stem}.jpg`;
+      // runtime: we can't sync-check file easily without HEAD; use pack path when m always exists after G1;
+      // for f missing browser shows broken — use onerror fallback on img
+      if (imgGender === "m") {
+        // m pack or original
+        return tryPack;
+      }
+      // f: use f path; img onerror → cell.image
+      cell._imgFallback = cell.image || `assets/img/m/${stem}.jpg`;
+      return tryPack;
     }
 
     function hideKey() {
@@ -555,6 +628,7 @@
       } else board = generalBoard;
 
       loadHidden();
+      loadGender();
       try {
         if (!isGuest) sessionStorage.setItem("aac_active_profile", activeProfileId);
         else sessionStorage.removeItem("aac_active_profile");
@@ -678,7 +752,7 @@
       sentence.forEach(c => {
         const d = document.createElement("div");
         d.className = "chip";
-        d.innerHTML = `<img src="${c.image}" alt=""><span>${c.label}</span>`;
+        d.innerHTML = `<img src="${cellImage(c)}" alt="" onerror="this.onerror=null;this.src='${c.image}'"><span>${c.label}</span>`;
         msg.appendChild(d);
       });
     }
@@ -698,6 +772,12 @@
       });
       modeCompose.classList.toggle("on", !instantSpeak);
       modeInstant.classList.toggle("on", instantSpeak);
+      const gM = document.getElementById("genderM");
+      const gF = document.getElementById("genderF");
+      if (gM && gF) {
+        gM.classList.toggle("on", imgGender === "m");
+        gF.classList.toggle("on", imgGender === "f");
+      }
     }
 
     function renderTabs() {
@@ -764,7 +844,9 @@
         const el = document.createElement("button");
         el.type = "button";
         el.className = "cell";
-        el.innerHTML = `<div class="pic"><img src="${cell.image}" alt="${cell.label}" loading="eager"></div><div class="lab">${cell.label}</div>`;
+        const src = cellImage(cell);
+        const fb = cell.image || src;
+        el.innerHTML = `<div class="pic"><img src="${src}" alt="${cell.label}" loading="eager" onerror="this.onerror=null;this.src='${fb}'"></div><div class="lab">${cell.label}</div>`;
         el.addEventListener("click", () => {
           el.classList.add("sel");
           setTimeout(() => el.classList.remove("sel"), 200);
@@ -990,6 +1072,25 @@
       toast("一點即講");
     };
 
+    document.getElementById("genderM").onclick = () => {
+      if (!teacher) return;
+      imgGender = "m";
+      saveGender();
+      render();
+      toast("圖套：男學生（預設）");
+    };
+    document.getElementById("genderF").onclick = () => {
+      if (!teacher) return;
+      if (activeProfileId === "guest") {
+        toast("訪客固定男圖；請先揀學生再試女套");
+        return;
+      }
+      imgGender = "f";
+      saveGender();
+      render();
+      toast("圖套：女學生（缺圖 fallback 男）");
+    };
+
     // —— 自訂詞彙 ——
     function openVocab() {
       if (!teacher) return;
@@ -1020,7 +1121,7 @@
           const b = document.createElement("button");
           b.type = "button";
           b.className = "vcell " + (on ? "on" : "off");
-          b.innerHTML = `<span class="badge">${on ? "✓" : "–"}</span><img src="${cell.image}" alt=""><div class="vl">${cell.label}</div>`;
+          b.innerHTML = `<span class="badge">${on ? "✓" : "–"}</span><img src="${cellImage(cell)}" alt="" onerror="this.onerror=null;this.src='${cell.image}'"><div class="vl">${cell.label}</div>`;
           b.onclick = () => {
             if (hiddenIds.has(cell.id)) hiddenIds.delete(cell.id);
             else hiddenIds.add(cell.id);
@@ -1090,6 +1191,7 @@
       }
       if (p.defaultDisplayPreset) preset = p.defaultDisplayPreset;
       loadHidden();
+      loadGender();
       return applyProfile(activeProfileId === "guest" ? "guest" : activeProfileId);
     }).catch(err => {
       toast("載入失敗（請用本地 server）");

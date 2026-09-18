@@ -1,21 +1,21 @@
 {
   "schemaVersion": 1,
   "packId": "sen-aac-p0-public-demo",
-  "rev": "public-demo-2026-09-17",
+  "rev": "g2-female-pack-2026-09-18",
   "title": "SEN AAC P0 public demo",
-  "note": "Public demo only. No real student photos. School local uses private profiles.",
   "defaultDisplayPreset": "2x2",
   "guest": {
     "id": "guest",
     "label": "訪客",
+    "sex": "m",
     "displayPreset": "2x2",
-    "writeProgress": false,
-    "showPhotoWall": false
+    "writeProgress": false
   },
   "profiles": [
     {
       "id": "demo-a",
       "label": "示範 A",
+      "sex": "m",
       "avatarPath": "",
       "displayPreset": "2x2",
       "personalBoardId": "personal-demo-calm"
@@ -23,13 +23,14 @@
     {
       "id": "demo-b",
       "label": "示範 B",
+      "sex": "f",
       "avatarPath": "",
       "displayPreset": "2x2"
     },
     {
       "id": "demo-c",
       "label": "示範 C",
-      "avatarPath": "",
+      "sex": "m",
       "displayPreset": "2x4"
     }
   ]

@@ -2,16 +2,18 @@
   "schemaVersion": 1,
   "id": "general-p0-trial",
   "title": "P0 試用板 + Batch1 + Batch2",
-  "rev": "batch2-2026-09-17",
+  "rev": "social-split-2026-09-18",
+  "note": "社交拆：打招呼｜答話；4選1時每頁一類。需要表達用「我要」。",
   "defaultDisplayPreset": "2x2",
   "categories": [
     { "id": "need", "label": "我要", "color": "#2b6cb0", "order": 1 },
     { "id": "place", "label": "去邊", "color": "#1f7a4c", "order": 2 },
-    { "id": "routine", "label": "常規", "color": "#b7791f", "order": 3 },
-    { "id": "social", "label": "社交", "color": "#6b46c1", "order": 4 },
-    { "id": "people", "label": "人物", "color": "#805ad5", "order": 5 },
-    { "id": "ask", "label": "問句", "color": "#2c7a7b", "order": 6 },
-    { "id": "feel", "label": "感覺", "color": "#c05621", "order": 7 }
+    { "id": "greet", "label": "打招呼", "color": "#6b46c1", "order": 3 },
+    { "id": "reply", "label": "答話", "color": "#805ad5", "order": 4 },
+    { "id": "routine", "label": "常規", "color": "#b7791f", "order": 5 },
+    { "id": "people", "label": "人物", "color": "#553c9a", "order": 6 },
+    { "id": "ask", "label": "問句", "color": "#2c7a7b", "order": 7 },
+    { "id": "feel", "label": "感覺", "color": "#c05621", "order": 8 }
   ],
   "cells": [
     { "id": "want", "category": "need", "order": 1, "label": "我要", "speak": "我要", "image": "assets/img/want.jpg" },
@@ -30,19 +32,20 @@
     { "id": "bus", "category": "place", "order": 3, "label": "校車", "speak": "坐校車", "image": "assets/img/bus.jpg" },
     { "id": "toilet-place", "category": "place", "order": 4, "label": "廁所", "speak": "去廁所", "image": "assets/img/toilet.jpg" },
 
+    { "id": "morning", "category": "greet", "order": 1, "label": "早晨", "speak": "早晨", "image": "assets/img/morning.jpg" },
+    { "id": "hello", "category": "greet", "order": 2, "label": "你好", "speak": "你好", "image": "assets/img/hello.jpg" },
+    { "id": "bye", "category": "greet", "order": 3, "label": "拜拜", "speak": "拜拜", "image": "assets/img/bye.jpg" },
+    { "id": "thanks", "category": "greet", "order": 4, "label": "多謝", "speak": "多謝", "image": "assets/img/thanks.jpg" },
+
+    { "id": "yes", "category": "reply", "order": 1, "label": "係", "speak": "係", "image": "assets/img/yes.jpg" },
+    { "id": "no", "category": "reply", "order": 2, "label": "唔係", "speak": "唔係", "image": "assets/img/no.jpg" },
+    { "id": "same", "category": "reply", "order": 3, "label": "一樣", "speak": "一樣", "image": "assets/img/same.jpg" },
+    { "id": "diff", "category": "reply", "order": 4, "label": "唔同", "speak": "唔同", "image": "assets/img/diff.jpg" },
+
     { "id": "sit", "category": "routine", "order": 1, "label": "坐好", "speak": "坐好", "image": "assets/img/sit.jpg" },
     { "id": "clap", "category": "routine", "order": 2, "label": "拍手", "speak": "拍手", "image": "assets/img/clap.jpg" },
     { "id": "hand-up", "category": "routine", "order": 3, "label": "舉手", "speak": "舉手", "image": "assets/img/hand-up.jpg" },
     { "id": "put-back", "category": "routine", "order": 4, "label": "放返", "speak": "放返原位", "image": "assets/img/put-back.jpg" },
-
-    { "id": "morning", "category": "social", "order": 1, "label": "早晨", "speak": "早晨", "image": "assets/img/morning.jpg" },
-    { "id": "hello", "category": "social", "order": 2, "label": "你好", "speak": "你好", "image": "assets/img/hello.jpg" },
-    { "id": "bye", "category": "social", "order": 3, "label": "拜拜", "speak": "拜拜", "image": "assets/img/bye.jpg" },
-    { "id": "thanks", "category": "social", "order": 4, "label": "多謝", "speak": "多謝", "image": "assets/img/thanks.jpg" },
-    { "id": "yes", "category": "social", "order": 5, "label": "係", "speak": "係", "image": "assets/img/yes.jpg" },
-    { "id": "no", "category": "social", "order": 6, "label": "唔係", "speak": "唔係", "image": "assets/img/no.jpg" },
-    { "id": "same", "category": "social", "order": 7, "label": "一樣", "speak": "一樣", "image": "assets/img/same.jpg" },
-    { "id": "diff", "category": "social", "order": 8, "label": "唔同", "speak": "唔同", "image": "assets/img/diff.jpg" },
 
     { "id": "teacher", "category": "people", "order": 1, "label": "老師", "speak": "老師", "image": "assets/img/teacher.jpg" },
     { "id": "class-teacher", "category": "people", "order": 2, "label": "班主任", "speak": "班主任", "image": "assets/img/class-teacher.jpg" },
