@@ -61,48 +61,62 @@
       position: absolute; left: 0; bottom: 0; height: 5px; width: 0%;
       background: #fff; border-radius: 0 0 14px 14px; pointer-events: none;
     }
-    .body { display: grid; grid-template-columns: 118px 1fr; min-height: 0; }
+    .body { display: grid; grid-template-columns: 108px 1fr; min-height: 0; }
     .side {
-      display: flex; flex-direction: column; gap: 6px; padding: 8px 6px;
+      display: flex; flex-direction: column; gap: 6px; padding: 8px 5px;
       background: #e8eef5; border-right: 3px solid #c5d0dc; min-height: 0;
     }
     .tabs {
       flex: 1; display: flex; flex-direction: column; gap: 8px;
-      overflow: hidden; /* 中度：唔畀 tab 區 scroll */
+      overflow: hidden;
+      min-height: 0;
     }
     .tab {
       border: 3px solid #9aafc4; background: #f0f4f8; border-radius: 14px;
-      padding: 8px 4px 6px; font-size: .95rem; font-weight: 900; cursor: pointer;
-      text-align: center; min-height: 58px; color: #1a2330;
+      padding: 6px 2px 4px; font-size: .9rem; font-weight: 900; cursor: pointer;
+      text-align: center; min-height: 0; color: #1a2330;
       display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
       flex: 1 1 0;
     }
-    .tab .ico { font-size: 1.45rem; line-height: 1; }
-    .tab .tl { font-size: .82rem; line-height: 1.1; }
+    .tab .ico { font-size: 1.35rem; line-height: 1; }
+    .tab .tl { font-size: .78rem; line-height: 1.05; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
     .tab.on { color: #fff; border-color: #1a2330; }
-    .side-foot { display: flex; flex-direction: column; gap: 6px; align-items: center; }
-    .pager { display: flex; align-items: center; gap: 6px; }
+    .side-foot {
+      flex: 0 0 auto;
+      display: flex; flex-direction: column; gap: 6px; align-items: stretch;
+      width: 100%;
+    }
+    /* pager 喺主區底，唔塞左欄 */
+    .pager-bar {
+      flex: 0 0 auto;
+      display: flex; align-items: center; justify-content: center; gap: 14px;
+      padding: 6px 8px 2px;
+    }
     .pg-btn {
-      width: 64px; height: 64px; border-radius: 14px; border: 3px solid #2c3e50;
-      background: #fff; font-size: 1.5rem; font-weight: 900; cursor: pointer;
+      width: 72px; height: 56px; border-radius: 14px; border: 3px solid #2c3e50;
+      background: #fff; font-size: 1.6rem; font-weight: 900; cursor: pointer;
+      flex: 0 0 auto;
     }
     .pg-btn:disabled { opacity: .35; }
-    .pg-label { min-width: 48px; text-align: center; font-weight: 900; font-size: 1rem; }
-    .pg-dots { display: flex; gap: 5px; justify-content: center; margin-top: 2px; }
+    .pg-mid { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 56px; }
+    .pg-label { text-align: center; font-weight: 900; font-size: 1.05rem; }
+    .pg-dots { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; max-width: 120px; }
     .pg-dots i {
-      width: 10px; height: 10px; border-radius: 50%; background: #b0c0d0; display: block;
+      width: 11px; height: 11px; border-radius: 50%; background: #b0c0d0; display: block;
     }
     .pg-dots i.on { background: #2b6cb0; }
     .lock {
-      display: none; /* 學生模式隱藏；老師模式先見 */
-      width: 100%; height: 44px; border-radius: 10px; border: 2px solid #2b6cb0;
-      background: #e3f0ff; color: #1e4e82; font-weight: 800; font-size: .85rem; cursor: pointer;
+      display: none;
+      width: 100%; min-height: 40px; border-radius: 10px; border: 2px solid #2b6cb0;
+      background: #e3f0ff; color: #1e4e82; font-weight: 800; font-size: .72rem;
+      cursor: pointer; padding: 6px 4px; line-height: 1.2;
     }
     .lock.show { display: block; }
     .lock.on { border-color: #1f7a4c; background: #d9f5e6; color: #155c39; }
     .teacher-box {
       display: none; width: 100%; padding: 6px; background: #fff;
-      border: 2px solid #2b6cb0; border-radius: 10px; max-height: 42vh; overflow-y: auto;
+      border: 2px solid #2b6cb0; border-radius: 10px;
+      max-height: 36vh; overflow-y: auto;
     }
     .teacher-box.show { display: block; }
     .teacher-box .ttl { font-size: .7rem; font-weight: 800; color: #2b6cb0; text-align: center; margin-bottom: 4px; }
@@ -113,7 +127,7 @@
     }
     .mini.on { background: #1f7a4c; border-color: #155c39; color: #fff; }
     .mini.wide { grid-column: 1 / -1; }
-    .grid-wrap { padding: 8px 10px 10px; min-height: 0; display: flex; flex-direction: column; gap: 4px; }
+    .grid-wrap { padding: 8px 10px 6px; min-height: 0; display: flex; flex-direction: column; gap: 2px; }
     .hint {
       text-align: center; font-size: .75rem; color: #5a6b7d; font-weight: 700;
       display: none; /* 學生藏 */
@@ -345,19 +359,11 @@
         <aside class="side">
           <div class="tabs" id="tabs"></div>
           <div class="side-foot">
-            <div class="pager">
-              <button type="button" class="pg-btn" id="prev">◀</button>
-              <div>
-                <div class="pg-label" id="pageLabel">1/1</div>
-                <div class="pg-dots" id="pageDots"></div>
-              </div>
-              <button type="button" class="pg-btn" id="next">▶</button>
-            </div>
-            <button type="button" class="lock" id="lock">🔓 老師中 · 撳返學生</button>
+            <button type="button" class="lock" id="lock">🔓 返學生</button>
             <div class="teacher-box" id="teacherBox">
               <div class="ttl">PROFILE</div>
               <div class="row-btns">
-                <button type="button" class="mini" id="btnPickProfile">揀學生相</button>
+                <button type="button" class="mini" id="btnPickProfile">揀學生</button>
                 <button type="button" class="mini" id="btnGuest">訪客</button>
               </div>
               <div class="ttl" style="margin-top:6px">DISPLAY</div>
@@ -369,10 +375,10 @@
               </div>
               <div class="ttl" style="margin-top:6px">詞彙</div>
               <div class="row-btns">
-                <button type="button" class="mini wide" id="btnVocab">自訂顯示邊啲詞</button>
+                <button type="button" class="mini wide" id="btnVocab">自訂詞</button>
               </div>
               <div class="row-btns" style="margin-top:6px">
-                <button type="button" class="mini wide" id="btnLockDone">返學生模式</button>
+                <button type="button" class="mini wide" id="btnLockDone">返學生</button>
               </div>
             </div>
           </div>
@@ -380,6 +386,14 @@
         <main class="grid-wrap">
           <div class="hint" id="hint">P0</div>
           <div class="grid" id="grid" data-preset="2x2"></div>
+          <div class="pager-bar">
+            <button type="button" class="pg-btn" id="prev" aria-label="上一頁">◀</button>
+            <div class="pg-mid">
+              <div class="pg-label" id="pageLabel">1/1</div>
+              <div class="pg-dots" id="pageDots"></div>
+            </div>
+            <button type="button" class="pg-btn" id="next" aria-label="下一頁">▶</button>
+          </div>
         </main>
       </div>
     </div>
