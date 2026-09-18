@@ -22,60 +22,87 @@
       display: grid; grid-template-rows: auto 1fr;
       background: #f4f7fb; border: 3px solid #2c3e50; border-radius: 14px;
       overflow: hidden; box-shadow: 0 10px 32px rgba(0,0,0,.18);
+      position: relative;
     }
     .msg-bar {
       display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: stretch;
-      padding: 8px 10px; background: #fff; border-bottom: 3px solid #2b6cb0; min-height: 72px;
+      padding: 8px 10px; background: #fff; border-bottom: 3px solid #2b6cb0; min-height: 80px;
     }
     .msg-strip {
       display: flex; align-items: center; gap: 8px; overflow-x: auto;
-      padding: 4px 8px; background: #eef4fb; border: 2px solid #b8cce3; border-radius: 12px; min-height: 56px;
+      padding: 4px 8px; background: #eef4fb; border: 2px solid #b8cce3; border-radius: 12px; min-height: 64px;
     }
     .msg-empty { color: #6b7c90; font-weight: 800; font-size: 1rem; }
     .chip {
-      flex: 0 0 auto; width: 52px; height: 52px; border-radius: 10px;
+      flex: 0 0 auto; width: 64px; height: 64px; border-radius: 12px;
       border: 2px solid #2b6cb0; background: #fff; overflow: hidden;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
     }
     .chip img { width: 100%; height: 70%; object-fit: cover; }
-    .chip span { font-size: .65rem; font-weight: 900; line-height: 1; }
-    .actions { display: flex; gap: 8px; }
+    .chip span { font-size: .7rem; font-weight: 900; line-height: 1; }
+    .actions { display: flex; gap: 8px; align-items: stretch; }
     .btn {
-      border: 0; border-radius: 12px; font-weight: 900; font-size: 1.2rem;
-      min-width: 72px; padding: 0 12px; cursor: pointer; touch-action: manipulation;
+      border: 0; border-radius: 14px; font-weight: 900; font-size: 1.15rem;
+      min-width: 64px; padding: 0 14px; cursor: pointer; touch-action: manipulation;
     }
     .btn:active { transform: scale(.97); }
-    .btn-speak { background: #1f7a4c; color: #fff; min-width: 92px; font-size: 1.4rem; }
-    .btn-del { background: #ffe8a3; color: #5a4300; }
-    .btn-clr { background: #ffd0d0; color: #7a1f1f; }
-    .body { display: grid; grid-template-columns: 132px 1fr; min-height: 0; }
+    .btn-speak {
+      background: #1f7a4c; color: #fff;
+      min-width: 120px; font-size: 1.75rem; padding: 0 22px;
+      box-shadow: 0 3px 0 #155c39;
+    }
+    .btn-del { background: #ffe8a3; color: #5a4300; min-width: 64px; font-size: 1.35rem; opacity: .92; }
+    .btn-clr {
+      background: #ffd0d0; color: #7a1f1f; min-width: 64px; font-size: 1.05rem; opacity: .9;
+      position: relative;
+    }
+    .btn-clr.holding { background: #e53e3e; color: #fff; }
+    .btn-clr .holdbar {
+      position: absolute; left: 0; bottom: 0; height: 5px; width: 0%;
+      background: #fff; border-radius: 0 0 14px 14px; pointer-events: none;
+    }
+    .body { display: grid; grid-template-columns: 118px 1fr; min-height: 0; }
     .side {
       display: flex; flex-direction: column; gap: 6px; padding: 8px 6px;
       background: #e8eef5; border-right: 3px solid #c5d0dc; min-height: 0;
     }
-    .tabs { flex: 1; display: flex; flex-direction: column; gap: 6px; overflow-y: auto; }
-    .tab {
-      border: 3px solid #9aafc4; background: #f0f4f8; border-radius: 12px;
-      padding: 10px 4px; font-size: 1.05rem; font-weight: 900; cursor: pointer;
-      text-align: center; min-height: 48px; color: #1a2330;
+    .tabs {
+      flex: 1; display: flex; flex-direction: column; gap: 8px;
+      overflow: hidden; /* 中度：唔畀 tab 區 scroll */
     }
+    .tab {
+      border: 3px solid #9aafc4; background: #f0f4f8; border-radius: 14px;
+      padding: 8px 4px 6px; font-size: .95rem; font-weight: 900; cursor: pointer;
+      text-align: center; min-height: 58px; color: #1a2330;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+      flex: 1 1 0;
+    }
+    .tab .ico { font-size: 1.45rem; line-height: 1; }
+    .tab .tl { font-size: .82rem; line-height: 1.1; }
     .tab.on { color: #fff; border-color: #1a2330; }
     .side-foot { display: flex; flex-direction: column; gap: 6px; align-items: center; }
-    .pager { display: flex; align-items: center; gap: 4px; }
+    .pager { display: flex; align-items: center; gap: 6px; }
     .pg-btn {
-      width: 46px; height: 46px; border-radius: 10px; border: 3px solid #2c3e50;
-      background: #fff; font-size: 1.2rem; font-weight: 900; cursor: pointer;
+      width: 64px; height: 64px; border-radius: 14px; border: 3px solid #2c3e50;
+      background: #fff; font-size: 1.5rem; font-weight: 900; cursor: pointer;
     }
     .pg-btn:disabled { opacity: .35; }
-    .pg-label { min-width: 42px; text-align: center; font-weight: 900; }
-    .lock {
-      width: 100%; height: 40px; border-radius: 10px; border: 2px dashed #a0b0c0;
-      background: #f7f9fc; color: #5a6b7d; font-weight: 800; font-size: .8rem; cursor: pointer;
+    .pg-label { min-width: 48px; text-align: center; font-weight: 900; font-size: 1rem; }
+    .pg-dots { display: flex; gap: 5px; justify-content: center; margin-top: 2px; }
+    .pg-dots i {
+      width: 10px; height: 10px; border-radius: 50%; background: #b0c0d0; display: block;
     }
-    .lock.on { border-style: solid; border-color: #2b6cb0; background: #e3f0ff; color: #1e4e82; }
+    .pg-dots i.on { background: #2b6cb0; }
+    .lock {
+      display: none; /* 學生模式隱藏；老師模式先見 */
+      width: 100%; height: 44px; border-radius: 10px; border: 2px solid #2b6cb0;
+      background: #e3f0ff; color: #1e4e82; font-weight: 800; font-size: .85rem; cursor: pointer;
+    }
+    .lock.show { display: block; }
+    .lock.on { border-color: #1f7a4c; background: #d9f5e6; color: #155c39; }
     .teacher-box {
       display: none; width: 100%; padding: 6px; background: #fff;
-      border: 2px solid #2b6cb0; border-radius: 10px;
+      border: 2px solid #2b6cb0; border-radius: 10px; max-height: 42vh; overflow-y: auto;
     }
     .teacher-box.show { display: block; }
     .teacher-box .ttl { font-size: .7rem; font-weight: 800; color: #2b6cb0; text-align: center; margin-bottom: 4px; }
@@ -85,13 +112,16 @@
       padding: 8px 2px; font-size: .78rem; font-weight: 900; cursor: pointer;
     }
     .mini.on { background: #1f7a4c; border-color: #155c39; color: #fff; }
+    .mini.wide { grid-column: 1 / -1; }
     .grid-wrap { padding: 8px 10px 10px; min-height: 0; display: flex; flex-direction: column; gap: 4px; }
-    .hint { text-align: center; font-size: .75rem; color: #5a6b7d; font-weight: 700; }
-    .grid { flex: 1; display: grid; gap: 10px; min-height: 0; }
-    /* 橫向格：圖 bleed 填滿，字底欄 — 減少白位 */
+    .hint {
+      text-align: center; font-size: .75rem; color: #5a6b7d; font-weight: 700;
+      display: none; /* 學生藏 */
+    }
+    .hint.show { display: block; }
+    .grid { flex: 1; display: grid; gap: 12px; min-height: 0; }
     .cell {
-      display: grid;
-      grid-template-rows: 1fr auto;
+      display: grid; grid-template-rows: 1fr auto;
       background: #1a2330; border: 4px solid #2c3e50; border-radius: 16px; cursor: pointer;
       touch-action: manipulation; min-height: 0; padding: 0; position: relative;
       overflow: hidden;
@@ -106,28 +136,18 @@
       background: #dfe6ee; overflow: hidden; align-self: stretch;
     }
     .cell .pic img {
-      width: 100%; height: 100%; object-fit: cover; object-position: center;
-      display: block;
+      width: 100%; height: 100%; object-fit: cover; object-position: center; display: block;
     }
     .cell .lab {
       font-size: clamp(1.15rem, 2.4vw, 1.9rem); font-weight: 900;
-      text-align: center; line-height: 1.15;
-      padding: 8px 6px 10px;
-      background: #fff; color: #1a2330;
-      border-top: 2px solid #c5d0dc;
-      width: 100%;
+      text-align: center; line-height: 1.15; padding: 8px 6px 10px;
+      background: #fff; color: #1a2330; border-top: 2px solid #c5d0dc; width: 100%;
     }
-    /* 2選1：字更大；圖仍填滿 */
     .grid[data-preset="1x2"] .lab { font-size: clamp(1.6rem, 3.2vw, 2.5rem); padding: 12px 8px; }
-    /* 8／16 選1：字略細，圖仍 1fr 全高 */
     .grid[data-preset="2x4"] .lab,
-    .grid[data-preset="4x4"] .lab {
-      font-size: clamp(.85rem, 1.5vw, 1.15rem); padding: 4px 2px 6px;
-    }
-    /* 橫向超寬格（2選1）：可改圖+字左右排，圖佔大 */
+    .grid[data-preset="4x4"] .lab { font-size: clamp(.85rem, 1.5vw, 1.15rem); padding: 4px 2px 6px; }
     .grid[data-preset="1x2"] .cell {
-      grid-template-rows: none;
-      grid-template-columns: 1.35fr 0.65fr;
+      grid-template-rows: none; grid-template-columns: 1.35fr 0.65fr;
     }
     .grid[data-preset="1x2"] .cell .lab {
       border-top: 0; border-left: 2px solid #c5d0dc;
@@ -146,17 +166,21 @@
     }
     .flash.on { opacity: 1; }
     .tag {
+      display: none; /* 學生藏 */
       position: fixed; top: 6px; right: 8px; z-index: 40;
       background: #1f7a4c; color: #fff; font-size: .68rem; font-weight: 800;
       padding: 4px 8px; border-radius: 6px;
     }
+    .tag.show { display: block; }
     .who {
       position: fixed; top: 6px; left: 8px; z-index: 40;
-      display: flex; align-items: center; gap: 8px;
+      display: none; /* 學生藏；老師模式顯示 */
+      align-items: center; gap: 8px;
       background: rgba(255,255,255,.95); border: 2px solid #2c3e50;
       border-radius: 999px; padding: 4px 10px 4px 4px;
       font-weight: 900; font-size: .85rem;
     }
+    .who.show { display: flex; }
     .who img {
       width: 36px; height: 36px; border-radius: 50%; object-fit: cover;
       border: 2px solid #2b6cb0; background: #e8eef5;
@@ -168,6 +192,15 @@
     }
     .who.guest .dot { display: grid; }
     .who:not(.guest) .dot { display: none; }
+    /* 隱形老師入口：四角 */
+    .secret {
+      position: fixed; z-index: 45; width: 48px; height: 48px;
+      background: transparent; border: 0; padding: 0;
+    }
+    .secret.tl { top: 0; left: 0; }
+    .secret.tr { top: 0; right: 0; }
+    .secret.bl { bottom: 0; left: 0; }
+    .secret.br { bottom: 0; right: 0; }
     .overlay {
       display: none; position: fixed; inset: 0; z-index: 60;
       background: rgba(26,35,48,.88); place-items: center; padding: 16px;
@@ -191,6 +224,7 @@
       font-weight: 900; font-size: 1.1rem; padding: 10px 18px; cursor: pointer;
     }
     .panel .xbtn.ghost { background: #e8eef5; color: #1a2330; border: 2px solid #9aafc4; }
+    .panel .xbtn.ok { background: #1f7a4c; font-size: 1.25rem; min-width: 140px; }
     .profiles {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
       gap: 12px; margin-top: 8px;
@@ -202,16 +236,35 @@
     }
     .prof:active, .prof.on { border-color: #1f7a4c; box-shadow: 0 0 0 3px rgba(31,122,76,.3); }
     .prof img {
-      width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px;
-      background: #eef2f6;
+      width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; background: #eef2f6;
     }
     .prof .nm { font-weight: 900; font-size: 1.1rem; }
     .prof .meta { font-size: .75rem; color: #5a6b7d; font-weight: 700; }
-    .prof.guest-card {
-      background: #e8eef5; justify-content: center; min-height: 160px;
-    }
+    .prof.guest-card { background: #e8eef5; justify-content: center; min-height: 160px; }
     .prof.guest-card .big { font-size: 2.2rem; }
     .panel-actions { display: flex; gap: 8px; justify-content: center; margin-top: 14px; flex-wrap: wrap; }
+    /* 自訂詞彙 */
+    .vocab-cat { margin: 12px 0; }
+    .vocab-cat h3 {
+      font-size: 1rem; margin-bottom: 8px; padding: 6px 10px; border-radius: 8px; color: #fff;
+    }
+    .vocab-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px;
+    }
+    .vcell {
+      border: 3px solid #9aafc4; border-radius: 12px; background: #fff; padding: 6px;
+      cursor: pointer; text-align: center; position: relative;
+    }
+    .vcell.on { border-color: #1f7a4c; background: #eaf8f0; }
+    .vcell.off { opacity: .45; border-style: dashed; }
+    .vcell img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; background: #eef2f6; }
+    .vcell .vl { font-weight: 900; font-size: .9rem; margin-top: 4px; }
+    .vcell .badge {
+      position: absolute; top: 4px; right: 4px; width: 26px; height: 26px; border-radius: 50%;
+      display: grid; place-items: center; font-weight: 900; font-size: .85rem; color: #fff;
+    }
+    .vcell.on .badge { background: #1f7a4c; }
+    .vcell.off .badge { background: #a0aec0; }
     .rotate-hint {
       display: none; position: fixed; inset: 0; z-index: 50;
       background: rgba(26,35,48,.92); color: #fff; place-items: center;
@@ -224,89 +277,114 @@
   </style>
 </head>
 <body>
+  <button type="button" class="secret tl" id="secTL" aria-label=""></button>
+  <button type="button" class="secret tr" id="secTR" aria-label=""></button>
+  <button type="button" class="secret bl" id="secBL" aria-label=""></button>
+  <button type="button" class="secret br" id="secBR" aria-label=""></button>
+
   <div class="who guest" id="who">
-      <span class="dot">訪</span>
-      <img id="whoImg" alt="" />
-      <span id="whoLabel">訪客</span>
-    </div>
-    <div class="tag">P0 public demo · 一點即講</div>
-    <div class="rotate-hint">請將裝置轉橫（iPad 橫向）</div>
-    <div class="flash" id="flash"></div>
+    <span class="dot">訪</span>
+    <img id="whoImg" alt="" />
+    <span id="whoLabel">訪客</span>
+  </div>
+  <div class="tag" id="tag">老師模式</div>
+  <div class="rotate-hint">請將裝置轉橫（iPad 橫向）</div>
+  <div class="flash" id="flash"></div>
 
-    <!-- 密碼閘 -->
-    <div class="overlay" id="pinOverlay">
-      <div class="panel">
-        <h2>老師密碼</h2>
-        <div class="sub">過閘先可以揀學生真相片 · 否則只用訪客</div>
-        <div class="pin-row">
-          <input id="pinInput" type="password" inputmode="numeric" maxlength="12" placeholder="••••••" autocomplete="off" />
-          <button type="button" id="pinOk">確認</button>
-        </div>
-        <div class="panel-actions">
-          <button type="button" class="xbtn ghost" id="pinCancel">取消 · 繼續訪客</button>
-        </div>
+  <div class="overlay" id="pinOverlay">
+    <div class="panel">
+      <h2>老師密碼</h2>
+      <div class="sub">過閘先設定／揀學生 · 否則只用訪客</div>
+      <div class="pin-row">
+        <input id="pinInput" type="password" inputmode="numeric" maxlength="12" placeholder="••••••" autocomplete="off" />
+        <button type="button" id="pinOk">確認</button>
+      </div>
+      <div class="panel-actions">
+        <button type="button" class="xbtn ghost" id="pinCancel">取消</button>
       </div>
     </div>
+  </div>
 
-    <!-- 真相片 profile 牆 -->
-    <div class="overlay" id="profileOverlay">
-      <div class="panel">
-        <h2>揀學生</h2>
-        <div class="sub">撳真相片切換 · 訪客無個人設定</div>
-        <div class="profiles" id="profileWall"></div>
-        <div class="panel-actions">
-          <button type="button" class="xbtn ghost" id="profileClose">完成</button>
-        </div>
+  <div class="overlay" id="profileOverlay">
+    <div class="panel">
+      <h2>揀學生</h2>
+      <div class="sub">撳真相片切換 · 訪客無個人設定</div>
+      <div class="profiles" id="profileWall"></div>
+      <div class="panel-actions">
+        <button type="button" class="xbtn ok" id="profileClose">得</button>
       </div>
     </div>
+  </div>
 
-    <div class="stage">
-      <div class="app">
-        <header class="msg-bar">
-          <div class="msg-strip" id="msg"><span class="msg-empty" id="msgEmpty">撳大格組句…</span></div>
-          <div class="actions">
-            <button type="button" class="btn btn-speak" id="btnSpeak">講</button>
-            <button type="button" class="btn btn-del" id="btnDel">⌫</button>
-            <button type="button" class="btn btn-clr" id="btnClr">清</button>
-          </div>
-        </header>
-        <div class="body">
-          <aside class="side">
-            <div class="tabs" id="tabs"></div>
-            <div class="side-foot">
-              <div class="pager">
-                <button type="button" class="pg-btn" id="prev">◀</button>
+  <div class="overlay" id="vocabOverlay">
+    <div class="panel">
+      <h2>自訂顯示詞彙</h2>
+      <div class="sub" id="vocabSub">撳格開關 · 關咗學生睇唔到 · 跟而家 profile 存</div>
+      <div class="panel-actions" style="margin-top:0;margin-bottom:8px">
+        <button type="button" class="xbtn ghost" id="vocabAllOn">全部開</button>
+        <button type="button" class="xbtn ghost" id="vocabAllOff">全部關</button>
+      </div>
+      <div id="vocabEditor"></div>
+      <div class="panel-actions">
+        <button type="button" class="xbtn ok" id="vocabDone">得</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="app">
+      <header class="msg-bar">
+        <div class="msg-strip" id="msg"><span class="msg-empty" id="msgEmpty">撳大格…</span></div>
+        <div class="actions">
+          <button type="button" class="btn btn-speak" id="btnSpeak">講</button>
+          <button type="button" class="btn btn-del" id="btnDel">⌫</button>
+          <button type="button" class="btn btn-clr" id="btnClr">清<span class="holdbar" id="clrBar"></span></button>
+        </div>
+      </header>
+      <div class="body">
+        <aside class="side">
+          <div class="tabs" id="tabs"></div>
+          <div class="side-foot">
+            <div class="pager">
+              <button type="button" class="pg-btn" id="prev">◀</button>
+              <div>
                 <div class="pg-label" id="pageLabel">1/1</div>
-                <button type="button" class="pg-btn" id="next">▶</button>
+                <div class="pg-dots" id="pageDots"></div>
               </div>
-              <button type="button" class="lock" id="lock">🔒 老師／轉人</button>
-              <div class="teacher-box" id="teacherBox">
-                <div class="ttl">PROFILE</div>
-                <div class="row-btns">
-                  <button type="button" class="mini" id="btnPickProfile">揀學生相</button>
-                  <button type="button" class="mini" id="btnGuest">訪客</button>
-                </div>
-                <div class="ttl" style="margin-top:6px">DISPLAY</div>
-                <div class="row-btns" id="dispBtns"></div>
-                <div class="ttl" style="margin-top:6px">出聲</div>
-                <div class="row-btns">
-                  <button type="button" class="mini" id="modeCompose">組句後講</button>
-                  <button type="button" class="mini" id="modeInstant">即點即講</button>
-                </div>
-                <div class="row-btns" style="margin-top:6px">
-                  <button type="button" class="mini" id="btnLockDone" style="grid-column:1/-1">返學生模式</button>
-                </div>
+              <button type="button" class="pg-btn" id="next">▶</button>
+            </div>
+            <button type="button" class="lock" id="lock">🔓 老師中 · 撳返學生</button>
+            <div class="teacher-box" id="teacherBox">
+              <div class="ttl">PROFILE</div>
+              <div class="row-btns">
+                <button type="button" class="mini" id="btnPickProfile">揀學生相</button>
+                <button type="button" class="mini" id="btnGuest">訪客</button>
+              </div>
+              <div class="ttl" style="margin-top:6px">DISPLAY</div>
+              <div class="row-btns" id="dispBtns"></div>
+              <div class="ttl" style="margin-top:6px">出聲</div>
+              <div class="row-btns">
+                <button type="button" class="mini" id="modeCompose">組句後講</button>
+                <button type="button" class="mini" id="modeInstant">即點即講</button>
+              </div>
+              <div class="ttl" style="margin-top:6px">詞彙</div>
+              <div class="row-btns">
+                <button type="button" class="mini wide" id="btnVocab">自訂顯示邊啲詞</button>
+              </div>
+              <div class="row-btns" style="margin-top:6px">
+                <button type="button" class="mini wide" id="btnLockDone">返學生模式</button>
               </div>
             </div>
-          </aside>
-          <main class="grid-wrap">
-            <div class="hint" id="hint">P0 試用</div>
-            <div class="grid" id="grid" data-preset="2x2"></div>
-          </main>
-        </div>
+          </div>
+        </aside>
+        <main class="grid-wrap">
+          <div class="hint" id="hint">P0</div>
+          <div class="grid" id="grid" data-preset="2x2"></div>
+        </main>
       </div>
     </div>
-    <div class="banner" id="banner"></div>
+  </div>
+  <div class="banner" id="banner"></div>
 
   <script>
     document.addEventListener("contextmenu", e => e.preventDefault());
@@ -319,9 +397,15 @@
       "4x4": { rows: 4, cols: 4, label: "16選1" }
     };
 
+    const TAB_ICON = {
+      need: "🙋", place: "📍", routine: "✋", social: "👋",
+      people: "👤", ask: "❓", feel: "😊", calm: "🌿", want: "💬",
+      say: "💬", help: "🆘"
+    };
+
     let board = null;
     let generalBoard = null;
-    let personalBoards = {}; // id -> board
+    let personalBoards = {};
     let profilesData = null;
     let preset = "2x2";
     let teacher = false;
@@ -331,12 +415,11 @@
     let page = 0;
     let sentence = [];
     let activeProfileId = "guest";
+    let hiddenIds = new Set(); // 當前 profile 隱藏嘅 cell id
 
-    // salt + pin → sha256；JS 只存 hash
     const PIN_SALT = "tkops-aac-v1";
     const PIN_HASH = "6cecd5c6eafcace439d4d48ea9c2ce5def4d253aa2ffb72007cb994cd3853444";
 
-    // profileId → personal board file
     const PERSONAL_FILES = {
       "demo-a": "data/personal-demo-calm.json",
       "personal-demo-calm": "data/personal-demo-calm.json"
@@ -347,10 +430,12 @@
     const msg = document.getElementById("msg");
     const msgEmpty = document.getElementById("msgEmpty");
     const pageLabel = document.getElementById("pageLabel");
+    const pageDots = document.getElementById("pageDots");
     const prev = document.getElementById("prev");
     const next = document.getElementById("next");
     const banner = document.getElementById("banner");
     const hint = document.getElementById("hint");
+    const tag = document.getElementById("tag");
     const lockBtn = document.getElementById("lock");
     const teacherBox = document.getElementById("teacherBox");
     const dispBtns = document.getElementById("dispBtns");
@@ -362,16 +447,41 @@
     const whoLabel = document.getElementById("whoLabel");
     const pinOverlay = document.getElementById("pinOverlay");
     const profileOverlay = document.getElementById("profileOverlay");
+    const vocabOverlay = document.getElementById("vocabOverlay");
     const pinInput = document.getElementById("pinInput");
     const profileWall = document.getElementById("profileWall");
+    const vocabEditor = document.getElementById("vocabEditor");
+    const vocabSub = document.getElementById("vocabSub");
+    const btnClr = document.getElementById("btnClr");
+    const clrBar = document.getElementById("clrBar");
 
     async function sha256Hex(str) {
       const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
       return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
     }
 
+    function hideKey() {
+      return "aac_hidden_" + (board?.id || "general") + "_" + activeProfileId;
+    }
+
+    function loadHidden() {
+      hiddenIds = new Set();
+      try {
+        const raw = localStorage.getItem(hideKey());
+        if (raw) JSON.parse(raw).forEach(id => hiddenIds.add(id));
+      } catch (_) {}
+    }
+
+    function saveHidden() {
+      try {
+        localStorage.setItem(hideKey(), JSON.stringify([...hiddenIds]));
+      } catch (_) {}
+    }
+
     function currentProfile() {
-      if (!profilesData || activeProfileId === "guest") return profilesData?.guest || { id: "guest", label: "訪客", displayPreset: "2x2" };
+      if (!profilesData || activeProfileId === "guest") {
+        return profilesData?.guest || { id: "guest", label: "訪客", displayPreset: "2x2" };
+      }
       return profilesData.profiles.find(p => p.id === activeProfileId) || profilesData.guest;
     }
 
@@ -387,20 +497,15 @@
       } else {
         whoImg.removeAttribute("src");
       }
-      if (p.displayPreset && PRESETS[p.displayPreset]) {
-        preset = p.displayPreset;
-      } else if (isGuest && profilesData?.defaultDisplayPreset) {
-        preset = profilesData.defaultDisplayPreset;
-      }
+      if (p.displayPreset && PRESETS[p.displayPreset]) preset = p.displayPreset;
+      else if (isGuest && profilesData?.defaultDisplayPreset) preset = profilesData.defaultDisplayPreset;
       page = 0;
       cat = null;
       sentence = [];
 
-      // 切板：有個人板 → 用個人；否則 General
       const pbId = p.personalBoardId || activeProfileId;
-      if (!isGuest && personalBoards[pbId]) {
-        board = personalBoards[pbId];
-      } else if (!isGuest && PERSONAL_FILES[activeProfileId]) {
+      if (!isGuest && personalBoards[pbId]) board = personalBoards[pbId];
+      else if (!isGuest && PERSONAL_FILES[activeProfileId]) {
         try {
           const r = await fetch(PERSONAL_FILES[activeProfileId]);
           const pb = await r.json();
@@ -410,17 +515,15 @@
           console.warn(e);
           board = generalBoard;
         }
-      } else {
-        board = generalBoard;
-      }
+      } else board = generalBoard;
 
+      loadHidden();
       try {
         if (!isGuest) sessionStorage.setItem("aac_active_profile", activeProfileId);
         else sessionStorage.removeItem("aac_active_profile");
       } catch (_) {}
       render();
-      const boardName = board?.title || "General";
-      toast(isGuest ? "訪客 · General" : (p.label + " · " + boardName));
+      toast(isGuest ? "訪客" : (p.label + " · " + (board?.title || "")));
     }
 
     function renderWhoOnly() {
@@ -448,11 +551,10 @@
     function renderProfileWall() {
       if (!profilesData) return;
       profileWall.innerHTML = "";
-      // guest card
       const g = document.createElement("button");
       g.type = "button";
       g.className = "prof guest-card" + (activeProfileId === "guest" ? " on" : "");
-      g.innerHTML = `<div class="big">👤</div><div class="nm">訪客</div><div class="meta">無個人進度</div>`;
+      g.innerHTML = `<div class="big">👤</div><div class="nm">訪客</div><div class="meta">共用板</div>`;
       g.onclick = () => { applyProfile("guest"); closeProfileWall(); };
       profileWall.appendChild(g);
 
@@ -461,7 +563,10 @@
         b.type = "button";
         b.className = "prof" + (activeProfileId === p.id ? " on" : "");
         const disp = PRESETS[p.displayPreset]?.label || p.displayPreset || "";
-        b.innerHTML = `<img src="${p.avatarPath}" alt="${p.label}"><div class="nm">${p.label}</div><div class="meta">${disp}</div>`;
+        const img = p.avatarPath
+          ? `<img src="${p.avatarPath}" alt="${p.label}">`
+          : `<div class="big">🙂</div>`;
+        b.innerHTML = `${img}<div class="nm">${p.label}</div><div class="meta">${disp}</div>`;
         b.onclick = () => { applyProfile(p.id); closeProfileWall(); };
         profileWall.appendChild(b);
       });
@@ -480,13 +585,19 @@
     }
 
     function pageSize() {
-      const p = PRESETS[preset];
-      return p.rows * p.cols;
+      return PRESETS[preset].rows * PRESETS[preset].cols;
     }
 
-    function cellsOfCat(id) {
+    function visibleCats() {
+      return [...board.categories]
+        .sort((a, b) => a.order - b.order)
+        .filter(c => cellsOfCat(c.id, true).length > 0);
+    }
+
+    function cellsOfCat(id, onlyVisible = true) {
       return board.cells
         .filter(c => c.category === id)
+        .filter(c => !onlyVisible || !hiddenIds.has(c.id))
         .sort((a, b) => a.order - b.order);
     }
 
@@ -507,7 +618,6 @@
         window.speechSynthesis.cancel();
         const u = new SpeechSynthesisUtterance(text);
         u.lang = "zh-HK";
-        // prefer zh-HK / zh-TW / yue
         const voices = window.speechSynthesis.getVoices();
         const v = voices.find(x => /zh-HK|yue/i.test(x.lang) || /Hong Kong|Yue/i.test(x.name))
           || voices.find(x => /zh-TW|zh-CN|zh/i.test(x.lang));
@@ -519,7 +629,6 @@
       });
     }
 
-    // unlock voices on some browsers
     if (window.speechSynthesis) {
       window.speechSynthesis.getVoices();
       window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
@@ -555,19 +664,52 @@
     }
 
     function renderTabs() {
-      const cats = [...board.categories].sort((a, b) => a.order - b.order);
-      if (!cat) cat = cats[0].id;
+      const cats = visibleCats();
+      if (!cats.length) {
+        tabs.innerHTML = "";
+        return;
+      }
+      if (!cat || !cats.find(c => c.id === cat)) cat = cats[0].id;
       tabs.innerHTML = "";
-      cats.forEach(c => {
+      // 中度：最多同時顯示 4 個 tab；多出嘅用「更多」
+      const MAX = 4;
+      let show = cats;
+      let more = [];
+      if (cats.length > MAX) {
+        const activeIdx = Math.max(0, cats.findIndex(c => c.id === cat));
+        // 保證當前 cat 喺可見 4 個入面
+        if (activeIdx < MAX - 1) {
+          show = cats.slice(0, MAX - 1);
+          more = cats.slice(MAX - 1);
+        } else {
+          show = cats.slice(0, MAX - 2).concat(cats[activeIdx]);
+          more = cats.filter(c => !show.includes(c));
+        }
+      }
+      show.forEach(c => {
         const b = document.createElement("button");
         b.type = "button";
         b.className = "tab" + (c.id === cat ? " on" : "");
-        b.textContent = c.label;
+        const ico = TAB_ICON[c.id] || "📌";
+        b.innerHTML = `<span class="ico">${ico}</span><span class="tl">${c.label}</span>`;
         if (c.id === cat) b.style.background = c.color || "#2b6cb0";
         else b.style.background = "#f0f4f8";
         b.onclick = () => { cat = c.id; page = 0; render(); };
         tabs.appendChild(b);
       });
+      if (more.length) {
+        const m = document.createElement("button");
+        m.type = "button";
+        m.className = "tab";
+        m.innerHTML = `<span class="ico">⋯</span><span class="tl">更多</span>`;
+        m.style.background = "#dfe6ee";
+        m.onclick = () => {
+          // 簡單：轉去 more 第一個
+          cat = more[0].id; page = 0; render();
+          toast("類別：" + more.map(x => x.label).join("、"));
+        };
+        tabs.appendChild(m);
+      }
     }
 
     function renderGrid() {
@@ -586,17 +728,14 @@
         el.type = "button";
         el.className = "cell";
         el.innerHTML = `<div class="pic"><img src="${cell.image}" alt="${cell.label}" loading="eager"></div><div class="lab">${cell.label}</div>`;
-        el.addEventListener("click", async () => {
+        el.addEventListener("click", () => {
           el.classList.add("sel");
           setTimeout(() => el.classList.remove("sel"), 200);
           flashOk();
           if (sentence.length >= 8) sentence.shift();
           sentence.push(cell);
           renderMsg();
-          // 預設／即點即講：一點就有聲
-          if (instantSpeak) {
-            speakText(cell.speak || cell.label);
-          }
+          if (instantSpeak) speakText(cell.speak || cell.label);
         });
         grid.appendChild(el);
       });
@@ -611,7 +750,27 @@
       pageLabel.textContent = `${page + 1}/${pages.length}`;
       prev.disabled = page <= 0;
       next.disabled = page >= pages.length - 1;
-      hint.textContent = `${whoLabel.textContent} · ${PRESETS[preset].label} · ${instantSpeak ? "一點即講" : "組句後撳「講」"} · 禁 swipe`;
+      pageDots.innerHTML = "";
+      pages.forEach((_, i) => {
+        const d = document.createElement("i");
+        if (i === page) d.classList.add("on");
+        pageDots.appendChild(d);
+      });
+
+      if (teacher) {
+        hint.classList.add("show");
+        hint.textContent = `${whoLabel.textContent} · ${PRESETS[preset].label} · 隱 ${hiddenIds.size} 詞`;
+      } else {
+        hint.classList.remove("show");
+      }
+    }
+
+    function renderChrome() {
+      lockBtn.classList.toggle("show", teacher);
+      lockBtn.classList.toggle("on", teacher);
+      teacherBox.classList.toggle("show", teacher);
+      tag.classList.toggle("show", teacher);
+      who.classList.toggle("show", teacher);
     }
 
     function render() {
@@ -621,10 +780,40 @@
       renderGrid();
       renderMsg();
       renderWhoOnly();
-      lockBtn.classList.toggle("on", teacher);
-      lockBtn.textContent = teacher ? "🔓 老師中" : "🔒 老師／轉人";
-      teacherBox.classList.toggle("show", teacher);
+      renderChrome();
     }
+
+    function enterTeacher() {
+      if (!gateOk) { openPin(); return; }
+      teacher = true;
+      render();
+      toast("老師模式");
+    }
+
+    function exitTeacher() {
+      teacher = false;
+      closeProfileWall();
+      closeVocab();
+      render();
+      toast("返學生模式");
+    }
+
+    // —— 隱形入口：5 下任意角（2 秒內）——
+    let secretTaps = 0;
+    let secretTimer = null;
+    function secretHit() {
+      if (teacher) return;
+      secretTaps++;
+      clearTimeout(secretTimer);
+      secretTimer = setTimeout(() => { secretTaps = 0; }, 2000);
+      if (secretTaps >= 5) {
+        secretTaps = 0;
+        enterTeacher();
+      }
+    }
+    ["secTL", "secTR", "secBL", "secBR"].forEach(id => {
+      document.getElementById(id).addEventListener("click", secretHit);
+    });
 
     prev.onclick = () => { if (page > 0) { page--; renderGrid(); } };
     next.onclick = () => {
@@ -632,7 +821,45 @@
       if (page < pages.length - 1) { page++; renderGrid(); }
     };
     document.getElementById("btnDel").onclick = () => { sentence.pop(); renderMsg(); };
-    document.getElementById("btnClr").onclick = () => { sentence = []; renderMsg(); };
+
+    // 清：長按 0.7s 先清
+    let clrTimer = null;
+    let clrStart = 0;
+    function clrDown(e) {
+      e.preventDefault();
+      clrStart = Date.now();
+      btnClr.classList.add("holding");
+      clrBar.style.width = "0%";
+      const tick = () => {
+        const p = Math.min(1, (Date.now() - clrStart) / 700);
+        clrBar.style.width = (p * 100) + "%";
+        if (p >= 1) {
+          sentence = [];
+          renderMsg();
+          flashOk();
+          toast("已清空");
+          clrUp();
+          return;
+        }
+        clrTimer = requestAnimationFrame(tick);
+      };
+      clrTimer = requestAnimationFrame(tick);
+    }
+    function clrUp() {
+      btnClr.classList.remove("holding");
+      clrBar.style.width = "0%";
+      if (clrTimer) cancelAnimationFrame(clrTimer);
+      clrTimer = null;
+      if (Date.now() - clrStart < 700 && clrStart) {
+        toast("長按「清」先清空");
+      }
+      clrStart = 0;
+    }
+    btnClr.addEventListener("pointerdown", clrDown);
+    btnClr.addEventListener("pointerup", clrUp);
+    btnClr.addEventListener("pointerleave", clrUp);
+    btnClr.addEventListener("pointercancel", clrUp);
+
     document.getElementById("btnSpeak").onclick = async () => {
       if (!sentence.length) { toast("未有詞"); return; }
       const t = sentence.map(c => c.speak || c.label).join("，");
@@ -641,19 +868,8 @@
     };
 
     lockBtn.onclick = () => {
-      if (teacher) {
-        teacher = false;
-        render();
-        toast("返學生模式");
-        return;
-      }
-      // 要轉人／老師設定 → 先密碼（若未過閘）
-      if (!gateOk) openPin();
-      else {
-        teacher = true;
-        render();
-        toast("老師模式");
-      }
+      if (teacher) exitTeacher();
+      else enterTeacher();
     };
 
     document.getElementById("pinOk").onclick = async () => {
@@ -671,43 +887,90 @@
       closePin();
       teacher = true;
       render();
-      openProfileWall();
-      toast("密碼 OK · 揀學生");
+      toast("密碼 OK");
     };
-    document.getElementById("pinCancel").onclick = () => {
-      closePin();
-      toast("繼續訪客");
-    };
+    document.getElementById("pinCancel").onclick = () => { closePin(); };
     pinInput.addEventListener("keydown", e => {
       if (e.key === "Enter") document.getElementById("pinOk").click();
     });
 
     document.getElementById("btnPickProfile").onclick = () => openProfileWall();
-    document.getElementById("btnGuest").onclick = () => {
-      applyProfile("guest");
-    };
+    document.getElementById("btnGuest").onclick = () => applyProfile("guest");
     document.getElementById("profileClose").onclick = () => closeProfileWall();
-    document.getElementById("btnLockDone").onclick = () => {
-      teacher = false;
-      closeProfileWall();
-      render();
-      toast("返學生模式");
-    };
+    document.getElementById("btnLockDone").onclick = () => exitTeacher();
 
     modeCompose.onclick = () => {
       if (!teacher) return;
       instantSpeak = false;
       renderDisp();
-      toast("只組句（點格唔出聲）— 少用");
+      toast("組句後講");
     };
     modeInstant.onclick = () => {
       if (!teacher) return;
       instantSpeak = true;
       renderDisp();
-      toast("一點即講（預設）");
+      toast("一點即講");
     };
 
-    // anti-swipe nav
+    // —— 自訂詞彙 ——
+    function openVocab() {
+      if (!teacher) return;
+      vocabSub.textContent = `而家：${whoLabel.textContent} · 板：${board?.title || ""} · 撳格開關`;
+      renderVocabEditor();
+      vocabOverlay.classList.add("show");
+    }
+    function closeVocab() {
+      vocabOverlay.classList.remove("show");
+      page = 0;
+      cat = null;
+      render();
+    }
+    function renderVocabEditor() {
+      vocabEditor.innerHTML = "";
+      const cats = [...board.categories].sort((a, b) => a.order - b.order);
+      cats.forEach(c => {
+        const wrap = document.createElement("div");
+        wrap.className = "vocab-cat";
+        const h = document.createElement("h3");
+        h.textContent = (TAB_ICON[c.id] || "") + " " + c.label;
+        h.style.background = c.color || "#2b6cb0";
+        wrap.appendChild(h);
+        const g = document.createElement("div");
+        g.className = "vocab-grid";
+        board.cells.filter(x => x.category === c.id).sort((a, b) => a.order - b.order).forEach(cell => {
+          const on = !hiddenIds.has(cell.id);
+          const b = document.createElement("button");
+          b.type = "button";
+          b.className = "vcell " + (on ? "on" : "off");
+          b.innerHTML = `<span class="badge">${on ? "✓" : "–"}</span><img src="${cell.image}" alt=""><div class="vl">${cell.label}</div>`;
+          b.onclick = () => {
+            if (hiddenIds.has(cell.id)) hiddenIds.delete(cell.id);
+            else hiddenIds.add(cell.id);
+            saveHidden();
+            renderVocabEditor();
+          };
+          g.appendChild(b);
+        });
+        wrap.appendChild(g);
+        vocabEditor.appendChild(wrap);
+      });
+    }
+    document.getElementById("btnVocab").onclick = openVocab;
+    document.getElementById("vocabDone").onclick = closeVocab;
+    document.getElementById("vocabAllOn").onclick = () => {
+      hiddenIds.clear();
+      saveHidden();
+      renderVocabEditor();
+      toast("全部開");
+    };
+    document.getElementById("vocabAllOff").onclick = () => {
+      board.cells.forEach(c => hiddenIds.add(c.id));
+      saveHidden();
+      renderVocabEditor();
+      toast("全部關（記得再開幾格）");
+    };
+
+    // anti-swipe
     let touchStart = null;
     document.addEventListener("touchstart", e => {
       const t = e.changedTouches[0];
@@ -719,18 +982,16 @@
       const dx = t.clientX - touchStart.x;
       const dy = t.clientY - touchStart.y;
       if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.2) {
-        toast("已擋：swipe 唔會翻頁，用 ◀ ▶");
+        toast("用 ◀ ▶ 翻頁");
       }
       touchStart = null;
     }, { passive: true });
     document.addEventListener("wheel", e => {
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 8) {
         e.preventDefault();
-        toast("已擋：橫滑唔翻頁");
       }
     }, { passive: false });
 
-    // restore session gate (唔跨瀏覽器重開自動過閘 — session only)
     try {
       if (sessionStorage.getItem("aac_gate_ok") === "1") gateOk = true;
       const ap = sessionStorage.getItem("aac_active_profile");
@@ -750,9 +1011,10 @@
         personalBoards["demo-a"] = chanBoard;
       }
       if (p.defaultDisplayPreset) preset = p.defaultDisplayPreset;
+      loadHidden();
       return applyProfile(activeProfileId === "guest" ? "guest" : activeProfileId);
     }).catch(err => {
-      toast("載入 board/profiles 失敗（請用本地 server）");
+      toast("載入失敗（請用本地 server）");
       console.error(err);
     });
   </script>
