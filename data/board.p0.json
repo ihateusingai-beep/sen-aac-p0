@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "general-p0-trial",
   "title": "P0 試用板 · 日常表達",
-  "rev": "batch-a-2026-09-20",
-  "note": "Batch A 課室操作：抹手抹嘴換衫攞放低睇書玩；嘈冇嘢；未得得啦唔知；排隊企好收工；可唔可以",
+  "rev": "batch-ac-2026-09-21",
+  "note": "Batch A+C：課室操作 + 人物「我／同學」",
   "defaultDisplayPreset": "2x2",
   "categories": [
     {
@@ -641,6 +641,22 @@
       "label": "可唔可以",
       "speak": "可唔可以",
       "image": "assets/img/may-i.jpg"
+    },
+    {
+      "id": "me",
+      "category": "people",
+      "order": 5,
+      "label": "我",
+      "speak": "我",
+      "image": "assets/img/me.jpg"
+    },
+    {
+      "id": "friend",
+      "category": "people",
+      "order": 6,
+      "label": "同學",
+      "speak": "同學",
+      "image": "assets/img/friend.jpg"
     }
   ]
 }

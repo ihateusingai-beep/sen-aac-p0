@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "packId": "sen-aac-p0-public-demo",
-  "rev": "batch-a-2026-09-20",
+  "rev": "batch-ac-2026-09-21",
   "title": "SEN AAC P0 public demo",
-  "note": "No real student PII. Demo PIN 000000. Style C + Batch A classroom ops (~72). N3+N4.",
+  "note": "No real student PII. Demo PIN 000000. Style C + Batch A/C (~74). N3+N4.",
   "defaultDisplayPreset": "2x2",
   "guest": {
     "id": "guest",
