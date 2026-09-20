@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "general-p0-trial",
   "title": "P0 試用板 · 日常表達",
-  "rev": "batch-ac-2026-09-21",
-  "note": "Batch A+C：課室操作 + 人物「我／同學」",
+  "rev": "batch-b-2026-09-21",
+  "note": "Batch B：活動 tab（畫畫唱歌跳舞跑步波＋物件＋而家一陣完咗）",
   "defaultDisplayPreset": "2x2",
   "categories": [
     {
@@ -53,6 +53,12 @@
       "label": "感覺",
       "color": "#c05621",
       "order": 8
+    },
+    {
+      "id": "activity",
+      "label": "活動",
+      "color": "#dd6b20",
+      "order": 9
     }
   ],
   "cells": [
@@ -657,6 +663,115 @@
       "label": "同學",
       "speak": "同學",
       "image": "assets/img/friend.jpg"
+    },
+    {
+      "id": "draw",
+      "category": "activity",
+      "order": 1,
+      "label": "畫畫",
+      "speak": "我想畫畫",
+      "image": "assets/img/draw.jpg"
+    },
+    {
+      "id": "sing",
+      "category": "activity",
+      "order": 2,
+      "label": "唱歌",
+      "speak": "我想唱歌",
+      "image": "assets/img/sing.jpg"
+    },
+    {
+      "id": "dance",
+      "category": "activity",
+      "order": 3,
+      "label": "跳舞",
+      "speak": "我想跳舞",
+      "image": "assets/img/dance.jpg"
+    },
+    {
+      "id": "run",
+      "category": "activity",
+      "order": 4,
+      "label": "跑步",
+      "speak": "我想跑步",
+      "image": "assets/img/run.jpg"
+    },
+    {
+      "id": "ball",
+      "category": "activity",
+      "order": 5,
+      "label": "波",
+      "speak": "我想玩波",
+      "image": "assets/img/ball.jpg"
+    },
+    {
+      "id": "pencil",
+      "category": "activity",
+      "order": 6,
+      "label": "鉛筆",
+      "speak": "鉛筆",
+      "image": "assets/img/pencil.jpg",
+      "gendered": false
+    },
+    {
+      "id": "eraser",
+      "category": "activity",
+      "order": 7,
+      "label": "擦膠",
+      "speak": "擦膠",
+      "image": "assets/img/eraser.jpg",
+      "gendered": false
+    },
+    {
+      "id": "book",
+      "category": "activity",
+      "order": 8,
+      "label": "書",
+      "speak": "書",
+      "image": "assets/img/book.jpg",
+      "gendered": false
+    },
+    {
+      "id": "tablet",
+      "category": "activity",
+      "order": 9,
+      "label": "平板",
+      "speak": "平板",
+      "image": "assets/img/tablet.jpg",
+      "gendered": false
+    },
+    {
+      "id": "headphones",
+      "category": "activity",
+      "order": 10,
+      "label": "耳機",
+      "speak": "耳機",
+      "image": "assets/img/headphones.jpg",
+      "gendered": false
+    },
+    {
+      "id": "now",
+      "category": "activity",
+      "order": 11,
+      "label": "而家",
+      "speak": "而家",
+      "image": "assets/img/now.jpg"
+    },
+    {
+      "id": "later",
+      "category": "activity",
+      "order": 12,
+      "label": "一陣",
+      "speak": "一陣",
+      "image": "assets/img/later.jpg"
+    },
+    {
+      "id": "finished",
+      "category": "activity",
+      "order": 13,
+      "label": "完咗",
+      "speak": "完咗",
+      "image": "assets/img/finished.jpg"
     }
   ]
 }
