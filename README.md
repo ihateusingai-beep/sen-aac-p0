@@ -1,7 +1,7 @@
 # SEN AAC P0 — public demo
 
-~52 日常表達格 · N選1 · 一點即講 · **Style C** 男女圖套 · 禁 swipe  
-**N3** 老師改1格 · **N4** Pack 匯出／入
+~72 日常表達格 · N選1 · 一點即講 · **Style C** 男女圖套 · 禁 swipe  
+**Batch A** 抹手／排隊／可唔可以… · **N3** 改1格 · **N4** Pack
 
 **Live:** https://ihateusingai-beep.github.io/sen-aac-p0/
 
