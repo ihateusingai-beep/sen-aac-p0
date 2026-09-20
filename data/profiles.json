@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "packId": "sen-aac-p0-public-demo",
-  "rev": "n3n4-2026-09-19",
+  "rev": "style-c-firm-2026-09-20",
   "title": "SEN AAC P0 public demo",
-  "note": "No real student PII. Demo PIN 000000. N3 edit cell + N4 pack I/O.",
+  "note": "No real student PII. Demo PIN 000000. Style C firm (Ming/Haru). N3+N4.",
   "defaultDisplayPreset": "2x2",
   "guest": {
     "id": "guest",

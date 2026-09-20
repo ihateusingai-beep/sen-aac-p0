@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "general-p0-trial",
   "title": "P0 試用板 · 日常表達",
-  "rev": "daily-express-2026-09-18",
-  "note": "只加中度日常表達：凍痛攰驚、等陣得唔該、飯堂操場",
+  "rev": "need-feel-social-2026-09-19",
+  "note": "口語：需要（肚餓眼訓）+ 情緒（不安舒服）+ 社交正面／道歉。已有飲水熱凍開心多謝唔該唔重複。",
   "defaultDisplayPreset": "2x2",
   "categories": [
     { "id": "need", "label": "我要", "color": "#2b6cb0", "order": 1 },
@@ -20,13 +20,15 @@
     { "id": "no-want", "category": "need", "order": 2, "label": "唔要", "speak": "唔要", "image": "assets/img/no-want.jpg" },
     { "id": "drink", "category": "need", "order": 3, "label": "飲水", "speak": "我要飲水", "image": "assets/img/drink.jpg" },
     { "id": "eat", "category": "need", "order": 4, "label": "食嘢", "speak": "我要食嘢", "image": "assets/img/eat.jpg" },
-    { "id": "stop", "category": "need", "order": 5, "label": "停", "speak": "停一停", "image": "assets/img/stop.jpg" },
-    { "id": "help-me", "category": "need", "order": 6, "label": "幫我", "speak": "請幫我", "image": "assets/img/help-me.jpg" },
-    { "id": "hot", "category": "need", "order": 7, "label": "熱", "speak": "我好熱", "image": "assets/img/hot.jpg" },
-    { "id": "cold", "category": "need", "order": 8, "label": "凍", "speak": "我好凍", "image": "assets/img/cold.jpg" },
-    { "id": "toilet", "category": "need", "order": 9, "label": "廁所", "speak": "我要去廁所", "image": "assets/img/toilet.jpg" },
-    { "id": "no-do", "category": "need", "order": 10, "label": "唔做", "speak": "唔做", "image": "assets/img/no-do.jpg" },
-    { "id": "homework", "category": "need", "order": 11, "label": "交功課", "speak": "交功課俾先生", "image": "assets/img/homework.jpg" },
+    { "id": "hungry", "category": "need", "order": 5, "label": "肚餓", "speak": "我好肚餓", "image": "assets/img/hungry.jpg" },
+    { "id": "sleepy", "category": "need", "order": 6, "label": "眼訓", "speak": "我好眼訓", "image": "assets/img/sleepy.jpg" },
+    { "id": "stop", "category": "need", "order": 7, "label": "停", "speak": "停一停", "image": "assets/img/stop.jpg" },
+    { "id": "help-me", "category": "need", "order": 8, "label": "幫我", "speak": "幫我", "image": "assets/img/help-me.jpg" },
+    { "id": "hot", "category": "need", "order": 9, "label": "熱", "speak": "我好熱", "image": "assets/img/hot.jpg" },
+    { "id": "cold", "category": "need", "order": 10, "label": "凍", "speak": "我好凍", "image": "assets/img/cold.jpg" },
+    { "id": "toilet", "category": "need", "order": 11, "label": "廁所", "speak": "我要去廁所", "image": "assets/img/toilet.jpg" },
+    { "id": "no-do", "category": "need", "order": 12, "label": "唔做", "speak": "唔做", "image": "assets/img/no-do.jpg" },
+    { "id": "homework", "category": "need", "order": 13, "label": "交功課", "speak": "交功課俾先生", "image": "assets/img/homework.jpg" },
 
     { "id": "classroom", "category": "place", "order": 1, "label": "教室", "speak": "去教室", "image": "assets/img/classroom.jpg" },
     { "id": "canteen", "category": "place", "order": 2, "label": "飯堂", "speak": "去飯堂", "image": "assets/img/canteen.jpg" },
@@ -40,6 +42,10 @@
     { "id": "bye", "category": "greet", "order": 3, "label": "拜拜", "speak": "拜拜", "image": "assets/img/bye.jpg" },
     { "id": "thanks", "category": "greet", "order": 4, "label": "多謝", "speak": "多謝", "image": "assets/img/thanks.jpg" },
     { "id": "please", "category": "greet", "order": 5, "label": "唔該", "speak": "唔該", "image": "assets/img/please.jpg" },
+    { "id": "thanks-lot", "category": "greet", "order": 6, "label": "唔該晒", "speak": "唔該晒", "image": "assets/img/thanks-lot.jpg" },
+    { "id": "good-yes", "category": "greet", "order": 7, "label": "好呀", "speak": "好呀", "image": "assets/img/good-yes.jpg" },
+    { "id": "sorry", "category": "greet", "order": 8, "label": "對唔住", "speak": "對唔住", "image": "assets/img/sorry.jpg" },
+    { "id": "excuse", "category": "greet", "order": 9, "label": "唔好意思", "speak": "唔好意思", "image": "assets/img/excuse.jpg" },
 
     { "id": "yes", "category": "reply", "order": 1, "label": "係", "speak": "係", "image": "assets/img/yes.jpg" },
     { "id": "no", "category": "reply", "order": 2, "label": "唔係", "speak": "唔係", "image": "assets/img/no.jpg" },
@@ -63,9 +69,11 @@
 
     { "id": "happy", "category": "feel", "order": 1, "label": "開心", "speak": "我好開心", "image": "assets/img/happy.jpg" },
     { "id": "sad", "category": "feel", "order": 2, "label": "唔開心", "speak": "我唔開心", "image": "assets/img/sad.jpg" },
-    { "id": "angry", "category": "feel", "order": 3, "label": "嬲", "speak": "我嬲", "image": "assets/img/angry.jpg" },
-    { "id": "scared", "category": "feel", "order": 4, "label": "驚", "speak": "我驚", "image": "assets/img/scared.jpg" },
-    { "id": "tired", "category": "feel", "order": 5, "label": "攰", "speak": "我好攰", "image": "assets/img/tired.jpg" },
-    { "id": "pain", "category": "feel", "order": 6, "label": "痛", "speak": "我痛", "image": "assets/img/pain.jpg" }
+    { "id": "uneasy", "category": "feel", "order": 3, "label": "不安", "speak": "我好不安", "image": "assets/img/uneasy.jpg" },
+    { "id": "comfy", "category": "feel", "order": 4, "label": "舒服", "speak": "我好舒服", "image": "assets/img/comfy.jpg" },
+    { "id": "angry", "category": "feel", "order": 5, "label": "嬲", "speak": "我嬲", "image": "assets/img/angry.jpg" },
+    { "id": "scared", "category": "feel", "order": 6, "label": "驚", "speak": "我驚", "image": "assets/img/scared.jpg" },
+    { "id": "tired", "category": "feel", "order": 7, "label": "攰", "speak": "我好攰", "image": "assets/img/tired.jpg" },
+    { "id": "pain", "category": "feel", "order": 8, "label": "痛", "speak": "我痛", "image": "assets/img/pain.jpg" }
   ]
 }
