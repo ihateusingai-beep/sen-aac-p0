@@ -311,5 +311,6 @@
       "image": "assets/img/toilet.jpg",
       "gendered": false
     }
-  ]
+  ],
+  "mergeGeneral": true
 }

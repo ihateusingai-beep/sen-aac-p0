@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "packId": "sen-aac-p0-public-demo",
-  "rev": "ux-phone-tip-2026-09-21",
+  "rev": "home-b1-2026-09-22",
   "title": "SEN AAC P0 public demo",
-  "note": "No real student PII. Demo PIN 000000. Style C ~88. Place first page + meal + e-learning. Phone tip not force landscape.",
+  "note": "No real student PII. Demo PIN 000000. Style C ~143. Body tab + house B1 + IA fix merge/more/trial-hide.",
   "defaultDisplayPreset": "2x2",
   "guest": {
     "id": "guest",

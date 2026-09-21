@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-  <title>SEN AAC P0 demo · 4選1</title>
+  <title>培智 AAC P0 · 4選1</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
@@ -364,6 +364,33 @@
       pointer-events: none;
     }
     .cell { position: relative; }
+    .usage-body {
+      background: #fff; border: 2px solid #c5d0dc; border-radius: 12px;
+      padding: 12px; max-height: 50dvh; overflow: auto;
+      font-size: .95rem; line-height: 1.45;
+    }
+    .usage-body .u-row {
+      display: grid; grid-template-columns: 1fr auto; gap: 8px;
+      padding: 6px 4px; border-bottom: 1px solid #e8eef5; font-weight: 800;
+    }
+    .usage-body .u-row:last-child { border-bottom: 0; }
+    .usage-body .u-meta { color: #5a6b7d; font-size: .85rem; font-weight: 700; margin-bottom: 10px; }
+    .usage-body .u-empty { color: #6b7c90; font-weight: 800; text-align: center; padding: 18px 8px; }
+    /* 更多 · tab 大掣選單 */
+    .tab-pick-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 10px; margin-top: 8px;
+    }
+    .tab-pick {
+      border: 4px solid #2c3e50; border-radius: 16px; background: #fff;
+      padding: 14px 8px; cursor: pointer; text-align: center;
+      font-weight: 900; min-height: 88px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+    }
+    .tab-pick .ico { font-size: 1.8rem; line-height: 1; }
+    .tab-pick .tl { font-size: 1.15rem; }
+    .tab-pick.on { box-shadow: 0 0 0 3px rgba(31,122,76,.35); border-color: #1f7a4c; color: #fff; }
+    .tab-pick:active { transform: scale(.98); }
   </style>
 </head>
 <body>
@@ -416,6 +443,17 @@
     </div>
   </div>
 
+  <div class="overlay" id="tabPickOverlay">
+    <div class="panel">
+      <h2>揀類別</h2>
+      <div class="sub">全部 tab · 一點即跳</div>
+      <div class="tab-pick-grid" id="tabPickGrid"></div>
+      <div class="panel-actions">
+        <button type="button" class="xbtn ghost" id="tabPickClose">取消</button>
+      </div>
+    </div>
+  </div>
+
   <div class="overlay" id="vocabOverlay">
     <div class="panel">
       <h2>自訂顯示詞彙</h2>
@@ -449,6 +487,19 @@
       <div class="panel-actions">
         <button type="button" class="xbtn ghost" id="editCancel">取消</button>
         <button type="button" class="xbtn ok" id="editSave">儲存</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="usageOverlay">
+    <div class="panel">
+      <h2>使用摘要 L0</h2>
+      <div class="sub" id="usageSub">本機記錄 · 訪客唔記 · 無 AI · 只有老師見</div>
+      <div id="usageBody" class="usage-body"></div>
+      <div class="panel-actions">
+        <button type="button" class="xbtn ghost" id="usageExport">匯出 JSON</button>
+        <button type="button" class="xbtn ghost" id="usageClear">清呢個生</button>
+        <button type="button" class="xbtn ok" id="usageDone">得</button>
       </div>
     </div>
   </div>
@@ -501,6 +552,10 @@
                 <button type="button" class="mini" id="btnPackExport">匯出</button>
                 <button type="button" class="mini" id="btnPackImport">匯入</button>
               </div>
+              <div class="ttl" style="margin-top:6px">使用 L0</div>
+              <div class="row-btns">
+                <button type="button" class="mini wide" id="btnUsage">呢個生·使用</button>
+              </div>
               <div class="row-btns" style="margin-top:6px">
                 <button type="button" class="mini wide" id="btnLockDone">返學生</button>
               </div>
@@ -538,9 +593,13 @@
     const TAB_ICON = {
       need: "🙋", place: "📍", routine: "✋",
       greet: "👋", reply: "💬", social: "👋",
-      people: "👤", ask: "❓", feel: "😊", calm: "🌿", want: "💬",
-      say: "💬", help: "🆘"
+      people: "👤", ask: "❓", feel: "😊", body: "🤒", activity: "🎨",
+      house: "🏠", calm: "🌿", want: "💬", say: "💬", help: "🆘",
+      story: "📖", desc: "📝", think: "💭"
     };
+
+    /** 試用：每 tab 只開前 N 格（未有本機隱詞記錄時） */
+    const TRIAL_KEEP_PER_TAB = 8;
 
     let board = null;
     let generalBoard = null;
@@ -560,6 +619,197 @@
     let cellOverrides = {}; // id -> {label,speak,image}
     let editingCellId = null;
     let editImageData = null; // dataURL or null keep
+    let usageSessionId = (typeof crypto !== "undefined" && crypto.randomUUID)
+      ? crypto.randomUUID()
+      : ("s" + Date.now() + "-" + Math.random().toString(16).slice(2));
+
+    // —— L0 UsageStore（IndexedDB · 訪客 0 · 無 AI）——
+    const USAGE_DB_NAME = "aac-usage-v1";
+    const USAGE_STORE = "events";
+    const USAGE_MAX_PER_PROFILE = 5000;
+
+    function usageAllowed() {
+      return !!(activeProfileId && activeProfileId !== "guest");
+    }
+
+    function openUsageDB() {
+      return new Promise((resolve, reject) => {
+        if (!window.indexedDB) {
+          reject(new Error("no idb"));
+          return;
+        }
+        const req = indexedDB.open(USAGE_DB_NAME, 1);
+        req.onupgradeneeded = () => {
+          const db = req.result;
+          if (!db.objectStoreNames.contains(USAGE_STORE)) {
+            const os = db.createObjectStore(USAGE_STORE, { keyPath: "id", autoIncrement: true });
+            os.createIndex("by_profile", "profileId", { unique: false });
+            os.createIndex("by_ts", "ts", { unique: false });
+          }
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error || new Error("idb open fail"));
+      });
+    }
+
+    async function logUsage(type, extra) {
+      if (!usageAllowed()) return;
+      const ev = {
+        v: 1,
+        ts: new Date().toISOString(),
+        sessionId: usageSessionId,
+        profileId: activeProfileId,
+        boardId: (board && board.id) || "general",
+        displayPreset: preset,
+        type: type,
+        ...(extra || {})
+      };
+      try {
+        const db = await openUsageDB();
+        await new Promise((resolve, reject) => {
+          const tx = db.transaction(USAGE_STORE, "readwrite");
+          tx.oncomplete = () => resolve();
+          tx.onerror = () => reject(tx.error);
+          tx.objectStore(USAGE_STORE).add(ev);
+        });
+        // 間中 trim，唔阻每次 tap
+        if (Math.random() < 0.02) {
+          const all = await listUsageForProfile(activeProfileId);
+          if (all.length > USAGE_MAX_PER_PROFILE) {
+            const drop = all.slice(0, all.length - USAGE_MAX_PER_PROFILE);
+            const db2 = await openUsageDB();
+            await new Promise((resolve, reject) => {
+              const tx = db2.transaction(USAGE_STORE, "readwrite");
+              tx.oncomplete = () => resolve();
+              tx.onerror = () => reject(tx.error);
+              const os = tx.objectStore(USAGE_STORE);
+              drop.forEach(e => { if (e.id != null) os.delete(e.id); });
+            });
+          }
+        }
+      } catch (e) {
+        console.warn("usage log skip", e);
+      }
+    }
+
+    async function listUsageForProfile(profileId) {
+      if (!profileId || profileId === "guest") return [];
+      try {
+        const db = await openUsageDB();
+        return await new Promise((resolve, reject) => {
+          const tx = db.transaction(USAGE_STORE, "readonly");
+          const idx = tx.objectStore(USAGE_STORE).index("by_profile");
+          const req = idx.getAll(profileId);
+          req.onsuccess = () => {
+            const rows = req.result || [];
+            rows.sort((a, b) => String(a.ts).localeCompare(String(b.ts)));
+            resolve(rows);
+          };
+          req.onerror = () => reject(req.error);
+        });
+      } catch (e) {
+        console.warn(e);
+        return [];
+      }
+    }
+
+    async function clearUsageForProfile(profileId) {
+      if (!profileId || profileId === "guest") return 0;
+      const rows = await listUsageForProfile(profileId);
+      if (!rows.length) return 0;
+      const db = await openUsageDB();
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction(USAGE_STORE, "readwrite");
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+        const os = tx.objectStore(USAGE_STORE);
+        rows.forEach(e => { if (e.id != null) os.delete(e.id); });
+      });
+      return rows.length;
+    }
+
+    function summarizeUsage(rows) {
+      const taps = rows.filter(r => r.type === "tap_cell");
+      const byCell = new Map();
+      taps.forEach(r => {
+        const key = r.cellId || r.label || "?";
+        const cur = byCell.get(key) || { cellId: r.cellId, label: r.label || r.cellId || "?", n: 0 };
+        cur.n += 1;
+        if (r.label) cur.label = r.label;
+        byCell.set(key, cur);
+      });
+      const top = [...byCell.values()].sort((a, b) => b.n - a.n).slice(0, 10);
+      const byType = {};
+      rows.forEach(r => { byType[r.type] = (byType[r.type] || 0) + 1; });
+      return {
+        total: rows.length,
+        taps: taps.length,
+        top,
+        byType,
+        firstTs: rows[0] && rows[0].ts,
+        lastTs: rows.length ? rows[rows.length - 1].ts : null
+      };
+    }
+
+    function closeUsagePanel() {
+      document.getElementById("usageOverlay").classList.remove("show");
+    }
+
+    async function openUsagePanel() {
+      if (!teacher) return;
+      const body = document.getElementById("usageBody");
+      const sub = document.getElementById("usageSub");
+      document.getElementById("usageOverlay").classList.add("show");
+      if (activeProfileId === "guest") {
+        sub.textContent = "訪客模式 · 永不記錄";
+        body.innerHTML = '<div class="u-empty">訪客唔記使用。<br>請先「揀學生」再睇摘要。</div>';
+        return;
+      }
+      const p = currentProfile();
+      sub.textContent = (p && p.label ? p.label : activeProfileId) + " · 本機 IDB · 無 AI · 無上雲";
+      body.innerHTML = '<div class="u-empty">讀緊…</div>';
+      const rows = await listUsageForProfile(activeProfileId);
+      const s = summarizeUsage(rows);
+      if (!rows.length) {
+        body.innerHTML = '<div class="u-empty">未有記錄。<br>用呢個學生撳格之後再開。</div>';
+        return;
+      }
+      let html = `<div class="u-meta">事件 ${s.total} · 點格 ${s.taps}` +
+        (s.firstTs ? ` · 由 ${s.firstTs.slice(0, 16).replace("T", " ")}` : "") +
+        (s.lastTs ? ` · 至 ${s.lastTs.slice(0, 16).replace("T", " ")}` : "") +
+        `</div><div class="u-meta">Top 點格</div>`;
+      if (!s.top.length) html += '<div class="u-empty">未有點格</div>';
+      else s.top.forEach((t, i) => {
+        html += `<div class="u-row"><span>${i + 1}. ${t.label}</span><span>${t.n}</span></div>`;
+      });
+      html += `<div class="u-meta" style="margin-top:12px">其他事件</div>`;
+      Object.keys(s.byType).sort().forEach(k => {
+        html += `<div class="u-row"><span>${k}</span><span>${s.byType[k]}</span></div>`;
+      });
+      body.innerHTML = html;
+    }
+
+    async function exportUsageJson() {
+      if (activeProfileId === "guest") { toast("訪客無數據"); return; }
+      const rows = await listUsageForProfile(activeProfileId);
+      const p = currentProfile();
+      const payload = {
+        schema: "aac-usage-export-v1",
+        exportedAt: new Date().toISOString(),
+        profileId: activeProfileId,
+        profileLabel: (p && p.label) || activeProfileId,
+        note: "本機匯出 · L0 · 無 AI · 請妥善保管",
+        count: rows.length,
+        events: rows.map(({ id, ...rest }) => rest)
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `usage-${activeProfileId}-${Date.now()}.json`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+      toast("已匯出 " + rows.length + " 條");
+    }
 
     const PIN_SALT = "tkops-aac-v1";
     const PIN_HASH = "6cecd5c6eafcace439d4d48ea9c2ce5def4d253aa2ffb72007cb994cd3853444";
@@ -649,7 +899,11 @@
       "lkt-now","lkt-thanks","lkt-want",
       "wipe-hands","wipe-mouth","change-clothes","take","put-down","read","play",
       "noisy","nothing","not-yet","done-ok","dunno","line-up","stand","pack-up","may-i",
-      "draw","sing","dance","run","ball","now","later","finished","e-learning"
+      "draw","sing","dance","run","ball","now","later","finished","e-learning",
+      "morning-assembly","be-quiet","walk-slow","recess","lunch","do-homework","hand-in","jacket","game",
+      "unwell","headache","tummy-ache","hand-pain","foot-pain","tooth-pain","fever","cough","dizzy","rest","see-nurse",
+      "neck-pain","back-pain","waist-pain","eye-pain","ear-pain","runny-nose","breathless","itchy","nauseous","diarrhea","medicine","see-doctor","leave-sick",
+      "wake-up","brush-teeth","shower","sleep-bed","watch-tv","snack","enough"
     ]);
 
     function cellImage(cell) {
@@ -699,18 +953,114 @@
       return "aac_hidden_" + (board?.id || "general") + "_" + activeProfileId;
     }
 
+    function defaultTrialHidden(bd) {
+      const hide = new Set();
+      if (!bd || !Array.isArray(bd.cells)) return hide;
+      const by = {};
+      bd.cells.forEach(c => {
+        const k = c.category || "_";
+        (by[k] || (by[k] = [])).push(c);
+      });
+      Object.keys(by).forEach(k => {
+        const list = by[k].slice().sort((a, b) => (a.order || 0) - (b.order || 0));
+        // 屋企 B1 全開（家域最小套）；其他 tab 前 8
+        const keep = (k === "house") ? 99 : TRIAL_KEEP_PER_TAB;
+        list.slice(keep).forEach(c => hide.add(c.id));
+      });
+      return hide;
+    }
+
     function loadHidden() {
       hiddenIds = new Set();
       try {
         const raw = localStorage.getItem(hideKey());
-        if (raw) JSON.parse(raw).forEach(id => hiddenIds.add(id));
+        if (raw != null) {
+          const arr = JSON.parse(raw);
+          if (Array.isArray(arr)) arr.forEach(id => hiddenIds.add(id));
+          return; // 老師／本機已有記錄（包括全部開 = []）
+        }
       } catch (_) {}
+      // 未設過：試用預設每 tab 前 8 格
+      hiddenIds = defaultTrialHidden(board);
     }
 
     function saveHidden() {
       try {
         localStorage.setItem(hideKey(), JSON.stringify([...hiddenIds]));
       } catch (_) {}
+    }
+
+    function instantKey() {
+      return "aac_instant_" + activeProfileId;
+    }
+    function loadInstantSpeak() {
+      try {
+        const v = localStorage.getItem(instantKey());
+        if (v === "0") instantSpeak = false;
+        else if (v === "1") instantSpeak = true;
+      } catch (_) {}
+    }
+    function saveInstantSpeak() {
+      try {
+        localStorage.setItem(instantKey(), instantSpeak ? "1" : "0");
+      } catch (_) {}
+    }
+
+    /** 深拷貝 */
+    function cloneBoard(bd) {
+      return JSON.parse(JSON.stringify(bd));
+    }
+
+    /**
+     * mergeGeneral:
+     * - true / 缺省：General + 個人（同 id 個人覆蓋；個人獨有 tab 接尾）
+     * - false：只用個人板
+     */
+    function mergeBoards(general, personal) {
+      if (!personal) return cloneBoard(general);
+      if (personal.mergeGeneral === false) return cloneBoard(personal);
+      if (!general) return cloneBoard(personal);
+
+      const out = cloneBoard(general);
+      const catIds = new Set(out.categories.map(c => c.id));
+      let maxOrder = out.categories.reduce((m, c) => Math.max(m, c.order || 0), 0);
+      (personal.categories || []).forEach(c => {
+        if (!catIds.has(c.id)) {
+          maxOrder += 1;
+          out.categories.push({
+            id: c.id,
+            label: c.label,
+            color: c.color || "#4a5568",
+            order: maxOrder
+          });
+          catIds.add(c.id);
+        }
+      });
+      out.categories.sort((a, b) => (a.order || 0) - (b.order || 0));
+
+      const cellMap = new Map(out.cells.map(c => [c.id, c]));
+      (personal.cells || []).forEach(c => {
+        cellMap.set(c.id, { ...c });
+      });
+      out.cells = [...cellMap.values()];
+
+      out.id = personal.id || out.id;
+      out.title = personal.title || out.title;
+      out.profileId = personal.profileId || out.profileId;
+      out.mergeGeneral = true;
+      out.rev = (general.rev || "g") + "+" + (personal.rev || "p");
+      out.note = (personal.note || personal.source || "") + " · merged " + (general.rev || "");
+      if (personal.defaultDisplayPreset) out.defaultDisplayPreset = personal.defaultDisplayPreset;
+      return out;
+    }
+
+    function resolveBoardForProfile(profile) {
+      const isGuest = !profile || profile.id === "guest" || activeProfileId === "guest";
+      if (isGuest) return cloneBoard(generalBoard);
+      const pbId = profile.personalBoardId || activeProfileId;
+      let personal = personalBoards[pbId] || personalBoards[activeProfileId];
+      if (!personal) return cloneBoard(generalBoard);
+      return mergeBoards(generalBoard, personal);
     }
 
     // —— N3 cell overrides · N4 pack ——
@@ -854,12 +1204,9 @@
               );
             } catch (_) {}
           }
-          const p = currentProfile();
-          const hasPersonal = !!(p && p.personalBoardId && personalBoards[p.personalBoardId]);
-          if (activeProfileId === "guest" || !hasPersonal) {
-            board = generalBoard;
-            loadOverrides();
-          }
+          board = resolveBoardForProfile(currentProfile());
+          loadHidden();
+          loadOverrides();
           page = 0; cat = null; sentence = [];
           render();
           toast("已匯入 General · " + (b.cells?.length || 0) + " 格");
@@ -880,6 +1227,7 @@
     }
 
     async function applyProfile(id) {
+      const prev = activeProfileId;
       activeProfileId = id || "guest";
       const p = currentProfile();
       const isGuest = activeProfileId === "guest";
@@ -897,29 +1245,40 @@
       cat = null;
       sentence = [];
 
+      // 載個人 JSON（若未 cache）
       const pbId = p.personalBoardId || activeProfileId;
-      if (!isGuest && personalBoards[pbId]) board = personalBoards[pbId];
-      else if (!isGuest && PERSONAL_FILES[activeProfileId]) {
+      if (!isGuest && !personalBoards[pbId] && PERSONAL_FILES[activeProfileId]) {
         try {
           const r = await fetch(PERSONAL_FILES[activeProfileId]);
           const pb = await r.json();
           personalBoards[pb.id || pbId] = pb;
-          board = pb;
+          personalBoards[activeProfileId] = pb;
         } catch (e) {
           console.warn(e);
-          board = generalBoard;
         }
-      } else board = generalBoard;
+      }
 
+      board = resolveBoardForProfile(p);
       loadHidden();
       loadOverrides();
       loadGender();
+      loadInstantSpeak();
       try {
         if (!isGuest) sessionStorage.setItem("aac_active_profile", activeProfileId);
         else sessionStorage.removeItem("aac_active_profile");
       } catch (_) {}
+      // L0：換生開新 session；訪客不記
+      usageSessionId = (typeof crypto !== "undefined" && crypto.randomUUID)
+        ? crypto.randomUUID()
+        : ("s" + Date.now() + "-" + Math.random().toString(16).slice(2));
+      if (!isGuest) {
+        logUsage("profile_on", { label: p.label || activeProfileId, meta: { from: prev || "guest" } });
+      }
       render();
-      toast(isGuest ? "訪客" : (p.label + " · " + (board?.title || "")));
+      const nVis = board.cells.filter(c => !hiddenIds.has(c.id)).length;
+      toast(isGuest
+        ? ("訪客 · 顯示 " + nVis + " 詞")
+        : (p.label + " · " + (board?.title || "") + " · " + nVis + " 詞"));
     }
 
     function renderWhoOnly() {
@@ -1067,6 +1426,36 @@
       if (bem) bem.classList.toggle("on", editMode);
     }
 
+    function closeTabPick() {
+      document.getElementById("tabPickOverlay").classList.remove("show");
+    }
+
+    function openTabPick() {
+      const gridEl = document.getElementById("tabPickGrid");
+      if (!gridEl || !board) return;
+      const cats = visibleCats();
+      gridEl.innerHTML = "";
+      cats.forEach(c => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "tab-pick" + (c.id === cat ? " on" : "");
+        const ico = TAB_ICON[c.id] || "📌";
+        const n = cellsOfCat(c.id, true).length;
+        b.innerHTML = `<span class="ico">${ico}</span><span class="tl">${c.label}</span><span style="font-size:.75rem;font-weight:800;opacity:.85">${n} 詞</span>`;
+        if (c.id === cat) b.style.background = c.color || "#2b6cb0";
+        else b.style.background = "#fff";
+        b.onclick = () => {
+          cat = c.id;
+          page = 0;
+          closeTabPick();
+          render();
+          logUsage("tab_change", { categoryId: c.id, label: c.label, meta: { via: "picker" } });
+        };
+        gridEl.appendChild(b);
+      });
+      document.getElementById("tabPickOverlay").classList.add("show");
+    }
+
     function renderTabs() {
       const cats = visibleCats();
       if (!cats.length) {
@@ -1075,21 +1464,32 @@
       }
       if (!cat || !cats.find(c => c.id === cat)) cat = cats[0].id;
       tabs.innerHTML = "";
-      // 中度：最多同時顯示 4 個 tab；多出嘅用「更多」
+      // 中度：釘 4 常用 +「更多」開完整選單
+      const PIN = ["need", "place", "house", "body"];
       const MAX = 4;
-      let show = cats;
-      let more = [];
-      if (cats.length > MAX) {
-        const activeIdx = Math.max(0, cats.findIndex(c => c.id === cat));
-        // 保證當前 cat 喺可見 4 個入面
-        if (activeIdx < MAX - 1) {
-          show = cats.slice(0, MAX - 1);
-          more = cats.slice(MAX - 1);
-        } else {
-          show = cats.slice(0, MAX - 2).concat(cats[activeIdx]);
-          more = cats.filter(c => !show.includes(c));
-        }
+      let show = [];
+      const byId = Object.fromEntries(cats.map(c => [c.id, c]));
+      PIN.forEach(id => { if (byId[id]) show.push(byId[id]); });
+      // 若 pin 不足 4，用 order 補
+      if (show.length < MAX - (cats.length > MAX ? 1 : 0)) {
+        cats.forEach(c => {
+          if (show.length >= MAX - (cats.length > show.length ? 1 : 0)) return;
+          if (!show.find(x => x.id === c.id)) show.push(c);
+        });
       }
+      // 保證當前 cat 在側欄
+      if (cat && !show.find(c => c.id === cat) && byId[cat]) {
+        if (show.length >= MAX) show[show.length - 1] = byId[cat];
+        else show.push(byId[cat]);
+      }
+      // 側欄最多 3 個實 tab + 更多（若仲有）
+      const needMore = cats.length > show.length || cats.length > 3;
+      if (needMore && show.length > 3) show = show.slice(0, 3);
+      // 若當前被 slice 走，塞返最後
+      if (cat && !show.find(c => c.id === cat) && byId[cat]) {
+        show[show.length - 1] = byId[cat];
+      }
+
       show.forEach(c => {
         const b = document.createElement("button");
         b.type = "button";
@@ -1098,20 +1498,19 @@
         b.innerHTML = `<span class="ico">${ico}</span><span class="tl">${c.label}</span>`;
         if (c.id === cat) b.style.background = c.color || "#2b6cb0";
         else b.style.background = "#f0f4f8";
-        b.onclick = () => { cat = c.id; page = 0; render(); };
+        b.onclick = () => {
+          cat = c.id; page = 0; render();
+          logUsage("tab_change", { categoryId: c.id, label: c.label });
+        };
         tabs.appendChild(b);
       });
-      if (more.length) {
+      if (needMore || cats.length > show.length) {
         const m = document.createElement("button");
         m.type = "button";
         m.className = "tab";
         m.innerHTML = `<span class="ico">⋯</span><span class="tl">更多</span>`;
         m.style.background = "#dfe6ee";
-        m.onclick = () => {
-          // 簡單：轉去 more 第一個
-          cat = more[0].id; page = 0; render();
-          toast("類別：" + more.map(x => x.label).join("、"));
-        };
+        m.onclick = () => openTabPick();
         tabs.appendChild(m);
       }
     }
@@ -1159,6 +1558,12 @@
           if (sentence.length >= 8) sentence.shift();
           sentence.push(cell);
           renderMsg();
+          logUsage("tap_cell", {
+            cellId: cell.id,
+            label: cell.label,
+            categoryId: cell.category || cat,
+            pageIndex: page
+          });
           if (instantSpeak) speakText(cell.speak || cell.label);
         });
         grid.appendChild(el);
@@ -1223,6 +1628,8 @@
       closeProfileWall();
       closeVocab();
       closeEditCell();
+      closeUsagePanel();
+      closeTabPick();
       render();
       toast("返學生模式");
     }
@@ -1282,10 +1689,20 @@
     gearBtn.addEventListener("pointerleave", () => gearUp(false));
     gearBtn.addEventListener("pointercancel", () => gearUp(false));
 
-    prev.onclick = () => { if (page > 0) { page--; renderGrid(); } };
+    prev.onclick = () => {
+      if (page > 0) {
+        page--;
+        renderGrid();
+        logUsage("page_change", { pageIndex: page, categoryId: cat });
+      }
+    };
     next.onclick = () => {
       const pages = pagesOf(cellsOfCat(cat));
-      if (page < pages.length - 1) { page++; renderGrid(); }
+      if (page < pages.length - 1) {
+        page++;
+        renderGrid();
+        logUsage("page_change", { pageIndex: page, categoryId: cat });
+      }
     };
     document.getElementById("btnDel").onclick = () => { sentence.pop(); renderMsg(); };
 
@@ -1304,6 +1721,7 @@
           sentence = [];
           renderMsg();
           flashOk();
+          logUsage("clear_bar", {});
           toast("已清空");
           clrUp();
           return;
@@ -1331,6 +1749,10 @@
       if (!sentence.length) { toast("未有詞"); return; }
       const t = sentence.map(c => c.speak || c.label).join("，");
       flashOk();
+      logUsage("speak_bar", {
+        label: t.slice(0, 80),
+        meta: { n: sentence.length }
+      });
       await speakText(t);
     };
 
@@ -1364,17 +1786,20 @@
     document.getElementById("btnPickProfile").onclick = () => openProfileWall();
     document.getElementById("btnGuest").onclick = () => applyProfile("guest");
     document.getElementById("profileClose").onclick = () => closeProfileWall();
+    document.getElementById("tabPickClose").onclick = () => closeTabPick();
     document.getElementById("btnLockDone").onclick = () => exitTeacher();
 
     modeCompose.onclick = () => {
       if (!teacher) return;
       instantSpeak = false;
+      saveInstantSpeak();
       renderDisp();
       toast("組句後講");
     };
     modeInstant.onclick = () => {
       if (!teacher) return;
       instantSpeak = true;
+      saveInstantSpeak();
       renderDisp();
       toast("一點即講");
     };
@@ -1517,6 +1942,21 @@
       if (f) packImportFile(f);
     };
 
+    document.getElementById("btnUsage").onclick = () => {
+      if (!teacher) return;
+      openUsagePanel();
+    };
+    document.getElementById("usageDone").onclick = () => closeUsagePanel();
+    document.getElementById("usageExport").onclick = () => exportUsageJson();
+    document.getElementById("usageClear").onclick = async () => {
+      if (!teacher) return;
+      if (activeProfileId === "guest") { toast("訪客無數據"); return; }
+      if (!confirm("清呢個生全部本機使用記錄？")) return;
+      const n = await clearUsageForProfile(activeProfileId);
+      toast("已清 " + n + " 條");
+      openUsagePanel();
+    };
+
     // 手機溫馨提示：唔強逼橫向；可關閉後繼續用
     const DEVICE_TIP_KEY = "aac_device_tip_v1";
     function isPhoneLike() {
@@ -1598,9 +2038,6 @@
         personalBoards["demo-c"] = storyBoard;
       }
       if (p.defaultDisplayPreset) preset = p.defaultDisplayPreset;
-      loadHidden();
-      loadOverrides();
-      loadGender();
       return applyProfile(activeProfileId === "guest" ? "guest" : activeProfileId);
     }).catch(err => {
       toast("載入失敗（請用本地 server）");
