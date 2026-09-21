@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "general-p0-trial",
   "title": "P0 試用板 · 日常表達",
-  "rev": "batch-b-2026-09-21",
-  "note": "Batch B：活動 tab（畫畫唱歌跳舞跑步波＋物件＋而家一陣完咗）",
+  "rev": "e-learning-2026-09-21",
+  "note": "去邊首頁：廁所/課室/返屋企/操場；飯堂→食飯（我要，沿用圖） +電子學習",
   "defaultDisplayPreset": "2x2",
   "categories": [
     {
@@ -63,113 +63,9 @@
   ],
   "cells": [
     {
-      "id": "want",
-      "category": "need",
-      "order": 1,
-      "label": "我要",
-      "speak": "我要",
-      "image": "assets/img/want.jpg"
-    },
-    {
-      "id": "no-want",
-      "category": "need",
-      "order": 2,
-      "label": "唔要",
-      "speak": "唔要",
-      "image": "assets/img/no-want.jpg"
-    },
-    {
-      "id": "drink",
-      "category": "need",
-      "order": 3,
-      "label": "飲水",
-      "speak": "我要飲水",
-      "image": "assets/img/drink.jpg"
-    },
-    {
-      "id": "eat",
-      "category": "need",
-      "order": 4,
-      "label": "食嘢",
-      "speak": "我要食嘢",
-      "image": "assets/img/eat.jpg"
-    },
-    {
-      "id": "hungry",
-      "category": "need",
-      "order": 5,
-      "label": "肚餓",
-      "speak": "我好肚餓",
-      "image": "assets/img/hungry.jpg"
-    },
-    {
-      "id": "sleepy",
-      "category": "need",
-      "order": 6,
-      "label": "眼訓",
-      "speak": "我好眼訓",
-      "image": "assets/img/sleepy.jpg"
-    },
-    {
-      "id": "stop",
-      "category": "need",
-      "order": 7,
-      "label": "停",
-      "speak": "停一停",
-      "image": "assets/img/stop.jpg"
-    },
-    {
-      "id": "help-me",
-      "category": "need",
-      "order": 8,
-      "label": "幫我",
-      "speak": "幫我",
-      "image": "assets/img/help-me.jpg"
-    },
-    {
-      "id": "hot",
-      "category": "need",
-      "order": 9,
-      "label": "熱",
-      "speak": "我好熱",
-      "image": "assets/img/hot.jpg"
-    },
-    {
-      "id": "cold",
-      "category": "need",
-      "order": 10,
-      "label": "凍",
-      "speak": "我好凍",
-      "image": "assets/img/cold.jpg"
-    },
-    {
-      "id": "toilet",
-      "category": "need",
-      "order": 11,
-      "label": "廁所",
-      "speak": "我要去廁所",
-      "image": "assets/img/toilet.jpg"
-    },
-    {
-      "id": "no-do",
-      "category": "need",
-      "order": 12,
-      "label": "唔做",
-      "speak": "唔做",
-      "image": "assets/img/no-do.jpg"
-    },
-    {
-      "id": "homework",
-      "category": "need",
-      "order": 13,
-      "label": "交功課",
-      "speak": "交功課俾先生",
-      "image": "assets/img/homework.jpg"
-    },
-    {
       "id": "classroom",
       "category": "place",
-      "order": 1,
+      "order": 2,
       "label": "課室",
       "speak": "去課室",
       "image": "assets/img/classroom.jpg",
@@ -178,7 +74,7 @@
     {
       "id": "hall",
       "category": "place",
-      "order": 2,
+      "order": 5,
       "label": "禮堂",
       "speak": "去禮堂",
       "image": "assets/img/hall.jpg",
@@ -187,7 +83,7 @@
     {
       "id": "music-room",
       "category": "place",
-      "order": 3,
+      "order": 6,
       "label": "音樂室",
       "speak": "去音樂室",
       "image": "assets/img/music-room.jpg",
@@ -196,7 +92,7 @@
     {
       "id": "library",
       "category": "place",
-      "order": 4,
+      "order": 7,
       "label": "圖書館",
       "speak": "去圖書館",
       "image": "assets/img/library.jpg",
@@ -205,25 +101,16 @@
     {
       "id": "activity-room",
       "category": "place",
-      "order": 5,
+      "order": 8,
       "label": "活動室",
       "speak": "去活動室",
       "image": "assets/img/activity-room.jpg",
       "gendered": false
     },
     {
-      "id": "canteen",
-      "category": "place",
-      "order": 6,
-      "label": "飯堂",
-      "speak": "去飯堂",
-      "image": "assets/img/canteen.jpg",
-      "gendered": false
-    },
-    {
       "id": "playground",
       "category": "place",
-      "order": 7,
+      "order": 4,
       "label": "操場",
       "speak": "去操場",
       "image": "assets/img/playground.jpg",
@@ -232,7 +119,7 @@
     {
       "id": "home",
       "category": "place",
-      "order": 8,
+      "order": 3,
       "label": "返屋企",
       "speak": "返屋企",
       "image": "assets/img/home.jpg",
@@ -250,7 +137,7 @@
     {
       "id": "toilet-place",
       "category": "place",
-      "order": 10,
+      "order": 1,
       "label": "廁所",
       "speak": "去廁所",
       "image": "assets/img/toilet.jpg",
@@ -521,62 +408,6 @@
       "image": "assets/img/pain.jpg"
     },
     {
-      "id": "wipe-hands",
-      "category": "need",
-      "order": 14,
-      "label": "抹手",
-      "speak": "我要抹手",
-      "image": "assets/img/wipe-hands.jpg"
-    },
-    {
-      "id": "wipe-mouth",
-      "category": "need",
-      "order": 15,
-      "label": "抹嘴",
-      "speak": "我要抹嘴",
-      "image": "assets/img/wipe-mouth.jpg"
-    },
-    {
-      "id": "change-clothes",
-      "category": "need",
-      "order": 16,
-      "label": "換衫",
-      "speak": "我要換衫",
-      "image": "assets/img/change-clothes.jpg"
-    },
-    {
-      "id": "take",
-      "category": "need",
-      "order": 17,
-      "label": "攞",
-      "speak": "我要攞",
-      "image": "assets/img/take.jpg"
-    },
-    {
-      "id": "put-down",
-      "category": "need",
-      "order": 18,
-      "label": "放低",
-      "speak": "放低",
-      "image": "assets/img/put-down.jpg"
-    },
-    {
-      "id": "read",
-      "category": "need",
-      "order": 19,
-      "label": "睇書",
-      "speak": "我想睇書",
-      "image": "assets/img/read.jpg"
-    },
-    {
-      "id": "play",
-      "category": "need",
-      "order": 20,
-      "label": "玩",
-      "speak": "我想玩",
-      "image": "assets/img/play.jpg"
-    },
-    {
       "id": "noisy",
       "category": "feel",
       "order": 9,
@@ -665,6 +496,175 @@
       "image": "assets/img/friend.jpg"
     },
     {
+      "id": "want",
+      "category": "need",
+      "order": 1,
+      "label": "我要",
+      "speak": "我要",
+      "image": "assets/img/want.jpg"
+    },
+    {
+      "id": "no-want",
+      "category": "need",
+      "order": 2,
+      "label": "唔要",
+      "speak": "唔要",
+      "image": "assets/img/no-want.jpg"
+    },
+    {
+      "id": "drink",
+      "category": "need",
+      "order": 3,
+      "label": "飲水",
+      "speak": "我要飲水",
+      "image": "assets/img/drink.jpg"
+    },
+    {
+      "id": "eat",
+      "category": "need",
+      "order": 4,
+      "label": "食嘢",
+      "speak": "我要食嘢",
+      "image": "assets/img/eat.jpg"
+    },
+    {
+      "id": "meal",
+      "category": "need",
+      "order": 5,
+      "label": "食飯",
+      "speak": "我要食飯",
+      "image": "assets/img/canteen.jpg",
+      "gendered": false
+    },
+    {
+      "id": "hungry",
+      "category": "need",
+      "order": 6,
+      "label": "肚餓",
+      "speak": "我好肚餓",
+      "image": "assets/img/hungry.jpg"
+    },
+    {
+      "id": "sleepy",
+      "category": "need",
+      "order": 7,
+      "label": "眼訓",
+      "speak": "我好眼訓",
+      "image": "assets/img/sleepy.jpg"
+    },
+    {
+      "id": "stop",
+      "category": "need",
+      "order": 8,
+      "label": "停",
+      "speak": "停一停",
+      "image": "assets/img/stop.jpg"
+    },
+    {
+      "id": "help-me",
+      "category": "need",
+      "order": 9,
+      "label": "幫我",
+      "speak": "幫我",
+      "image": "assets/img/help-me.jpg"
+    },
+    {
+      "id": "hot",
+      "category": "need",
+      "order": 10,
+      "label": "熱",
+      "speak": "我好熱",
+      "image": "assets/img/hot.jpg"
+    },
+    {
+      "id": "cold",
+      "category": "need",
+      "order": 11,
+      "label": "凍",
+      "speak": "我好凍",
+      "image": "assets/img/cold.jpg"
+    },
+    {
+      "id": "toilet",
+      "category": "need",
+      "order": 12,
+      "label": "廁所",
+      "speak": "我要去廁所",
+      "image": "assets/img/toilet.jpg"
+    },
+    {
+      "id": "no-do",
+      "category": "need",
+      "order": 13,
+      "label": "唔做",
+      "speak": "唔做",
+      "image": "assets/img/no-do.jpg"
+    },
+    {
+      "id": "homework",
+      "category": "need",
+      "order": 14,
+      "label": "交功課",
+      "speak": "交功課俾先生",
+      "image": "assets/img/homework.jpg"
+    },
+    {
+      "id": "wipe-hands",
+      "category": "need",
+      "order": 15,
+      "label": "抹手",
+      "speak": "我要抹手",
+      "image": "assets/img/wipe-hands.jpg"
+    },
+    {
+      "id": "wipe-mouth",
+      "category": "need",
+      "order": 16,
+      "label": "抹嘴",
+      "speak": "我要抹嘴",
+      "image": "assets/img/wipe-mouth.jpg"
+    },
+    {
+      "id": "change-clothes",
+      "category": "need",
+      "order": 17,
+      "label": "換衫",
+      "speak": "我要換衫",
+      "image": "assets/img/change-clothes.jpg"
+    },
+    {
+      "id": "take",
+      "category": "need",
+      "order": 18,
+      "label": "攞",
+      "speak": "我要攞",
+      "image": "assets/img/take.jpg"
+    },
+    {
+      "id": "put-down",
+      "category": "need",
+      "order": 19,
+      "label": "放低",
+      "speak": "放低",
+      "image": "assets/img/put-down.jpg"
+    },
+    {
+      "id": "read",
+      "category": "need",
+      "order": 20,
+      "label": "睇書",
+      "speak": "我想睇書",
+      "image": "assets/img/read.jpg"
+    },
+    {
+      "id": "play",
+      "category": "need",
+      "order": 21,
+      "label": "玩",
+      "speak": "我想玩",
+      "image": "assets/img/play.jpg"
+    },
+    {
       "id": "draw",
       "category": "activity",
       "order": 1,
@@ -741,9 +741,17 @@
       "gendered": false
     },
     {
-      "id": "headphones",
+      "id": "e-learning",
       "category": "activity",
       "order": 10,
+      "label": "電子學習",
+      "speak": "我想電子學習",
+      "image": "assets/img/e-learning.jpg"
+    },
+    {
+      "id": "headphones",
+      "category": "activity",
+      "order": 11,
       "label": "耳機",
       "speak": "耳機",
       "image": "assets/img/headphones.jpg",
@@ -752,7 +760,7 @@
     {
       "id": "now",
       "category": "activity",
-      "order": 11,
+      "order": 12,
       "label": "而家",
       "speak": "而家",
       "image": "assets/img/now.jpg"
@@ -760,7 +768,7 @@
     {
       "id": "later",
       "category": "activity",
-      "order": 12,
+      "order": 13,
       "label": "一陣",
       "speak": "一陣",
       "image": "assets/img/later.jpg"
@@ -768,7 +776,7 @@
     {
       "id": "finished",
       "category": "activity",
-      "order": 13,
+      "order": 14,
       "label": "完咗",
       "speak": "完咗",
       "image": "assets/img/finished.jpg"

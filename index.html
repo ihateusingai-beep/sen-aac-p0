@@ -301,15 +301,49 @@
     }
     .vcell.on .badge { background: #1f7a4c; }
     .vcell.off .badge { background: #a0aec0; }
-    .rotate-hint {
-      display: none; position: fixed; inset: 0; z-index: 50;
-      background: rgba(26,35,48,.92); color: #fff; place-items: center;
-      text-align: center; padding: 24px; font-size: 1.35rem; font-weight: 800;
+    /* 手機：溫馨提示（唔再強逼橫向／鎖死畫面） */
+    .device-tip {
+      display: none; position: fixed; inset: 0; z-index: 55;
+      background: rgba(26, 35, 48, .55); place-items: center; padding: 18px;
     }
-    @media (orientation: portrait) and (max-width: 900px) {
-      .rotate-hint { display: grid; }
-      .app { filter: blur(2px); pointer-events: none; }
+    .device-tip.show { display: grid; }
+    .device-tip-card {
+      width: min(420px, 94vw);
+      background: #fffaf3; color: #1a2330;
+      border: 3px solid #e8c07a; border-radius: 18px;
+      padding: 18px 16px 14px; text-align: center;
+      box-shadow: 0 12px 36px rgba(0,0,0,.28);
     }
+    .device-tip-ico { font-size: 2rem; line-height: 1; margin-bottom: 6px; }
+    .device-tip-title {
+      font-size: 1.2rem; font-weight: 900; margin-bottom: 8px; color: #8a5a12;
+    }
+    .device-tip-body {
+      font-size: .98rem; font-weight: 700; line-height: 1.45;
+      color: #2c3e50; margin-bottom: 8px;
+    }
+    .device-tip-sub {
+      font-size: .88rem; font-weight: 650; line-height: 1.4;
+      color: #5a6b7d; margin-bottom: 14px;
+    }
+    .device-tip-ok {
+      width: 100%; border: 0; border-radius: 14px;
+      background: #2b6cb0; color: #fff;
+      font-size: 1.1rem; font-weight: 900;
+      padding: 12px 14px; cursor: pointer;
+    }
+    .device-tip-ok:active { transform: scale(.98); }
+    .device-banner {
+      display: none; position: fixed; left: 50%; top: 8px; transform: translateX(-50%);
+      z-index: 42; max-width: min(520px, 94vw);
+      background: rgba(255, 250, 243, .96); color: #5a4300;
+      border: 2px solid #e8c07a; border-radius: 999px;
+      padding: 6px 12px; font-size: .72rem; font-weight: 800;
+      text-align: center; line-height: 1.25;
+      box-shadow: 0 4px 14px rgba(0,0,0,.12);
+      pointer-events: none;
+    }
+    .device-banner.show { display: block; }
 
     /* N3 改格 · N4 Pack */
     .edit-form { display: grid; gap: 10px; max-width: 420px; margin: 0 auto; }
@@ -345,7 +379,16 @@
     <span id="whoLabel">訪客</span>
   </div>
   <div class="tag" id="tag">老師模式</div>
-  <div class="rotate-hint">請將裝置轉橫（iPad 橫向）</div>
+  <div class="device-banner" id="deviceBanner">提示：電腦／iPad 最啱 · 手機畫面細，圖卡可能睇唔晒</div>
+  <div class="device-tip" id="deviceTip" role="dialog" aria-labelledby="deviceTipTitle">
+    <div class="device-tip-card">
+      <div class="device-tip-ico" aria-hidden="true">💻📱</div>
+      <div class="device-tip-title" id="deviceTipTitle">建議用電腦或 iPad</div>
+      <p class="device-tip-body">呢套溝通板為<strong>電腦／iPad</strong>設計，圖大、撳得穩。</p>
+      <p class="device-tip-sub">手機畫面比較細——就算轉橫，一般手機都未必睇得晒啲圖。用得就得，不過體驗會差啲。</p>
+      <button type="button" class="device-tip-ok" id="deviceTipOk">知啦，繼續用</button>
+    </div>
+  </div>
   <div class="flash" id="flash"></div>
 
   <div class="overlay" id="pinOverlay">
@@ -606,7 +649,7 @@
       "lkt-now","lkt-thanks","lkt-want",
       "wipe-hands","wipe-mouth","change-clothes","take","put-down","read","play",
       "noisy","nothing","not-yet","done-ok","dunno","line-up","stand","pack-up","may-i",
-      "draw","sing","dance","run","ball","now","later","finished"
+      "draw","sing","dance","run","ball","now","later","finished","e-learning"
     ]);
 
     function cellImage(cell) {
@@ -1473,6 +1516,41 @@
       e.target.value = "";
       if (f) packImportFile(f);
     };
+
+    // 手機溫馨提示：唔強逼橫向；可關閉後繼續用
+    const DEVICE_TIP_KEY = "aac_device_tip_v1";
+    function isPhoneLike() {
+      try {
+        const w = Math.min(window.innerWidth, window.innerHeight);
+        const long = Math.max(window.innerWidth, window.innerHeight);
+        // 手機／細屏：短邊 < 520，或 max-width 900 且無 hover 粗指針
+        if (w > 0 && w < 520) return true;
+        if (window.matchMedia && window.matchMedia("(max-width: 900px) and (hover: none)").matches) return true;
+        // 超窄橫向手機（長邊都唔夠 iPad）
+        if (long > 0 && long < 900 && w < 500) return true;
+      } catch (_) {}
+      return false;
+    }
+    function refreshDeviceTip() {
+      const tip = document.getElementById("deviceTip");
+      const banner = document.getElementById("deviceBanner");
+      if (!tip || !banner) return;
+      const phone = isPhoneLike();
+      let dismissed = false;
+      try { dismissed = sessionStorage.getItem(DEVICE_TIP_KEY) === "1"; } catch (_) {}
+      if (phone && !dismissed) tip.classList.add("show");
+      else tip.classList.remove("show");
+      // 關閉後仍留頂欄小提示（唔擋操作）
+      if (phone && dismissed) banner.classList.add("show");
+      else banner.classList.remove("show");
+    }
+    document.getElementById("deviceTipOk").onclick = () => {
+      try { sessionStorage.setItem(DEVICE_TIP_KEY, "1"); } catch (_) {}
+      refreshDeviceTip();
+    };
+    window.addEventListener("resize", refreshDeviceTip);
+    window.addEventListener("orientationchange", () => setTimeout(refreshDeviceTip, 200));
+    refreshDeviceTip();
 
     // anti-swipe
     let touchStart = null;
