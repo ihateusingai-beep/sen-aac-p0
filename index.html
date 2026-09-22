@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-  <title>培智 AAC P0 · 4選1</title>
+  <title>SEN AAC P0 demo · 4選1</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
@@ -844,14 +844,26 @@
     /** 試用：每 tab 只開前 N 格（未有本機隱詞記錄時） */
     const TRIAL_KEEP_PER_TAB = 8;
 
-    /** L1 高能：動詞閘 → jump 範疇 */
+    /** L1 高能：動詞閘 → jump 範疇（只同對應 tab 組句，防「去早晨」） */
     const L1_GATES = [
-      { id: "gate-go", label: "去", speak: "去", gateTo: "place", hint: "去 → 揀地方" },
+      { id: "gate-go", label: "去", speak: "去", gateTo: "place", gateAlso: ["house"], houseIds: ["bedroom-home","living-room","kitchen-home","bath-home","park"], hint: "去 → 揀地方" },
       { id: "gate-want", label: "我要", speak: "我要", gateTo: "need", hint: "我要 → 揀嘢" },
       { id: "gate-think", label: "我想", speak: "我想", gateTo: "activity", hint: "我想 → 揀活動" },
       { id: "gate-see", label: "見", speak: "見", gateTo: "people", hint: "見 → 揀人" },
       { id: "gate-no", label: "唔", speak: "唔", gateTo: "reply", hint: "唔 → 揀答法" }
     ];
+
+    function gateAcceptsCell(g, cell) {
+      if (!g || !cell) return false;
+      const c = cell.category;
+      if (c === g.gateTo) return true;
+      if (g.id === "gate-go" && c === "house") {
+        const ids = g.houseIds || [];
+        return ids.includes(cell.id);
+      }
+      if (Array.isArray(g.gateAlso) && g.gateAlso.includes(c) && g.id !== "gate-go") return true;
+      return false;
+    }
 
     let board = null;
     let generalBoard = null;
@@ -1984,8 +1996,10 @@
           setTimeout(() => el.classList.remove("sel"), 200);
           flashOk();
           if (sentence.length >= 8) sentence.shift();
-          // L1 plus + 有閘：可組「去+廁所」
-          if (abilityMode === "plus" && activeGate && plusCompose) {
+          // L1：只在「閘對應範疇」先組句（去+廁所 ✓；去+早晨 ✗）
+          const useGate = abilityMode === "plus" && activeGate && plusCompose
+            && gateAcceptsCell(activeGate, cell);
+          if (useGate) {
             if (sentence.length >= 7) sentence.shift();
             sentence.push({
               id: activeGate.id,
@@ -1993,6 +2007,9 @@
               speak: activeGate.speak,
               _isGate: true
             });
+          } else if (activeGate && abilityMode === "plus" && !gateAcceptsCell(activeGate, cell)) {
+            // 撳咗唔相關詞 → 取消殘留閘，避免怪連接
+            clearActiveGate();
           }
           sentence.push(cell);
           renderMsg();
@@ -2001,17 +2018,19 @@
             label: cell.label,
             categoryId: cell.category || cat,
             pageIndex: page,
-            meta: activeGate
+            meta: useGate
               ? { gate: activeGate.id, ability: abilityMode }
               : { ability: abilityMode }
           });
           if (instantSpeak) {
             let out = cellSpeak(cell);
-            if (abilityMode === "plus" && activeGate && plusCompose) {
+            if (useGate) {
               out = activeGate.speak + cellSpeak(cell);
             }
             speakText(out);
           }
+          // 組完一組就清閘（下一擊重新揀動詞）
+          if (useGate) clearActiveGate();
         });
         grid.appendChild(el);
       });
@@ -2555,6 +2574,9 @@
         personalBoards["demo-c"] = storyBoard;
       }
       if (p.defaultDisplayPreset) preset = p.defaultDisplayPreset;
+      loadHidden();
+      loadOverrides();
+      loadGender();
       return applyProfile(activeProfileId === "guest" ? "guest" : activeProfileId);
     }).catch(err => {
       toast("載入失敗（請用本地 server）");
