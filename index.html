@@ -847,21 +847,33 @@
     /** L1 高能：動詞閘 → jump 範疇（只同對應 tab 組句，防「去早晨」） */
     const L1_GATES = [
       { id: "gate-go", label: "去", speak: "去", gateTo: "place", gateAlso: ["house"], houseIds: ["bedroom-home","living-room","kitchen-home","bath-home","park"], hint: "去 → 揀地方" },
-      { id: "gate-want", label: "我要", speak: "我要", gateTo: "need", hint: "我要 → 揀嘢" },
+      { id: "gate-want", label: "我要", speak: "我要", gateTo: "need", gateAlso: ["supplies"], hint: "我要 → 揀嘢" },
       { id: "gate-think", label: "我想", speak: "我想", gateTo: "activity", hint: "我想 → 揀活動" },
       { id: "gate-see", label: "見", speak: "見", gateTo: "people", hint: "見 → 揀人" },
-      { id: "gate-no", label: "唔", speak: "唔", gateTo: "reply", hint: "唔 → 揀答法" }
+      { id: "gate-no", label: "唔", speak: "唔", gateTo: "reply", replyAllow: ["yes","ok","done-ok","same"], hint: "唔 → 係／得／一樣" }
     ];
 
+    /** 閘只收合法目標；cell.noGate 永不組（返屋企／校車／我／狀態格…） */
     function gateAcceptsCell(g, cell) {
       if (!g || !cell) return false;
+      if (cell.noGate) return false;
       const c = cell.category;
-      if (c === g.gateTo) return true;
-      if (g.id === "gate-go" && c === "house") {
-        const ids = g.houseIds || [];
-        return ids.includes(cell.id);
+      if (g.id === "gate-go") {
+        if (c === "place") return cell.id !== "home" && cell.id !== "bus";
+        if (c === "house") return (g.houseIds || []).includes(cell.id);
+        return false;
       }
-      if (Array.isArray(g.gateAlso) && g.gateAlso.includes(c) && g.id !== "gate-go") return true;
+      if (g.id === "gate-want") {
+        return (c === "need" || c === "supplies" || (Array.isArray(g.gateAlso) && g.gateAlso.includes(c)));
+      }
+      if (g.id === "gate-think") return c === "activity";
+      if (g.id === "gate-see") return c === "people";
+      if (g.id === "gate-no") {
+        const allow = g.replyAllow || ["yes", "ok", "done-ok", "same"];
+        return c === "reply" && allow.includes(cell.id);
+      }
+      if (c === g.gateTo) return true;
+      if (Array.isArray(g.gateAlso) && g.gateAlso.includes(c)) return true;
       return false;
     }
 
@@ -1325,13 +1337,14 @@
       } catch (_) {}
     }
 
-    /** plus：短核（剝我要／我想／去…）；basic：成句 */
-    function cellSpeak(cell) {
+    /** full=成句；plus-core=閘組句短核（speakPlus 優先，否則剝前綴） */
+    function cellSpeak(cell, mode) {
       if (!cell) return "";
       if (cell._isGate) return cell.speak || cell.label || "";
-      if (abilityMode !== "plus") return cell.speak || cell.label || "";
+      const full = cell.speak || cell.label || "";
+      if (mode !== "plus-core") return full;
       if (cell.speakPlus) return cell.speakPlus;
-      let s = String(cell.speak || cell.label || "");
+      let s = String(full);
       const prefixes = ["我想", "我要", "我好", "請", "去", "我"];
       for (let i = 0; i < prefixes.length; i++) {
         const p = prefixes[i];
@@ -1340,22 +1353,21 @@
           break;
         }
       }
-      return s || cell.label || "";
+      return s || cell.label || full;
     }
 
     function sentenceSpeakText() {
       if (!sentence.length) return "";
-      // 閘+詞相鄰：去+廁所 → 去廁所（唔加逗號）
+      // 閘+詞相鄰：去+廁所 → 去廁所；其他格用成句
       const parts = [];
       for (let i = 0; i < sentence.length; i++) {
         const c = sentence[i];
-        const t = cellSpeak(c);
-        if (!t) continue;
         if (c._isGate && i + 1 < sentence.length && !sentence[i + 1]._isGate) {
-          parts.push(t + cellSpeak(sentence[i + 1]));
+          parts.push(cellSpeak(c) + cellSpeak(sentence[i + 1], "plus-core"));
           i++;
         } else {
-          parts.push(t);
+          const t = cellSpeak(c);
+          if (t) parts.push(t);
         }
       }
       return parts.join("，");
@@ -2023,10 +2035,10 @@
               : { ability: abilityMode }
           });
           if (instantSpeak) {
-            let out = cellSpeak(cell);
-            if (useGate) {
-              out = activeGate.speak + cellSpeak(cell);
-            }
+            // 單格：成句；閘組：去+短核
+            let out = useGate
+              ? (activeGate.speak + cellSpeak(cell, "plus-core"))
+              : cellSpeak(cell);
             speakText(out);
           }
           // 組完一組就清閘（下一擊重新揀動詞）
