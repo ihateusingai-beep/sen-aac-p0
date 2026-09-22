@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "general-p0-trial",
   "title": "P0 試用板 · 日常表達",
-  "rev": "catnav-greet-2026-09-22",
-  "note": "瘦板：我要~13·活動興趣·用品tab·時間入答話·功課2格·用iPad·近義收 · 頂列◀▶範疇 · 午安晚安",
+  "rev": "tts-fix-2026-09-22",
+  "note": "瘦板：我要~13·活動興趣·用品tab·時間入答話·功課2格·用iPad·近義收 · 頂列◀▶範疇 · 午安晚安 · TTS口語修：瞓/安靜啲/擔心/用品我要/人物搵/收嘢",
   "defaultDisplayPreset": "2x2",
   "categories": [
     {
@@ -366,15 +366,15 @@
       "id": "pack-up",
       "category": "routine",
       "order": 8,
-      "label": "收工",
-      "speak": "收工",
+      "label": "收嘢",
+      "speak": "收嘢",
       "image": "assets/img/pack-up.jpg"
     },
     {
       "id": "be-quiet",
       "category": "routine",
       "label": "安靜",
-      "speak": "請安靜",
+      "speak": "安靜啲",
       "image": "assets/img/be-quiet.jpg",
       "order": 9
     },
@@ -423,7 +423,7 @@
       "category": "people",
       "order": 1,
       "label": "老師",
-      "speak": "老師",
+      "speak": "搵老師",
       "image": "assets/img/teacher.jpg"
     },
     {
@@ -431,7 +431,7 @@
       "category": "people",
       "order": 2,
       "label": "班主任",
-      "speak": "班主任",
+      "speak": "搵班主任",
       "image": "assets/img/class-teacher.jpg"
     },
     {
@@ -439,7 +439,7 @@
       "category": "people",
       "order": 3,
       "label": "司機",
-      "speak": "司機",
+      "speak": "搵司機",
       "image": "assets/img/driver.jpg"
     },
     {
@@ -447,7 +447,7 @@
       "category": "people",
       "order": 4,
       "label": "工友",
-      "speak": "工友",
+      "speak": "搵工友",
       "image": "assets/img/staff.jpg"
     },
     {
@@ -455,7 +455,7 @@
       "category": "people",
       "order": 5,
       "label": "我",
-      "speak": "我",
+      "speak": "係我",
       "image": "assets/img/me.jpg"
     },
     {
@@ -463,14 +463,14 @@
       "category": "people",
       "order": 6,
       "label": "同學",
-      "speak": "同學",
+      "speak": "呢個同學",
       "image": "assets/img/friend.jpg"
     },
     {
       "id": "nurse",
       "category": "people",
       "label": "護士",
-      "speak": "護士",
+      "speak": "搵護士",
       "image": "assets/img/nurse.jpg",
       "gendered": false,
       "order": 7
@@ -479,7 +479,7 @@
       "id": "social-worker",
       "category": "people",
       "label": "社工",
-      "speak": "社工",
+      "speak": "搵社工",
       "image": "assets/img/social-worker.jpg",
       "gendered": false,
       "order": 8
@@ -505,7 +505,7 @@
       "category": "ask",
       "order": 3,
       "label": "可唔可以",
-      "speak": "可唔可以",
+      "speak": "可唔可以呀",
       "image": "assets/img/may-i.jpg"
     },
     {
@@ -561,8 +561,8 @@
       "id": "sleepy",
       "category": "need",
       "order": 7,
-      "label": "眼訓",
-      "speak": "我好眼訓",
+      "label": "眼瞓",
+      "speak": "我好眼瞓",
       "image": "assets/img/sleepy.jpg"
     },
     {
@@ -658,7 +658,7 @@
       "category": "activity",
       "order": 11,
       "label": "放低",
-      "speak": "放低",
+      "speak": "我要放低",
       "image": "assets/img/put-down.jpg"
     },
     {
@@ -722,7 +722,7 @@
       "category": "supplies",
       "order": 1,
       "label": "鉛筆",
-      "speak": "鉛筆",
+      "speak": "我要鉛筆",
       "image": "assets/img/pencil.jpg",
       "gendered": false
     },
@@ -731,7 +731,7 @@
       "category": "supplies",
       "order": 2,
       "label": "擦膠",
-      "speak": "擦膠",
+      "speak": "我要擦膠",
       "image": "assets/img/eraser.jpg",
       "gendered": false
     },
@@ -740,7 +740,7 @@
       "category": "supplies",
       "order": 3,
       "label": "書",
-      "speak": "書",
+      "speak": "我要書",
       "image": "assets/img/book.jpg",
       "gendered": false
     },
@@ -749,7 +749,7 @@
       "category": "supplies",
       "order": 4,
       "label": "平板",
-      "speak": "平板",
+      "speak": "我要平板",
       "image": "assets/img/tablet.jpg",
       "gendered": false
     },
@@ -766,7 +766,7 @@
       "category": "supplies",
       "order": 5,
       "label": "耳機",
-      "speak": "耳機",
+      "speak": "我要耳機",
       "image": "assets/img/headphones.jpg",
       "gendered": false
     },
@@ -798,7 +798,7 @@
       "id": "bag",
       "category": "supplies",
       "label": "書包",
-      "speak": "書包",
+      "speak": "我要書包",
       "image": "assets/img/bag.jpg",
       "gendered": false,
       "order": 6
@@ -807,7 +807,7 @@
       "id": "bottle",
       "category": "supplies",
       "label": "水壺",
-      "speak": "水壺",
+      "speak": "我要水壺",
       "image": "assets/img/bottle.jpg",
       "gendered": false,
       "order": 7
@@ -816,7 +816,7 @@
       "id": "crayons",
       "category": "supplies",
       "label": "顏色筆",
-      "speak": "顏色筆",
+      "speak": "我要顏色筆",
       "image": "assets/img/crayons.jpg",
       "gendered": false,
       "order": 8
@@ -833,7 +833,7 @@
       "id": "glue",
       "category": "supplies",
       "label": "漿糊",
-      "speak": "漿糊",
+      "speak": "我要漿糊",
       "image": "assets/img/glue.jpg",
       "gendered": false,
       "order": 9
@@ -842,7 +842,7 @@
       "id": "jacket",
       "category": "supplies",
       "label": "外套",
-      "speak": "着外套",
+      "speak": "我要着外套",
       "image": "assets/img/jacket.jpg",
       "order": 11,
       "gendered": false
@@ -851,7 +851,7 @@
       "id": "scissors",
       "category": "supplies",
       "label": "剪刀",
-      "speak": "剪刀",
+      "speak": "我要剪刀",
       "image": "assets/img/scissors.jpg",
       "gendered": false,
       "order": 10
@@ -991,8 +991,8 @@
       "id": "uneasy",
       "category": "feel",
       "order": 6,
-      "label": "不安",
-      "speak": "我好不安",
+      "label": "擔心",
+      "speak": "我好擔心",
       "image": "assets/img/uneasy.jpg"
     },
     {
@@ -1024,7 +1024,7 @@
       "category": "feel",
       "order": 9,
       "label": "嘈",
-      "speak": "好嘈",
+      "speak": "呢度好嘈",
       "image": "assets/img/noisy.jpg"
     },
     {
@@ -1200,7 +1200,7 @@
     {
       "id": "dad",
       "label": "爸爸",
-      "speak": "爸爸",
+      "speak": "搵爸爸",
       "image": "assets/img/dad.jpg",
       "category": "house",
       "order": 6,
@@ -1209,7 +1209,7 @@
     {
       "id": "mom",
       "label": "媽媽",
-      "speak": "媽媽",
+      "speak": "搵媽媽",
       "image": "assets/img/mom.jpg",
       "category": "house",
       "order": 7,
@@ -1244,8 +1244,8 @@
     },
     {
       "id": "sleep-bed",
-      "label": "訓覺",
-      "speak": "我要訓覺",
+      "label": "瞓覺",
+      "speak": "我要瞓覺",
       "image": "assets/img/sleep-bed.jpg",
       "category": "house",
       "order": 11,
