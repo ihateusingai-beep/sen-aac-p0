@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "packId": "sen-aac-p0-public-demo",
-  "rev": "home-b1-2026-09-22",
+  "rev": "l1-gate-2026-09-22",
   "title": "SEN AAC P0 public demo",
-  "note": "No real student PII. Demo PIN 000000. Style C ~143. Body tab + house B1 + IA fix merge/more/trial-hide.",
+  "note": "No real student PII. Demo PIN 000000. Only demo-c = plus (高組). A/B basic.",
   "defaultDisplayPreset": "2x2",
   "guest": {
     "id": "guest",
@@ -11,7 +11,8 @@
     "sex": "m",
     "displayPreset": "2x2",
     "writeProgress": false,
-    "showPhotoWall": false
+    "showPhotoWall": false,
+    "ability": "basic"
   },
   "profiles": [
     {
@@ -20,21 +21,27 @@
       "sex": "m",
       "avatarPath": "",
       "displayPreset": "2x2",
-      "personalBoardId": "personal-demo-calm"
+      "personalBoardId": "personal-demo-calm",
+      "ability": "basic",
+      "plusCompose": true
     },
     {
       "id": "demo-b",
       "label": "示範 B",
       "sex": "f",
       "avatarPath": "",
-      "displayPreset": "2x2"
+      "displayPreset": "2x2",
+      "ability": "basic",
+      "plusCompose": true
     },
     {
       "id": "demo-c",
-      "label": "示範 C",
+      "label": "示範 C（高組）",
       "sex": "m",
       "displayPreset": "2x4",
-      "personalBoardId": "personal-demo-story"
+      "personalBoardId": "personal-demo-story",
+      "ability": "plus",
+      "plusCompose": true
     }
   ]
 }

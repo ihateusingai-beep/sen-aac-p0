@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "general-p0-trial",
   "title": "P0 試用板 · 日常表達",
-  "rev": "home-b1-2026-09-22",
-  "note": "屋企B1：房廳廚浴室公園·爸媽·起身刷牙沖涼訓覺睇電視零食夠喇（家校分域）",
+  "rev": "catnav-greet-2026-09-22",
+  "note": "瘦板：我要~13·活動興趣·用品tab·時間入答話·功課2格·用iPad·近義收 · 頂列◀▶範疇 · 午安晚安",
   "defaultDisplayPreset": "2x2",
   "categories": [
     {
@@ -71,6 +71,12 @@
       "label": "活動",
       "color": "#dd6b20",
       "order": 11
+    },
+    {
+      "id": "supplies",
+      "label": "用品",
+      "color": "#718096",
+      "order": 12
     }
   ],
   "cells": [
@@ -175,7 +181,7 @@
     {
       "id": "hello",
       "category": "greet",
-      "order": 2,
+      "order": 4,
       "label": "你好",
       "speak": "你好",
       "image": "assets/img/hello.jpg"
@@ -183,7 +189,7 @@
     {
       "id": "bye",
       "category": "greet",
-      "order": 3,
+      "order": 5,
       "label": "拜拜",
       "speak": "拜拜",
       "image": "assets/img/bye.jpg"
@@ -191,7 +197,7 @@
     {
       "id": "thanks",
       "category": "greet",
-      "order": 4,
+      "order": 6,
       "label": "多謝",
       "speak": "多謝",
       "image": "assets/img/thanks.jpg"
@@ -199,7 +205,7 @@
     {
       "id": "please",
       "category": "greet",
-      "order": 5,
+      "order": 7,
       "label": "唔該",
       "speak": "唔該",
       "image": "assets/img/please.jpg"
@@ -207,7 +213,7 @@
     {
       "id": "thanks-lot",
       "category": "greet",
-      "order": 6,
+      "order": 8,
       "label": "唔該晒",
       "speak": "唔該晒",
       "image": "assets/img/thanks-lot.jpg"
@@ -215,7 +221,7 @@
     {
       "id": "good-yes",
       "category": "greet",
-      "order": 7,
+      "order": 9,
       "label": "好呀",
       "speak": "好呀",
       "image": "assets/img/good-yes.jpg"
@@ -223,7 +229,7 @@
     {
       "id": "sorry",
       "category": "greet",
-      "order": 8,
+      "order": 10,
       "label": "對唔住",
       "speak": "對唔住",
       "image": "assets/img/sorry.jpg"
@@ -231,7 +237,7 @@
     {
       "id": "excuse",
       "category": "greet",
-      "order": 9,
+      "order": 11,
       "label": "唔好意思",
       "speak": "唔好意思",
       "image": "assets/img/excuse.jpg"
@@ -375,18 +381,10 @@
     {
       "id": "do-homework",
       "category": "routine",
-      "label": "功課",
+      "label": "做功課",
       "speak": "做功課",
       "image": "assets/img/do-homework.jpg",
       "order": 10
-    },
-    {
-      "id": "hand-in",
-      "category": "routine",
-      "label": "交嘢",
-      "speak": "交俾老師",
-      "image": "assets/img/hand-in.jpg",
-      "order": 11
     },
     {
       "id": "lunch",
@@ -617,64 +615,64 @@
     },
     {
       "id": "homework",
-      "category": "need",
-      "order": 14,
+      "category": "routine",
+      "order": 11,
       "label": "交功課",
-      "speak": "交功課俾先生",
+      "speak": "我要交功課",
       "image": "assets/img/homework.jpg"
     },
     {
       "id": "wipe-hands",
-      "category": "need",
-      "order": 15,
+      "category": "routine",
+      "order": 16,
       "label": "抹手",
       "speak": "我要抹手",
       "image": "assets/img/wipe-hands.jpg"
     },
     {
       "id": "wipe-mouth",
-      "category": "need",
-      "order": 16,
+      "category": "routine",
+      "order": 17,
       "label": "抹嘴",
       "speak": "我要抹嘴",
       "image": "assets/img/wipe-mouth.jpg"
     },
     {
       "id": "change-clothes",
-      "category": "need",
-      "order": 17,
+      "category": "routine",
+      "order": 18,
       "label": "換衫",
       "speak": "我要換衫",
       "image": "assets/img/change-clothes.jpg"
     },
     {
       "id": "take",
-      "category": "need",
-      "order": 18,
+      "category": "activity",
+      "order": 10,
       "label": "攞",
       "speak": "我要攞",
       "image": "assets/img/take.jpg"
     },
     {
       "id": "put-down",
-      "category": "need",
-      "order": 19,
+      "category": "activity",
+      "order": 11,
       "label": "放低",
       "speak": "放低",
       "image": "assets/img/put-down.jpg"
     },
     {
       "id": "read",
-      "category": "need",
-      "order": 20,
+      "category": "activity",
+      "order": 8,
       "label": "睇書",
       "speak": "我想睇書",
       "image": "assets/img/read.jpg"
     },
     {
       "id": "play",
-      "category": "need",
-      "order": 21,
+      "category": "activity",
+      "order": 6,
       "label": "玩",
       "speak": "我想玩",
       "image": "assets/img/play.jpg"
@@ -721,8 +719,8 @@
     },
     {
       "id": "pencil",
-      "category": "activity",
-      "order": 6,
+      "category": "supplies",
+      "order": 1,
       "label": "鉛筆",
       "speak": "鉛筆",
       "image": "assets/img/pencil.jpg",
@@ -730,8 +728,8 @@
     },
     {
       "id": "eraser",
-      "category": "activity",
-      "order": 7,
+      "category": "supplies",
+      "order": 2,
       "label": "擦膠",
       "speak": "擦膠",
       "image": "assets/img/eraser.jpg",
@@ -739,8 +737,8 @@
     },
     {
       "id": "book",
-      "category": "activity",
-      "order": 8,
+      "category": "supplies",
+      "order": 3,
       "label": "書",
       "speak": "書",
       "image": "assets/img/book.jpg",
@@ -748,8 +746,8 @@
     },
     {
       "id": "tablet",
-      "category": "activity",
-      "order": 9,
+      "category": "supplies",
+      "order": 4,
       "label": "平板",
       "speak": "平板",
       "image": "assets/img/tablet.jpg",
@@ -758,15 +756,15 @@
     {
       "id": "e-learning",
       "category": "activity",
-      "order": 10,
-      "label": "電子學習",
-      "speak": "我想電子學習",
+      "order": 9,
+      "label": "用iPad",
+      "speak": "我想用iPad",
       "image": "assets/img/e-learning.jpg"
     },
     {
       "id": "headphones",
-      "category": "activity",
-      "order": 11,
+      "category": "supplies",
+      "order": 5,
       "label": "耳機",
       "speak": "耳機",
       "image": "assets/img/headphones.jpg",
@@ -774,54 +772,54 @@
     },
     {
       "id": "now",
-      "category": "activity",
-      "order": 12,
+      "category": "reply",
+      "order": 9,
       "label": "而家",
       "speak": "而家",
       "image": "assets/img/now.jpg"
     },
     {
       "id": "later",
-      "category": "activity",
-      "order": 13,
+      "category": "reply",
+      "order": 10,
       "label": "一陣",
       "speak": "一陣",
       "image": "assets/img/later.jpg"
     },
     {
       "id": "finished",
-      "category": "activity",
-      "order": 14,
+      "category": "reply",
+      "order": 11,
       "label": "完咗",
       "speak": "完咗",
       "image": "assets/img/finished.jpg"
     },
     {
       "id": "bag",
-      "category": "activity",
+      "category": "supplies",
       "label": "書包",
       "speak": "書包",
       "image": "assets/img/bag.jpg",
       "gendered": false,
-      "order": 15
+      "order": 6
     },
     {
       "id": "bottle",
-      "category": "activity",
+      "category": "supplies",
       "label": "水壺",
       "speak": "水壺",
       "image": "assets/img/bottle.jpg",
       "gendered": false,
-      "order": 16
+      "order": 7
     },
     {
       "id": "crayons",
-      "category": "activity",
+      "category": "supplies",
       "label": "顏色筆",
       "speak": "顏色筆",
       "image": "assets/img/crayons.jpg",
       "gendered": false,
-      "order": 17
+      "order": 8
     },
     {
       "id": "game",
@@ -829,33 +827,34 @@
       "label": "遊戲",
       "speak": "我想玩遊戲",
       "image": "assets/img/game.jpg",
-      "order": 18
+      "order": 7
     },
     {
       "id": "glue",
-      "category": "activity",
+      "category": "supplies",
       "label": "漿糊",
       "speak": "漿糊",
       "image": "assets/img/glue.jpg",
       "gendered": false,
-      "order": 19
+      "order": 9
     },
     {
       "id": "jacket",
-      "category": "activity",
+      "category": "supplies",
       "label": "外套",
       "speak": "着外套",
       "image": "assets/img/jacket.jpg",
-      "order": 20
+      "order": 11,
+      "gendered": false
     },
     {
       "id": "scissors",
-      "category": "activity",
+      "category": "supplies",
       "label": "剪刀",
       "speak": "剪刀",
       "image": "assets/img/scissors.jpg",
       "gendered": false,
-      "order": 21
+      "order": 10
     },
     {
       "id": "headache",
@@ -1277,6 +1276,24 @@
       "image": "assets/img/enough.jpg",
       "category": "house",
       "order": 14,
+      "gendered": true
+    },
+    {
+      "id": "afternoon",
+      "label": "午安",
+      "speak": "午安",
+      "image": "assets/img/afternoon.jpg",
+      "category": "greet",
+      "order": 2,
+      "gendered": true
+    },
+    {
+      "id": "good-night",
+      "label": "晚安",
+      "speak": "晚安",
+      "image": "assets/img/good-night.jpg",
+      "category": "greet",
+      "order": 3,
       "gendered": true
     }
   ]
