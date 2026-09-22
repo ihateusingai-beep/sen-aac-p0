@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "packId": "sen-aac-p0-public-demo",
-  "rev": "l1-gate-2026-09-22",
+  "rev": "tts-fix-2026-09-22",
   "title": "SEN AAC P0 public demo",
-  "note": "No real student PII. Demo PIN 000000. Only demo-c = plus (高組). A/B basic.",
+  "note": "No real student PII. PIN 000000. demo-c=plus only. TTS colloquial fix.",
   "defaultDisplayPreset": "2x2",
   "guest": {
     "id": "guest",
