@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "packId": "sen-aac-p0-public-demo",
-  "rev": "grammar-copy-2026-09-22",
+  "rev": "bare-tts-2026-09-22",
   "title": "SEN AAC P0 public demo",
-  "note": "No real student PII. PIN 000000. demo-c=plus only. board rev grammar-copy-2026-09-22.",
+  "note": "No real student PII. PIN 000000. demo-c=plus only. board rev bare-tts-2026-09-22.",
   "defaultDisplayPreset": "2x2",
   "guest": {
     "id": "guest",

@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "general-p0-trial",
   "title": "P0 試用板 · 日常表達",
-  "rev": "grammar-copy-2026-09-22",
-  "note": "文案+文法：身體好X痛·屋企我要作息·小息食晏·冇事·放低嘢·暈 · speakPlus短核·noGate拒怪組 · plus見老師/去廁所唔見搵/去返",
+  "rev": "bare-tts-2026-09-22",
+  "note": "TTS裸核：單格唔預設加去/搵/我要/我想；動詞只由高能閘組句加上 · 返屋企固定短語 · speakPlus=核",
   "defaultDisplayPreset": "2x2",
   "categories": [
     {
@@ -85,7 +85,7 @@
       "category": "place",
       "order": 1,
       "label": "廁所",
-      "speak": "去廁所",
+      "speak": "廁所",
       "image": "assets/img/toilet.jpg",
       "gendered": false,
       "speakPlus": "廁所"
@@ -95,7 +95,7 @@
       "category": "place",
       "order": 2,
       "label": "課室",
-      "speak": "去課室",
+      "speak": "課室",
       "image": "assets/img/classroom.jpg",
       "gendered": false,
       "speakPlus": "課室"
@@ -108,14 +108,15 @@
       "speak": "返屋企",
       "image": "assets/img/home.jpg",
       "gendered": false,
-      "noGate": true
+      "noGate": true,
+      "speakPlus": "屋企"
     },
     {
       "id": "playground",
       "category": "place",
       "order": 4,
       "label": "操場",
-      "speak": "去操場",
+      "speak": "操場",
       "image": "assets/img/playground.jpg",
       "gendered": false,
       "speakPlus": "操場"
@@ -125,7 +126,7 @@
       "category": "place",
       "order": 5,
       "label": "禮堂",
-      "speak": "去禮堂",
+      "speak": "禮堂",
       "image": "assets/img/hall.jpg",
       "gendered": false,
       "speakPlus": "禮堂"
@@ -135,7 +136,7 @@
       "category": "place",
       "order": 6,
       "label": "音樂室",
-      "speak": "去音樂室",
+      "speak": "音樂室",
       "image": "assets/img/music-room.jpg",
       "gendered": false,
       "speakPlus": "音樂室"
@@ -145,7 +146,7 @@
       "category": "place",
       "order": 7,
       "label": "圖書館",
-      "speak": "去圖書館",
+      "speak": "圖書館",
       "image": "assets/img/library.jpg",
       "gendered": false,
       "speakPlus": "圖書館"
@@ -155,7 +156,7 @@
       "category": "place",
       "order": 8,
       "label": "活動室",
-      "speak": "去活動室",
+      "speak": "活動室",
       "image": "assets/img/activity-room.jpg",
       "gendered": false,
       "speakPlus": "活動室"
@@ -165,16 +166,16 @@
       "category": "place",
       "order": 9,
       "label": "校車",
-      "speak": "坐校車",
+      "speak": "校車",
       "image": "assets/img/bus.jpg",
       "gendered": false,
-      "noGate": true
+      "speakPlus": "校車"
     },
     {
       "id": "computer-room",
       "category": "place",
       "label": "電腦室",
-      "speak": "去電腦室",
+      "speak": "電腦室",
       "image": "assets/img/computer-room.jpg",
       "gendered": false,
       "order": 10,
@@ -186,7 +187,8 @@
       "order": 1,
       "label": "早晨",
       "speak": "早晨",
-      "image": "assets/img/morning.jpg"
+      "image": "assets/img/morning.jpg",
+      "speakPlus": "早晨"
     },
     {
       "id": "hello",
@@ -194,7 +196,8 @@
       "order": 4,
       "label": "你好",
       "speak": "你好",
-      "image": "assets/img/hello.jpg"
+      "image": "assets/img/hello.jpg",
+      "speakPlus": "你好"
     },
     {
       "id": "bye",
@@ -202,7 +205,8 @@
       "order": 5,
       "label": "拜拜",
       "speak": "拜拜",
-      "image": "assets/img/bye.jpg"
+      "image": "assets/img/bye.jpg",
+      "speakPlus": "拜拜"
     },
     {
       "id": "thanks",
@@ -210,7 +214,8 @@
       "order": 6,
       "label": "多謝",
       "speak": "多謝",
-      "image": "assets/img/thanks.jpg"
+      "image": "assets/img/thanks.jpg",
+      "speakPlus": "多謝"
     },
     {
       "id": "please",
@@ -218,7 +223,8 @@
       "order": 7,
       "label": "唔該",
       "speak": "唔該",
-      "image": "assets/img/please.jpg"
+      "image": "assets/img/please.jpg",
+      "speakPlus": "唔該"
     },
     {
       "id": "thanks-lot",
@@ -226,7 +232,8 @@
       "order": 8,
       "label": "唔該晒",
       "speak": "唔該晒",
-      "image": "assets/img/thanks-lot.jpg"
+      "image": "assets/img/thanks-lot.jpg",
+      "speakPlus": "唔該晒"
     },
     {
       "id": "good-yes",
@@ -234,7 +241,8 @@
       "order": 9,
       "label": "好呀",
       "speak": "好呀",
-      "image": "assets/img/good-yes.jpg"
+      "image": "assets/img/good-yes.jpg",
+      "speakPlus": "好呀"
     },
     {
       "id": "sorry",
@@ -242,7 +250,8 @@
       "order": 10,
       "label": "對唔住",
       "speak": "對唔住",
-      "image": "assets/img/sorry.jpg"
+      "image": "assets/img/sorry.jpg",
+      "speakPlus": "對唔住"
     },
     {
       "id": "excuse",
@@ -250,7 +259,8 @@
       "order": 11,
       "label": "唔好意思",
       "speak": "唔好意思",
-      "image": "assets/img/excuse.jpg"
+      "image": "assets/img/excuse.jpg",
+      "speakPlus": "唔好意思"
     },
     {
       "id": "yes",
@@ -268,7 +278,8 @@
       "label": "唔係",
       "speak": "唔係",
       "image": "assets/img/no.jpg",
-      "noGate": true
+      "noGate": true,
+      "speakPlus": "唔係"
     },
     {
       "id": "ok",
@@ -295,7 +306,8 @@
       "label": "唔同",
       "speak": "唔同嘅",
       "image": "assets/img/diff.jpg",
-      "noGate": true
+      "noGate": true,
+      "speakPlus": "唔同嘅"
     },
     {
       "id": "not-yet",
@@ -304,7 +316,8 @@
       "label": "未得",
       "speak": "未得",
       "image": "assets/img/not-yet.jpg",
-      "noGate": true
+      "noGate": true,
+      "speakPlus": "未得"
     },
     {
       "id": "done-ok",
@@ -320,9 +333,10 @@
       "category": "reply",
       "order": 8,
       "label": "唔知",
-      "speak": "我唔知",
+      "speak": "唔知",
       "image": "assets/img/dunno.jpg",
-      "noGate": true
+      "noGate": true,
+      "speakPlus": "唔知"
     },
     {
       "id": "sit",
@@ -330,7 +344,8 @@
       "order": 1,
       "label": "坐好",
       "speak": "坐好",
-      "image": "assets/img/sit.jpg"
+      "image": "assets/img/sit.jpg",
+      "speakPlus": "坐好"
     },
     {
       "id": "clap",
@@ -338,7 +353,8 @@
       "order": 2,
       "label": "拍手",
       "speak": "拍手",
-      "image": "assets/img/clap.jpg"
+      "image": "assets/img/clap.jpg",
+      "speakPlus": "拍手"
     },
     {
       "id": "hand-up",
@@ -346,7 +362,8 @@
       "order": 3,
       "label": "舉手",
       "speak": "舉手",
-      "image": "assets/img/hand-up.jpg"
+      "image": "assets/img/hand-up.jpg",
+      "speakPlus": "舉手"
     },
     {
       "id": "put-back",
@@ -354,7 +371,8 @@
       "order": 4,
       "label": "放返",
       "speak": "放返",
-      "image": "assets/img/put-back.jpg"
+      "image": "assets/img/put-back.jpg",
+      "speakPlus": "放返"
     },
     {
       "id": "wait",
@@ -362,7 +380,8 @@
       "order": 5,
       "label": "等陣",
       "speak": "等陣",
-      "image": "assets/img/wait.jpg"
+      "image": "assets/img/wait.jpg",
+      "speakPlus": "等陣"
     },
     {
       "id": "line-up",
@@ -370,7 +389,8 @@
       "order": 6,
       "label": "排隊",
       "speak": "排隊",
-      "image": "assets/img/line-up.jpg"
+      "image": "assets/img/line-up.jpg",
+      "speakPlus": "排隊"
     },
     {
       "id": "stand",
@@ -378,7 +398,8 @@
       "order": 7,
       "label": "企好",
       "speak": "企好",
-      "image": "assets/img/stand.jpg"
+      "image": "assets/img/stand.jpg",
+      "speakPlus": "企好"
     },
     {
       "id": "pack-up",
@@ -386,7 +407,8 @@
       "order": 8,
       "label": "收嘢",
       "speak": "收嘢",
-      "image": "assets/img/pack-up.jpg"
+      "image": "assets/img/pack-up.jpg",
+      "speakPlus": "收嘢"
     },
     {
       "id": "be-quiet",
@@ -394,7 +416,8 @@
       "label": "安靜",
       "speak": "安靜啲",
       "image": "assets/img/be-quiet.jpg",
-      "order": 9
+      "order": 9,
+      "speakPlus": "安靜啲"
     },
     {
       "id": "do-homework",
@@ -402,31 +425,35 @@
       "label": "做功課",
       "speak": "做功課",
       "image": "assets/img/do-homework.jpg",
-      "order": 10
+      "order": 10,
+      "speakPlus": "做功課"
     },
     {
       "id": "lunch",
       "category": "routine",
       "label": "食晏",
-      "speak": "而家食晏",
+      "speak": "食晏",
       "image": "assets/img/lunch.jpg",
-      "order": 12
+      "order": 12,
+      "speakPlus": "食晏"
     },
     {
       "id": "morning-assembly",
       "category": "routine",
       "label": "早會",
-      "speak": "上早會",
+      "speak": "早會",
       "image": "assets/img/morning-assembly.jpg",
-      "order": 13
+      "order": 13,
+      "speakPlus": "早會"
     },
     {
       "id": "recess",
       "category": "routine",
       "label": "小息",
-      "speak": "而家小息",
+      "speak": "小息",
       "image": "assets/img/recess.jpg",
-      "order": 14
+      "order": 14,
+      "speakPlus": "小息"
     },
     {
       "id": "walk-slow",
@@ -434,14 +461,15 @@
       "label": "慢慢行",
       "speak": "慢慢行",
       "image": "assets/img/walk-slow.jpg",
-      "order": 15
+      "order": 15,
+      "speakPlus": "慢慢行"
     },
     {
       "id": "teacher",
       "category": "people",
       "order": 1,
       "label": "老師",
-      "speak": "搵老師",
+      "speak": "老師",
       "image": "assets/img/teacher.jpg",
       "speakPlus": "老師"
     },
@@ -450,7 +478,7 @@
       "category": "people",
       "order": 2,
       "label": "班主任",
-      "speak": "搵班主任",
+      "speak": "班主任",
       "image": "assets/img/class-teacher.jpg",
       "speakPlus": "班主任"
     },
@@ -459,7 +487,7 @@
       "category": "people",
       "order": 3,
       "label": "司機",
-      "speak": "搵司機",
+      "speak": "司機",
       "image": "assets/img/driver.jpg",
       "speakPlus": "司機"
     },
@@ -468,7 +496,7 @@
       "category": "people",
       "order": 4,
       "label": "工友",
-      "speak": "搵工友",
+      "speak": "工友",
       "image": "assets/img/staff.jpg",
       "speakPlus": "工友"
     },
@@ -477,24 +505,26 @@
       "category": "people",
       "order": 5,
       "label": "我",
-      "speak": "係我",
+      "speak": "我",
       "image": "assets/img/me.jpg",
-      "noGate": true
+      "noGate": true,
+      "speakPlus": "我"
     },
     {
       "id": "friend",
       "category": "people",
       "order": 6,
       "label": "同學",
-      "speak": "呢個同學",
+      "speak": "同學",
       "image": "assets/img/friend.jpg",
-      "noGate": true
+      "noGate": true,
+      "speakPlus": "同學"
     },
     {
       "id": "nurse",
       "category": "people",
       "label": "護士",
-      "speak": "搵護士",
+      "speak": "護士",
       "image": "assets/img/nurse.jpg",
       "gendered": false,
       "order": 7,
@@ -504,7 +534,7 @@
       "id": "social-worker",
       "category": "people",
       "label": "社工",
-      "speak": "搵社工",
+      "speak": "社工",
       "image": "assets/img/social-worker.jpg",
       "gendered": false,
       "order": 8,
@@ -515,8 +545,9 @@
       "category": "ask",
       "order": 1,
       "label": "做咩",
-      "speak": "而家做咩",
-      "image": "assets/img/what-doing.jpg"
+      "speak": "做咩",
+      "image": "assets/img/what-doing.jpg",
+      "speakPlus": "做咩"
     },
     {
       "id": "where-go",
@@ -524,15 +555,17 @@
       "order": 2,
       "label": "去邊度",
       "speak": "去邊度",
-      "image": "assets/img/where-go.jpg"
+      "image": "assets/img/where-go.jpg",
+      "speakPlus": "去邊度"
     },
     {
       "id": "may-i",
       "category": "ask",
       "order": 3,
       "label": "可唔可以",
-      "speak": "可唔可以呀",
-      "image": "assets/img/may-i.jpg"
+      "speak": "可唔可以",
+      "image": "assets/img/may-i.jpg",
+      "speakPlus": "可唔可以"
     },
     {
       "id": "want",
@@ -541,7 +574,8 @@
       "label": "我要",
       "speak": "我要",
       "image": "assets/img/want.jpg",
-      "noGate": true
+      "noGate": true,
+      "speakPlus": "我要"
     },
     {
       "id": "no-want",
@@ -550,14 +584,15 @@
       "label": "唔要",
       "speak": "唔要",
       "image": "assets/img/no-want.jpg",
-      "noGate": true
+      "noGate": true,
+      "speakPlus": "唔要"
     },
     {
       "id": "drink",
       "category": "need",
       "order": 3,
       "label": "飲水",
-      "speak": "我要飲水",
+      "speak": "飲水",
       "image": "assets/img/drink.jpg",
       "speakPlus": "飲水"
     },
@@ -566,7 +601,7 @@
       "category": "need",
       "order": 4,
       "label": "食嘢",
-      "speak": "我要食嘢",
+      "speak": "食嘢",
       "image": "assets/img/eat.jpg",
       "speakPlus": "食嘢"
     },
@@ -575,7 +610,7 @@
       "category": "need",
       "order": 5,
       "label": "食飯",
-      "speak": "我要食飯",
+      "speak": "食飯",
       "image": "assets/img/canteen.jpg",
       "gendered": false,
       "speakPlus": "食飯"
@@ -585,18 +620,20 @@
       "category": "need",
       "order": 6,
       "label": "肚餓",
-      "speak": "我好肚餓",
+      "speak": "肚餓",
       "image": "assets/img/hungry.jpg",
-      "noGate": true
+      "noGate": true,
+      "speakPlus": "肚餓"
     },
     {
       "id": "sleepy",
       "category": "need",
       "order": 7,
       "label": "眼瞓",
-      "speak": "我好眼瞓",
+      "speak": "眼瞓",
       "image": "assets/img/sleepy.jpg",
-      "noGate": true
+      "noGate": true,
+      "speakPlus": "眼瞓"
     },
     {
       "id": "stop",
@@ -621,27 +658,29 @@
       "category": "need",
       "order": 10,
       "label": "熱",
-      "speak": "我好熱",
+      "speak": "熱",
       "image": "assets/img/hot.jpg",
-      "noGate": true
+      "noGate": true,
+      "speakPlus": "熱"
     },
     {
       "id": "cold",
       "category": "need",
       "order": 11,
       "label": "凍",
-      "speak": "我好凍",
+      "speak": "凍",
       "image": "assets/img/cold.jpg",
-      "noGate": true
+      "noGate": true,
+      "speakPlus": "凍"
     },
     {
       "id": "toilet",
       "category": "need",
       "order": 12,
-      "label": "要廁所",
-      "speak": "我要去廁所",
+      "label": "廁所",
+      "speak": "廁所",
       "image": "assets/img/toilet.jpg",
-      "speakPlus": "去廁所"
+      "speakPlus": "廁所"
     },
     {
       "id": "no-do",
@@ -650,14 +689,15 @@
       "label": "唔做",
       "speak": "唔做",
       "image": "assets/img/no-do.jpg",
-      "noGate": true
+      "noGate": true,
+      "speakPlus": "唔做"
     },
     {
       "id": "homework",
       "category": "routine",
       "order": 11,
       "label": "交功課",
-      "speak": "我要交功課",
+      "speak": "交功課",
       "image": "assets/img/homework.jpg",
       "speakPlus": "交功課"
     },
@@ -666,7 +706,7 @@
       "category": "routine",
       "order": 16,
       "label": "抹手",
-      "speak": "我要抹手",
+      "speak": "抹手",
       "image": "assets/img/wipe-hands.jpg",
       "speakPlus": "抹手"
     },
@@ -675,7 +715,7 @@
       "category": "routine",
       "order": 17,
       "label": "抹嘴",
-      "speak": "我要抹嘴",
+      "speak": "抹嘴",
       "image": "assets/img/wipe-mouth.jpg",
       "speakPlus": "抹嘴"
     },
@@ -684,7 +724,7 @@
       "category": "routine",
       "order": 18,
       "label": "換衫",
-      "speak": "我要換衫",
+      "speak": "換衫",
       "image": "assets/img/change-clothes.jpg",
       "speakPlus": "換衫"
     },
@@ -693,25 +733,25 @@
       "category": "activity",
       "order": 10,
       "label": "攞",
-      "speak": "我要攞嘢",
+      "speak": "攞",
       "image": "assets/img/take.jpg",
-      "speakPlus": "攞嘢"
+      "speakPlus": "攞"
     },
     {
       "id": "put-down",
       "category": "activity",
       "order": 11,
       "label": "放低",
-      "speak": "我要放低嘢",
+      "speak": "放低",
       "image": "assets/img/put-down.jpg",
-      "speakPlus": "放低嘢"
+      "speakPlus": "放低"
     },
     {
       "id": "read",
       "category": "activity",
       "order": 8,
       "label": "睇書",
-      "speak": "我想睇書",
+      "speak": "睇書",
       "image": "assets/img/read.jpg",
       "speakPlus": "睇書"
     },
@@ -720,7 +760,7 @@
       "category": "activity",
       "order": 6,
       "label": "玩",
-      "speak": "我想玩",
+      "speak": "玩",
       "image": "assets/img/play.jpg",
       "speakPlus": "玩"
     },
@@ -729,7 +769,7 @@
       "category": "activity",
       "order": 1,
       "label": "畫畫",
-      "speak": "我想畫畫",
+      "speak": "畫畫",
       "image": "assets/img/draw.jpg",
       "speakPlus": "畫畫"
     },
@@ -738,7 +778,7 @@
       "category": "activity",
       "order": 2,
       "label": "唱歌",
-      "speak": "我想唱歌",
+      "speak": "唱歌",
       "image": "assets/img/sing.jpg",
       "speakPlus": "唱歌"
     },
@@ -747,7 +787,7 @@
       "category": "activity",
       "order": 3,
       "label": "跳舞",
-      "speak": "我想跳舞",
+      "speak": "跳舞",
       "image": "assets/img/dance.jpg",
       "speakPlus": "跳舞"
     },
@@ -756,7 +796,7 @@
       "category": "activity",
       "order": 4,
       "label": "跑步",
-      "speak": "我想跑步",
+      "speak": "跑步",
       "image": "assets/img/run.jpg",
       "speakPlus": "跑步"
     },
@@ -765,7 +805,7 @@
       "category": "activity",
       "order": 5,
       "label": "波",
-      "speak": "我想玩波",
+      "speak": "玩波",
       "image": "assets/img/ball.jpg",
       "speakPlus": "玩波"
     },
@@ -774,7 +814,7 @@
       "category": "supplies",
       "order": 1,
       "label": "鉛筆",
-      "speak": "我要鉛筆",
+      "speak": "鉛筆",
       "image": "assets/img/pencil.jpg",
       "gendered": false,
       "speakPlus": "鉛筆"
@@ -784,7 +824,7 @@
       "category": "supplies",
       "order": 2,
       "label": "擦膠",
-      "speak": "我要擦膠",
+      "speak": "擦膠",
       "image": "assets/img/eraser.jpg",
       "gendered": false,
       "speakPlus": "擦膠"
@@ -794,7 +834,7 @@
       "category": "supplies",
       "order": 3,
       "label": "書",
-      "speak": "我要書",
+      "speak": "書",
       "image": "assets/img/book.jpg",
       "gendered": false,
       "speakPlus": "書"
@@ -804,7 +844,7 @@
       "category": "supplies",
       "order": 4,
       "label": "平板",
-      "speak": "我要平板",
+      "speak": "平板",
       "image": "assets/img/tablet.jpg",
       "gendered": false,
       "speakPlus": "平板"
@@ -814,7 +854,7 @@
       "category": "activity",
       "order": 9,
       "label": "用平板",
-      "speak": "我想用平板",
+      "speak": "用平板",
       "image": "assets/img/e-learning.jpg",
       "speakPlus": "用平板"
     },
@@ -823,7 +863,7 @@
       "category": "supplies",
       "order": 5,
       "label": "耳機",
-      "speak": "我要耳機",
+      "speak": "耳機",
       "image": "assets/img/headphones.jpg",
       "gendered": false,
       "speakPlus": "耳機"
@@ -835,7 +875,8 @@
       "label": "而家",
       "speak": "而家",
       "image": "assets/img/now.jpg",
-      "noGate": true
+      "noGate": true,
+      "speakPlus": "而家"
     },
     {
       "id": "later",
@@ -844,7 +885,8 @@
       "label": "一陣",
       "speak": "一陣",
       "image": "assets/img/later.jpg",
-      "noGate": true
+      "noGate": true,
+      "speakPlus": "一陣"
     },
     {
       "id": "finished",
@@ -853,13 +895,14 @@
       "label": "完咗",
       "speak": "完咗",
       "image": "assets/img/finished.jpg",
-      "noGate": true
+      "noGate": true,
+      "speakPlus": "完咗"
     },
     {
       "id": "bag",
       "category": "supplies",
       "label": "書包",
-      "speak": "我要書包",
+      "speak": "書包",
       "image": "assets/img/bag.jpg",
       "gendered": false,
       "order": 6,
@@ -869,7 +912,7 @@
       "id": "bottle",
       "category": "supplies",
       "label": "水壺",
-      "speak": "我要水壺",
+      "speak": "水壺",
       "image": "assets/img/bottle.jpg",
       "gendered": false,
       "order": 7,
@@ -879,7 +922,7 @@
       "id": "crayons",
       "category": "supplies",
       "label": "顏色筆",
-      "speak": "我要顏色筆",
+      "speak": "顏色筆",
       "image": "assets/img/crayons.jpg",
       "gendered": false,
       "order": 8,
@@ -889,7 +932,7 @@
       "id": "game",
       "category": "activity",
       "label": "遊戲",
-      "speak": "我想玩遊戲",
+      "speak": "玩遊戲",
       "image": "assets/img/game.jpg",
       "order": 7,
       "speakPlus": "玩遊戲"
@@ -898,7 +941,7 @@
       "id": "glue",
       "category": "supplies",
       "label": "漿糊",
-      "speak": "我要漿糊",
+      "speak": "漿糊",
       "image": "assets/img/glue.jpg",
       "gendered": false,
       "order": 9,
@@ -908,17 +951,17 @@
       "id": "jacket",
       "category": "supplies",
       "label": "外套",
-      "speak": "我要著外套",
+      "speak": "外套",
       "image": "assets/img/jacket.jpg",
       "order": 11,
       "gendered": false,
-      "speakPlus": "著外套"
+      "speakPlus": "外套"
     },
     {
       "id": "scissors",
       "category": "supplies",
       "label": "剪刀",
-      "speak": "我要剪刀",
+      "speak": "剪刀",
       "image": "assets/img/scissors.jpg",
       "gendered": false,
       "order": 10,
@@ -927,89 +970,97 @@
     {
       "id": "headache",
       "label": "頭痛",
-      "speak": "我好頭痛",
+      "speak": "頭痛",
       "image": "assets/img/headache.jpg",
       "category": "body",
       "order": 1,
-      "gendered": true
+      "gendered": true,
+      "speakPlus": "頭痛"
     },
     {
       "id": "tummy-ache",
       "label": "肚痛",
-      "speak": "我好肚痛",
+      "speak": "肚痛",
       "image": "assets/img/tummy-ache.jpg",
       "category": "body",
       "order": 2,
-      "gendered": true
+      "gendered": true,
+      "speakPlus": "肚痛"
     },
     {
       "id": "hand-pain",
       "label": "手痛",
-      "speak": "我好手痛",
+      "speak": "手痛",
       "image": "assets/img/hand-pain.jpg",
       "category": "body",
       "order": 3,
-      "gendered": true
+      "gendered": true,
+      "speakPlus": "手痛"
     },
     {
       "id": "foot-pain",
       "label": "腳痛",
-      "speak": "我好腳痛",
+      "speak": "腳痛",
       "image": "assets/img/foot-pain.jpg",
       "category": "body",
       "order": 4,
-      "gendered": true
+      "gendered": true,
+      "speakPlus": "腳痛"
     },
     {
       "id": "unwell",
       "label": "唔舒服",
-      "speak": "我好唔舒服",
+      "speak": "唔舒服",
       "image": "assets/img/unwell.jpg",
       "category": "body",
       "order": 5,
-      "gendered": true
+      "gendered": true,
+      "speakPlus": "唔舒服"
     },
     {
       "id": "tooth-pain",
       "label": "牙痛",
-      "speak": "我好牙痛",
+      "speak": "牙痛",
       "image": "assets/img/tooth-pain.jpg",
       "category": "body",
       "order": 9,
-      "gendered": true
+      "gendered": true,
+      "speakPlus": "牙痛"
     },
     {
       "id": "fever",
       "label": "發燒",
-      "speak": "我發燒",
+      "speak": "發燒",
       "image": "assets/img/fever.jpg",
       "category": "body",
       "order": 6,
-      "gendered": true
+      "gendered": true,
+      "speakPlus": "發燒"
     },
     {
       "id": "cough",
       "label": "咳",
-      "speak": "我咳緊",
+      "speak": "咳",
       "image": "assets/img/cough.jpg",
       "category": "body",
       "order": 7,
       "gendered": true,
-      "speakPlus": "咳緊"
+      "speakPlus": "咳"
     },
     {
       "id": "dizzy",
       "label": "暈",
-      "speak": "我好暈",
+      "speak": "暈",
       "image": "assets/img/dizzy.jpg",
       "category": "body",
       "order": 10,
-      "gendered": true
+      "gendered": true,
+      "speakPlus": "暈"
     },
     {
       "id": "rest",
       "label": "休息",
-      "speak": "我要休息",
+      "speak": "休息",
       "image": "assets/img/rest.jpg",
       "category": "body",
       "order": 11,
@@ -1019,19 +1070,19 @@
     {
       "id": "see-nurse",
       "label": "見護士",
-      "speak": "我要見護士",
+      "speak": "見護士",
       "image": "assets/img/see-nurse.jpg",
       "category": "body",
       "order": 8,
       "gendered": true,
-      "speakPlus": "見護士"
+      "speakPlus": "護士"
     },
     {
       "id": "pain",
       "category": "feel",
       "order": 8,
       "label": "痛",
-      "speak": "我好痛",
+      "speak": "痛",
       "image": "assets/img/pain.jpg",
       "speakPlus": "痛"
     },
@@ -1040,16 +1091,16 @@
       "category": "feel",
       "order": 3,
       "label": "攰",
-      "speak": "我好累",
+      "speak": "攰",
       "image": "assets/img/tired.jpg",
-      "speakPlus": "累"
+      "speakPlus": "攰"
     },
     {
       "id": "happy",
       "category": "feel",
       "order": 1,
       "label": "開心",
-      "speak": "我好開心",
+      "speak": "開心",
       "image": "assets/img/happy.jpg",
       "speakPlus": "開心"
     },
@@ -1058,7 +1109,7 @@
       "category": "feel",
       "order": 2,
       "label": "唔開心",
-      "speak": "我唔開心",
+      "speak": "唔開心",
       "image": "assets/img/sad.jpg",
       "speakPlus": "唔開心"
     },
@@ -1067,7 +1118,7 @@
       "category": "feel",
       "order": 6,
       "label": "擔心",
-      "speak": "我好擔心",
+      "speak": "擔心",
       "image": "assets/img/uneasy.jpg",
       "speakPlus": "擔心"
     },
@@ -1076,7 +1127,7 @@
       "category": "feel",
       "order": 7,
       "label": "舒服",
-      "speak": "我好舒服",
+      "speak": "舒服",
       "image": "assets/img/comfy.jpg",
       "speakPlus": "舒服"
     },
@@ -1085,7 +1136,7 @@
       "category": "feel",
       "order": 5,
       "label": "嬲",
-      "speak": "我好嬲",
+      "speak": "嬲",
       "image": "assets/img/angry.jpg",
       "speakPlus": "嬲"
     },
@@ -1094,7 +1145,7 @@
       "category": "feel",
       "order": 4,
       "label": "驚",
-      "speak": "我好驚",
+      "speak": "驚",
       "image": "assets/img/scared.jpg",
       "speakPlus": "驚"
     },
@@ -1103,88 +1154,94 @@
       "category": "feel",
       "order": 9,
       "label": "嘈",
-      "speak": "呢度好嘈",
+      "speak": "嘈",
       "image": "assets/img/noisy.jpg",
-      "noGate": true
+      "noGate": true,
+      "speakPlus": "嘈"
     },
     {
       "id": "nothing",
       "category": "feel",
       "order": 10,
       "label": "冇事",
-      "speak": "我冇事",
+      "speak": "冇事",
       "image": "assets/img/nothing.jpg",
       "speakPlus": "冇事"
     },
     {
       "id": "neck-pain",
       "label": "頸痛",
-      "speak": "我好頸痛",
+      "speak": "頸痛",
       "image": "assets/img/neck-pain.jpg",
       "category": "body",
       "order": 12,
-      "gendered": true
+      "gendered": true,
+      "speakPlus": "頸痛"
     },
     {
       "id": "back-pain",
       "label": "背痛",
-      "speak": "我好背痛",
+      "speak": "背痛",
       "image": "assets/img/back-pain.jpg",
       "category": "body",
       "order": 13,
-      "gendered": true
+      "gendered": true,
+      "speakPlus": "背痛"
     },
     {
       "id": "waist-pain",
       "label": "腰痛",
-      "speak": "我好腰痛",
+      "speak": "腰痛",
       "image": "assets/img/waist-pain.jpg",
       "category": "body",
       "order": 14,
-      "gendered": true
+      "gendered": true,
+      "speakPlus": "腰痛"
     },
     {
       "id": "eye-pain",
       "label": "眼痛",
-      "speak": "我好眼痛",
+      "speak": "眼痛",
       "image": "assets/img/eye-pain.jpg",
       "category": "body",
       "order": 15,
-      "gendered": true
+      "gendered": true,
+      "speakPlus": "眼痛"
     },
     {
       "id": "ear-pain",
       "label": "耳痛",
-      "speak": "我好耳痛",
+      "speak": "耳痛",
       "image": "assets/img/ear-pain.jpg",
       "category": "body",
       "order": 16,
-      "gendered": true
+      "gendered": true,
+      "speakPlus": "耳痛"
     },
     {
       "id": "runny-nose",
       "label": "流鼻水",
-      "speak": "我流緊鼻水",
+      "speak": "流鼻水",
       "image": "assets/img/runny-nose.jpg",
       "category": "body",
       "order": 17,
       "gendered": true,
-      "speakPlus": "流緊鼻水"
+      "speakPlus": "流鼻水"
     },
     {
       "id": "breathless",
       "label": "氣喘",
-      "speak": "我好難透氣",
+      "speak": "氣喘",
       "image": "assets/img/breathless.jpg",
       "category": "body",
       "order": 18,
       "gendered": true,
-      "speakPlus": "難透氣"
+      "speakPlus": "氣喘"
     },
     {
       "id": "itchy",
       "label": "痕",
-      "speak": "我好痕",
+      "speak": "痕",
       "image": "assets/img/itchy.jpg",
       "category": "body",
       "order": 19,
@@ -1194,17 +1251,17 @@
     {
       "id": "nauseous",
       "label": "想嘔",
-      "speak": "我想嘔",
+      "speak": "想嘔",
       "image": "assets/img/nauseous.jpg",
       "category": "body",
       "order": 20,
       "gendered": true,
-      "speakPlus": "嘔"
+      "speakPlus": "想嘔"
     },
     {
       "id": "diarrhea",
       "label": "肚急",
-      "speak": "我肚急",
+      "speak": "肚急",
       "image": "assets/img/diarrhea.jpg",
       "category": "body",
       "order": 21,
@@ -1214,7 +1271,7 @@
     {
       "id": "medicine",
       "label": "食藥",
-      "speak": "我要食藥",
+      "speak": "食藥",
       "image": "assets/img/medicine.jpg",
       "category": "body",
       "order": 22,
@@ -1224,7 +1281,7 @@
     {
       "id": "see-doctor",
       "label": "睇醫生",
-      "speak": "我要睇醫生",
+      "speak": "睇醫生",
       "image": "assets/img/see-doctor.jpg",
       "category": "body",
       "order": 23,
@@ -1234,7 +1291,7 @@
     {
       "id": "leave-sick",
       "label": "請假",
-      "speak": "我想請假",
+      "speak": "請假",
       "image": "assets/img/leave-sick.jpg",
       "category": "body",
       "order": 24,
@@ -1244,7 +1301,7 @@
     {
       "id": "bedroom-home",
       "label": "房",
-      "speak": "去房",
+      "speak": "房",
       "image": "assets/img/bedroom-home.jpg",
       "category": "house",
       "order": 1,
@@ -1254,7 +1311,7 @@
     {
       "id": "living-room",
       "label": "廳",
-      "speak": "去廳",
+      "speak": "廳",
       "image": "assets/img/living-room.jpg",
       "category": "house",
       "order": 2,
@@ -1264,7 +1321,7 @@
     {
       "id": "kitchen-home",
       "label": "廚房",
-      "speak": "去廚房",
+      "speak": "廚房",
       "image": "assets/img/kitchen-home.jpg",
       "category": "house",
       "order": 3,
@@ -1274,7 +1331,7 @@
     {
       "id": "bath-home",
       "label": "浴室",
-      "speak": "去浴室",
+      "speak": "浴室",
       "image": "assets/img/bath-home.jpg",
       "category": "house",
       "order": 4,
@@ -1284,7 +1341,7 @@
     {
       "id": "park",
       "label": "公園",
-      "speak": "去公園",
+      "speak": "公園",
       "image": "assets/img/park.jpg",
       "category": "house",
       "order": 5,
@@ -1294,7 +1351,7 @@
     {
       "id": "dad",
       "label": "爸爸",
-      "speak": "搵爸爸",
+      "speak": "爸爸",
       "image": "assets/img/dad.jpg",
       "category": "house",
       "order": 6,
@@ -1304,7 +1361,7 @@
     {
       "id": "mom",
       "label": "媽媽",
-      "speak": "搵媽媽",
+      "speak": "媽媽",
       "image": "assets/img/mom.jpg",
       "category": "house",
       "order": 7,
@@ -1314,7 +1371,7 @@
     {
       "id": "wake-up",
       "label": "起身",
-      "speak": "我要起身",
+      "speak": "起身",
       "image": "assets/img/wake-up.jpg",
       "category": "house",
       "order": 8,
@@ -1324,7 +1381,7 @@
     {
       "id": "brush-teeth",
       "label": "刷牙",
-      "speak": "我要刷牙",
+      "speak": "刷牙",
       "image": "assets/img/brush-teeth.jpg",
       "category": "house",
       "order": 9,
@@ -1334,7 +1391,7 @@
     {
       "id": "shower",
       "label": "沖涼",
-      "speak": "我要沖涼",
+      "speak": "沖涼",
       "image": "assets/img/shower.jpg",
       "category": "house",
       "order": 10,
@@ -1344,7 +1401,7 @@
     {
       "id": "sleep-bed",
       "label": "瞓覺",
-      "speak": "我要瞓覺",
+      "speak": "瞓覺",
       "image": "assets/img/sleep-bed.jpg",
       "category": "house",
       "order": 11,
@@ -1354,7 +1411,7 @@
     {
       "id": "watch-tv",
       "label": "睇電視",
-      "speak": "我想睇電視",
+      "speak": "睇電視",
       "image": "assets/img/watch-tv.jpg",
       "category": "house",
       "order": 12,
@@ -1364,7 +1421,7 @@
     {
       "id": "snack",
       "label": "零食",
-      "speak": "我要零食",
+      "speak": "零食",
       "image": "assets/img/snack.jpg",
       "category": "house",
       "order": 13,
@@ -1378,7 +1435,8 @@
       "image": "assets/img/enough.jpg",
       "category": "house",
       "order": 14,
-      "gendered": true
+      "gendered": true,
+      "speakPlus": "夠喇"
     },
     {
       "id": "afternoon",
@@ -1387,7 +1445,8 @@
       "image": "assets/img/afternoon.jpg",
       "category": "greet",
       "order": 2,
-      "gendered": true
+      "gendered": true,
+      "speakPlus": "午安"
     },
     {
       "id": "good-night",
@@ -1396,7 +1455,8 @@
       "image": "assets/img/good-night.jpg",
       "category": "greet",
       "order": 3,
-      "gendered": true
+      "gendered": true,
+      "speakPlus": "晚安"
     }
   ]
 }

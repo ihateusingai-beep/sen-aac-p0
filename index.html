@@ -859,7 +859,7 @@
       if (cell.noGate) return false;
       const c = cell.category;
       if (g.id === "gate-go") {
-        if (c === "place") return cell.id !== "home" && cell.id !== "bus";
+        if (c === "place") return cell.id !== "home"; // 返屋企=固定短語，唔組「去返」；校車可「去校車」
         if (c === "house") return (g.houseIds || []).includes(cell.id);
         return false;
       }
