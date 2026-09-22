@@ -490,6 +490,9 @@
       display: flex; flex-direction: column; gap: 8px; align-items: center;
     }
     .prof:active, .prof.on { border-color: #1f7a4c; box-shadow: 0 0 0 3px rgba(31,122,76,.3); }
+    .prof.is-plus { border-color: #6b46c1; }
+    .prof.is-plus.on { box-shadow: 0 0 0 3px rgba(107,70,193,.35); }
+    .prof.is-plus .meta { color: #6b46c1; font-weight: 900; }
     .prof img {
       width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; background: #eef2f6;
     }
@@ -771,6 +774,7 @@
               </div>
               <div class="row-btns" style="margin-top:4px">
                 <button type="button" class="mini wide" id="plusComposeBtn">閘+詞組句</button>
+                <button type="button" class="mini wide" id="abilityResetBtn">跟學生設定</button>
               </div>
               <div class="ttl" style="margin-top:6px">詞彙</div>
               <div class="row-btns">
@@ -1260,6 +1264,9 @@
     function abilityKey() {
       return "aac_ability_" + activeProfileId;
     }
+    function abilityOverrideKey() {
+      return "aac_ability_ov_" + activeProfileId;
+    }
     function composeKey() {
       return "aac_plus_compose_" + activeProfileId;
     }
@@ -1268,30 +1275,41 @@
       plusCompose = true;
       activeGate = null;
       if (activeProfileId === "guest") return;
+      const p = currentProfile();
       try {
+        // 老師手動改過先用 local；否則跟 profile.ability（李／示範C = plus）
+        const ov = localStorage.getItem(abilityOverrideKey());
         const v = localStorage.getItem(abilityKey());
-        if (v === "plus" || v === "basic") abilityMode = v;
-        else {
-          const p = currentProfile();
-          abilityMode = (p && p.ability === "plus") ? "plus" : "basic";
+        if (ov === "1" && (v === "plus" || v === "basic")) {
+          abilityMode = v;
+        } else if (p && p.ability === "plus") {
+          abilityMode = "plus";
+        } else if (p && p.ability === "basic") {
+          abilityMode = "basic";
+        } else if (v === "plus" || v === "basic") {
+          abilityMode = v;
         }
         const c = localStorage.getItem(composeKey());
         if (c === "0") plusCompose = false;
         else if (c === "1") plusCompose = true;
-        else {
-          const p = currentProfile();
-          if (p && p.plusCompose === false) plusCompose = false;
-        }
+        else if (p && p.plusCompose === false) plusCompose = false;
       } catch (_) {
-        const p = currentProfile();
         abilityMode = (p && p.ability === "plus") ? "plus" : "basic";
       }
     }
     function saveAbility() {
       if (activeProfileId === "guest") return;
       try {
+        localStorage.setItem(abilityOverrideKey(), "1");
         localStorage.setItem(abilityKey(), abilityMode);
         localStorage.setItem(composeKey(), plusCompose ? "1" : "0");
+      } catch (_) {}
+    }
+    function clearAbilityOverride() {
+      if (activeProfileId === "guest") return;
+      try {
+        localStorage.removeItem(abilityOverrideKey());
+        localStorage.removeItem(abilityKey());
       } catch (_) {}
     }
 
@@ -1661,9 +1679,10 @@
       }
       render();
       const nVis = board.cells.filter(c => !hiddenIds.has(c.id)).length;
+      const abTag = isGuest ? "初能" : (abilityMode === "plus" ? "高能閘" : "初能");
       toast(isGuest
-        ? ("訪客 · 顯示 " + nVis + " 詞")
-        : (p.label + " · " + (board?.title || "") + " · " + nVis + " 詞"));
+        ? ("訪客 · " + abTag + " · " + nVis + " 詞")
+        : (p.label + " · " + abTag + " · " + nVis + " 詞"));
     }
 
     function renderWhoOnly() {
@@ -1701,12 +1720,13 @@
       profilesData.profiles.forEach(p => {
         const b = document.createElement("button");
         b.type = "button";
-        b.className = "prof" + (activeProfileId === p.id ? " on" : "");
+        b.className = "prof" + (activeProfileId === p.id ? " on" : "") + (p.ability === "plus" ? " is-plus" : "");
         const disp = PRESETS[p.displayPreset]?.label || p.displayPreset || "";
+        const ab = p.ability === "plus" ? "高組 · 動詞閘" : "初能";
         const img = p.avatarPath
           ? `<img src="${p.avatarPath}" alt="${p.label}">`
-          : `<div class="big">🙂</div>`;
-        b.innerHTML = `${img}<div class="nm">${p.label}</div><div class="meta">${disp}</div>`;
+          : `<div class="big">${p.ability === "plus" ? "🧠" : "🙂"}</div>`;
+        b.innerHTML = `${img}<div class="nm">${p.label}</div><div class="meta">${ab} · ${disp}</div>`;
         b.onclick = () => { applyProfile(p.id); closeProfileWall(); };
         profileWall.appendChild(b);
       });
@@ -2260,12 +2280,12 @@
 
     document.getElementById("abilityBasic").onclick = () => {
       if (!teacher) return;
-      if (activeProfileId === "guest") { toast("訪客固定初能"); return; }
+      if (activeProfileId === "guest") { toast("訪客固定初能；請先揀學生"); return; }
       abilityMode = "basic";
       activeGate = null;
       saveAbility();
       render();
-      toast("初能：一格一句");
+      toast("已切初能（本機覆寫）");
     };
     document.getElementById("abilityPlus").onclick = () => {
       if (!teacher) return;
@@ -2273,7 +2293,16 @@
       abilityMode = "plus";
       saveAbility();
       render();
-      toast("高能 L1：動詞閘 → 跳詞");
+      toast("已切開高能閘（見頂欄動詞）");
+    };
+    document.getElementById("abilityResetBtn").onclick = () => {
+      if (!teacher) return;
+      if (activeProfileId === "guest") { toast("訪客固定初能"); return; }
+      clearAbilityOverride();
+      loadAbility();
+      render();
+      const p = currentProfile();
+      toast("已跟學生設定 → " + (abilityMode === "plus" ? "高能閘" : "初能") + (p && p.label ? "（" + p.label + "）" : ""));
     };
     document.getElementById("plusComposeBtn").onclick = () => {
       if (!teacher || abilityMode !== "plus") return;
