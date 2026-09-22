@@ -2079,44 +2079,67 @@
     document.getElementById("catNext").onclick = () => shiftCategory(1);
     document.getElementById("btnDel").onclick = () => { sentence.pop(); renderMsg(); };
 
-    // 清：長按 0.7s 先清
+    // 清：長按完成先清（pointer capture 防 iPad 誤 leave 取消）
     let clrTimer = null;
     let clrStart = 0;
+    let clrDone = false;
+    const CLR_HOLD_MS = 550;
+    function clrStopTick() {
+      if (clrTimer) cancelAnimationFrame(clrTimer);
+      clrTimer = null;
+    }
     function clrDown(e) {
       e.preventDefault();
+      if (e.button != null && e.button !== 0) return;
+      try { btnClr.setPointerCapture(e.pointerId); } catch (_) {}
+      clrStopTick();
+      clrDone = false;
       clrStart = Date.now();
       btnClr.classList.add("holding");
       clrBar.style.width = "0%";
       const tick = () => {
-        const p = Math.min(1, (Date.now() - clrStart) / 700);
+        if (!clrStart) return;
+        const p = Math.min(1, (Date.now() - clrStart) / CLR_HOLD_MS);
         clrBar.style.width = (p * 100) + "%";
         if (p >= 1) {
+          clrDone = true;
           sentence = [];
+          activeGate = null;
+          try { speechSynthesis.cancel(); } catch (_) {}
           renderMsg();
+          renderGateBar();
+          renderGateHint();
           flashOk();
           logUsage("clear_bar", {});
           toast("已清空");
-          clrUp();
+          clrStopTick();
+          btnClr.classList.remove("holding");
+          clrBar.style.width = "0%";
           return;
         }
         clrTimer = requestAnimationFrame(tick);
       };
       clrTimer = requestAnimationFrame(tick);
     }
-    function clrUp() {
+    function clrUp(e) {
+      clrStopTick();
       btnClr.classList.remove("holding");
       clrBar.style.width = "0%";
-      if (clrTimer) cancelAnimationFrame(clrTimer);
-      clrTimer = null;
-      if (Date.now() - clrStart < 700 && clrStart) {
-        toast("長按「清」先清空");
+      try {
+        if (e && e.pointerId != null) btnClr.releasePointerCapture(e.pointerId);
+      } catch (_) {}
+      // 未完成長按先提示；已清空唔再嘈
+      if (!clrDone && clrStart && (Date.now() - clrStart) < CLR_HOLD_MS) {
+        toast("按住「清」半秒");
       }
       clrStart = 0;
+      clrDone = false;
     }
     btnClr.addEventListener("pointerdown", clrDown);
     btnClr.addEventListener("pointerup", clrUp);
-    btnClr.addEventListener("pointerleave", clrUp);
     btnClr.addEventListener("pointercancel", clrUp);
+    // 唔用 pointerleave — iPad 手指微移會誤取消
+    btnClr.addEventListener("contextmenu", e => e.preventDefault());
 
     document.getElementById("btnSpeak").onclick = async () => {
       if (!sentence.length) { toast("未有詞"); return; }
