@@ -847,7 +847,7 @@
     /** L1 高能：動詞閘 → jump 範疇（只同對應 tab 組句，防「去早晨」） */
     const L1_GATES = [
       { id: "gate-go", label: "去", speak: "去", gateTo: "place", gateAlso: ["house"], houseIds: ["bedroom-home","living-room","kitchen-home","bath-home","park"], hint: "去 → 揀地方" },
-      { id: "gate-want", label: "我要", speak: "我要", gateTo: "need", gateAlso: ["supplies"], hint: "我要 → 揀嘢" },
+      { id: "gate-want", label: "我要", speak: "我要", gateTo: "need", gateAlso: ["supplies", "food"], hint: "我要 → 揀嘢／食" },
       { id: "gate-think", label: "我想", speak: "我想", gateTo: "activity", hint: "我想 → 揀活動" },
       { id: "gate-see", label: "見", speak: "見", gateTo: "people", hint: "見 → 揀人" },
       { id: "gate-no", label: "唔", speak: "唔", gateTo: "reply", replyAllow: ["yes","ok","done-ok","same"], hint: "唔 → 係／得／一樣" }
@@ -864,7 +864,7 @@
         return false;
       }
       if (g.id === "gate-want") {
-        return (c === "need" || c === "supplies" || (Array.isArray(g.gateAlso) && g.gateAlso.includes(c)));
+        return (c === "need" || c === "supplies" || c === "food" || (Array.isArray(g.gateAlso) && g.gateAlso.includes(c)));
       }
       if (g.id === "gate-think") return c === "activity";
       if (g.id === "gate-see") return c === "people";
@@ -1242,8 +1242,10 @@
       });
       Object.keys(by).forEach(k => {
         const list = by[k].slice().sort((a, b) => (a.order || 0) - (b.order || 0));
-        // 屋企 B1 全開；身體試用只急用 8；其他 tab 前 8
-        const keep = (k === "house") ? 99 : (k === "body") ? 8 : TRIAL_KEEP_PER_TAB;
+        // 屋企全開；食 F1 全開；車 T1 全開；身體急用 8；其他 tab 前 8
+        const keep = (k === "house" || k === "food" || k === "transport") ? 99
+          : (k === "body") ? 8
+          : TRIAL_KEEP_PER_TAB;
         list.slice(keep).forEach(c => hide.add(c.id));
       });
       return hide;

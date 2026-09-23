@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "general-p0-trial",
   "title": "P0 試用板 · 日常表達",
-  "rev": "bare-tts-2026-09-22",
-  "note": "TTS裸核：單格唔預設加去/搵/我要/我想；動詞只由高能閘組句加上 · 返屋企固定短語 · speakPlus=核",
+  "rev": "trans-real-2026-09-22",
+  "note": "TTS裸核：單格唔預設加去/搵/我要/我想；動詞只由高能閘組句加上 · 返屋企固定短語 · speakPlus=核 · F1食17+ T1車8 新tab食/車 裸核 · 車tab圖改超簡PECS側影",
   "defaultDisplayPreset": "2x2",
   "categories": [
     {
@@ -77,6 +77,18 @@
       "label": "用品",
       "color": "#718096",
       "order": 12
+    },
+    {
+      "id": "food",
+      "label": "食",
+      "color": "#dd6b20",
+      "order": 13
+    },
+    {
+      "id": "transport",
+      "label": "車",
+      "color": "#3182ce",
+      "order": 14
     }
   ],
   "cells": [
@@ -1457,6 +1469,256 @@
       "order": 3,
       "gendered": true,
       "speakPlus": "晚安"
+    },
+    {
+      "id": "food-bread",
+      "category": "food",
+      "order": 1,
+      "label": "麵包",
+      "speak": "麵包",
+      "speakPlus": "麵包",
+      "image": "assets/img/food-bread.jpg",
+      "gendered": false
+    },
+    {
+      "id": "food-rice",
+      "category": "food",
+      "order": 2,
+      "label": "飯",
+      "speak": "飯",
+      "speakPlus": "飯",
+      "image": "assets/img/food-rice.jpg",
+      "gendered": false
+    },
+    {
+      "id": "food-noodles",
+      "category": "food",
+      "order": 3,
+      "label": "麵",
+      "speak": "麵",
+      "speakPlus": "麵",
+      "image": "assets/img/food-noodles.jpg",
+      "gendered": false
+    },
+    {
+      "id": "food-congee",
+      "category": "food",
+      "order": 4,
+      "label": "粥",
+      "speak": "粥",
+      "speakPlus": "粥",
+      "image": "assets/img/food-congee.jpg",
+      "gendered": false
+    },
+    {
+      "id": "food-egg",
+      "category": "food",
+      "order": 5,
+      "label": "雞蛋",
+      "speak": "雞蛋",
+      "speakPlus": "雞蛋",
+      "image": "assets/img/food-egg.jpg",
+      "gendered": false
+    },
+    {
+      "id": "food-chicken-leg",
+      "category": "food",
+      "order": 6,
+      "label": "雞腿",
+      "speak": "雞腿",
+      "speakPlus": "雞腿",
+      "image": "assets/img/food-chicken-leg.jpg",
+      "gendered": false
+    },
+    {
+      "id": "food-fish",
+      "category": "food",
+      "order": 7,
+      "label": "魚",
+      "speak": "魚",
+      "speakPlus": "魚",
+      "image": "assets/img/food-fish.jpg",
+      "gendered": false
+    },
+    {
+      "id": "food-meat",
+      "category": "food",
+      "order": 8,
+      "label": "肉",
+      "speak": "肉",
+      "speakPlus": "肉",
+      "image": "assets/img/food-meat.jpg",
+      "gendered": false
+    },
+    {
+      "id": "food-veg",
+      "category": "food",
+      "order": 9,
+      "label": "菜",
+      "speak": "菜",
+      "speakPlus": "菜",
+      "image": "assets/img/food-veg.jpg",
+      "gendered": false
+    },
+    {
+      "id": "food-fruit",
+      "category": "food",
+      "order": 10,
+      "label": "生果",
+      "speak": "生果",
+      "speakPlus": "生果",
+      "image": "assets/img/food-fruit.jpg",
+      "gendered": false
+    },
+    {
+      "id": "food-apple",
+      "category": "food",
+      "order": 11,
+      "label": "蘋果",
+      "speak": "蘋果",
+      "speakPlus": "蘋果",
+      "image": "assets/img/food-apple.jpg",
+      "gendered": false
+    },
+    {
+      "id": "food-biscuit",
+      "category": "food",
+      "order": 12,
+      "label": "餅",
+      "speak": "餅",
+      "speakPlus": "餅",
+      "image": "assets/img/food-biscuit.jpg",
+      "gendered": false
+    },
+    {
+      "id": "drink-milk",
+      "category": "food",
+      "order": 13,
+      "label": "奶",
+      "speak": "奶",
+      "speakPlus": "奶",
+      "image": "assets/img/drink-milk.jpg",
+      "gendered": false
+    },
+    {
+      "id": "drink-juice",
+      "category": "food",
+      "order": 14,
+      "label": "果汁",
+      "speak": "果汁",
+      "speakPlus": "果汁",
+      "image": "assets/img/drink-juice.jpg",
+      "gendered": false
+    },
+    {
+      "id": "drink-tea",
+      "category": "food",
+      "order": 15,
+      "label": "茶",
+      "speak": "茶",
+      "speakPlus": "茶",
+      "image": "assets/img/drink-tea.jpg",
+      "gendered": false
+    },
+    {
+      "id": "drink-soda",
+      "category": "food",
+      "order": 16,
+      "label": "汽水",
+      "speak": "汽水",
+      "speakPlus": "汽水",
+      "image": "assets/img/drink-soda.jpg",
+      "gendered": false
+    },
+    {
+      "id": "drink-soy",
+      "category": "food",
+      "order": 17,
+      "label": "豆漿",
+      "speak": "豆漿",
+      "speakPlus": "豆漿",
+      "image": "assets/img/drink-soy.jpg",
+      "gendered": false
+    },
+    {
+      "id": "trans-bus",
+      "category": "transport",
+      "order": 1,
+      "label": "巴士",
+      "speak": "巴士",
+      "speakPlus": "巴士",
+      "image": "assets/img/trans-bus.jpg",
+      "gendered": false
+    },
+    {
+      "id": "trans-taxi",
+      "category": "transport",
+      "order": 2,
+      "label": "的士",
+      "speak": "的士",
+      "speakPlus": "的士",
+      "image": "assets/img/trans-taxi.jpg",
+      "gendered": false
+    },
+    {
+      "id": "trans-mtr",
+      "category": "transport",
+      "order": 3,
+      "label": "地鐵",
+      "speak": "地鐵",
+      "speakPlus": "地鐵",
+      "image": "assets/img/trans-mtr.jpg",
+      "gendered": false
+    },
+    {
+      "id": "trans-minibus",
+      "category": "transport",
+      "order": 4,
+      "label": "小巴",
+      "speak": "小巴",
+      "speakPlus": "小巴",
+      "image": "assets/img/trans-minibus.jpg",
+      "gendered": false
+    },
+    {
+      "id": "trans-car",
+      "category": "transport",
+      "order": 5,
+      "label": "車",
+      "speak": "車",
+      "speakPlus": "車",
+      "image": "assets/img/trans-car.jpg",
+      "gendered": false
+    },
+    {
+      "id": "trans-bike",
+      "category": "transport",
+      "order": 6,
+      "label": "單車",
+      "speak": "單車",
+      "speakPlus": "單車",
+      "image": "assets/img/trans-bike.jpg",
+      "gendered": false
+    },
+    {
+      "id": "trans-plane",
+      "category": "transport",
+      "order": 7,
+      "label": "飛機",
+      "speak": "飛機",
+      "speakPlus": "飛機",
+      "image": "assets/img/trans-plane.jpg",
+      "gendered": false
+    },
+    {
+      "id": "trans-boat",
+      "category": "transport",
+      "order": 8,
+      "label": "船",
+      "speak": "船",
+      "speakPlus": "船",
+      "image": "assets/img/trans-boat.jpg",
+      "gendered": false
     }
   ]
 }
