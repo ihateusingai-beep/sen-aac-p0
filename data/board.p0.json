@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "general-p0-trial",
   "title": "P0 試用板 · 日常表達",
-  "rev": "trans-real-2026-09-22",
-  "note": "TTS裸核：單格唔預設加去/搵/我要/我想；動詞只由高能閘組句加上 · 返屋企固定短語 · speakPlus=核 · F1食17+ T1車8 新tab食/車 裸核 · 車tab圖改超簡PECS側影",
+  "rev": "opt-emo-stylec-2026-10-06",
+  "note": "全加：招呼+4 問句+6 講14 邊12 · 裸核 +對/錯 reply；對不起=已有對唔住 · opt:瘦身序+好熱凍+再講聲量+間尺筆盒+無聊興奮+處理+情緒智能",
   "defaultDisplayPreset": "2x2",
   "categories": [
     {
@@ -61,34 +61,52 @@
       "order": 9
     },
     {
+      "id": "cope",
+      "label": "處理",
+      "color": "#319795",
+      "order": 10
+    },
+    {
       "id": "body",
       "label": "身體",
       "color": "#c53030",
-      "order": 10
+      "order": 11
     },
     {
       "id": "activity",
       "label": "活動",
       "color": "#dd6b20",
-      "order": 11
+      "order": 12
     },
     {
       "id": "supplies",
       "label": "用品",
       "color": "#718096",
-      "order": 12
+      "order": 13
     },
     {
       "id": "food",
       "label": "食",
       "color": "#dd6b20",
-      "order": 13
+      "order": 14
     },
     {
       "id": "transport",
       "label": "車",
       "color": "#3182ce",
-      "order": 14
+      "order": 15
+    },
+    {
+      "id": "express",
+      "label": "講",
+      "color": "#805ad5",
+      "order": 16
+    },
+    {
+      "id": "space",
+      "label": "邊",
+      "color": "#319795",
+      "order": 17
     }
   ],
   "cells": [
@@ -241,7 +259,7 @@
     {
       "id": "thanks-lot",
       "category": "greet",
-      "order": 8,
+      "order": 10,
       "label": "唔該晒",
       "speak": "唔該晒",
       "image": "assets/img/thanks-lot.jpg",
@@ -259,7 +277,7 @@
     {
       "id": "sorry",
       "category": "greet",
-      "order": 10,
+      "order": 8,
       "label": "對唔住",
       "speak": "對唔住",
       "image": "assets/img/sorry.jpg",
@@ -286,7 +304,7 @@
     {
       "id": "no",
       "category": "reply",
-      "order": 2,
+      "order": 4,
       "label": "唔係",
       "speak": "唔係",
       "image": "assets/img/no.jpg",
@@ -296,7 +314,7 @@
     {
       "id": "ok",
       "category": "reply",
-      "order": 3,
+      "order": 5,
       "label": "得",
       "speak": "得呀",
       "image": "assets/img/ok.jpg",
@@ -305,7 +323,7 @@
     {
       "id": "same",
       "category": "reply",
-      "order": 4,
+      "order": 12,
       "label": "一樣",
       "speak": "一樣嘅",
       "image": "assets/img/same.jpg",
@@ -314,7 +332,7 @@
     {
       "id": "diff",
       "category": "reply",
-      "order": 5,
+      "order": 13,
       "label": "唔同",
       "speak": "唔同嘅",
       "image": "assets/img/diff.jpg",
@@ -334,7 +352,7 @@
     {
       "id": "done-ok",
       "category": "reply",
-      "order": 7,
+      "order": 10,
       "label": "得啦",
       "speak": "得啦",
       "image": "assets/img/done-ok.jpg",
@@ -343,7 +361,7 @@
     {
       "id": "dunno",
       "category": "reply",
-      "order": 8,
+      "order": 7,
       "label": "唔知",
       "speak": "唔知",
       "image": "assets/img/dunno.jpg",
@@ -669,21 +687,21 @@
       "id": "hot",
       "category": "need",
       "order": 10,
-      "label": "熱",
-      "speak": "熱",
+      "label": "好熱",
+      "speak": "我好熱",
       "image": "assets/img/hot.jpg",
       "noGate": true,
-      "speakPlus": "熱"
+      "speakPlus": "好熱"
     },
     {
       "id": "cold",
       "category": "need",
       "order": 11,
-      "label": "凍",
-      "speak": "凍",
+      "label": "好凍",
+      "speak": "我好凍",
       "image": "assets/img/cold.jpg",
       "noGate": true,
-      "speakPlus": "凍"
+      "speakPlus": "好凍"
     },
     {
       "id": "toilet",
@@ -883,7 +901,7 @@
     {
       "id": "now",
       "category": "reply",
-      "order": 9,
+      "order": 11,
       "label": "而家",
       "speak": "而家",
       "image": "assets/img/now.jpg",
@@ -893,7 +911,7 @@
     {
       "id": "later",
       "category": "reply",
-      "order": 10,
+      "order": 8,
       "label": "一陣",
       "speak": "一陣",
       "image": "assets/img/later.jpg",
@@ -903,7 +921,7 @@
     {
       "id": "finished",
       "category": "reply",
-      "order": 11,
+      "order": 9,
       "label": "完咗",
       "speak": "完咗",
       "image": "assets/img/finished.jpg",
@@ -1005,7 +1023,7 @@
       "speak": "手痛",
       "image": "assets/img/hand-pain.jpg",
       "category": "body",
-      "order": 3,
+      "order": 9,
       "gendered": true,
       "speakPlus": "手痛"
     },
@@ -1015,7 +1033,7 @@
       "speak": "腳痛",
       "image": "assets/img/foot-pain.jpg",
       "category": "body",
-      "order": 4,
+      "order": 10,
       "gendered": true,
       "speakPlus": "腳痛"
     },
@@ -1025,7 +1043,7 @@
       "speak": "唔舒服",
       "image": "assets/img/unwell.jpg",
       "category": "body",
-      "order": 5,
+      "order": 3,
       "gendered": true,
       "speakPlus": "唔舒服"
     },
@@ -1035,7 +1053,7 @@
       "speak": "牙痛",
       "image": "assets/img/tooth-pain.jpg",
       "category": "body",
-      "order": 9,
+      "order": 11,
       "gendered": true,
       "speakPlus": "牙痛"
     },
@@ -1045,7 +1063,7 @@
       "speak": "發燒",
       "image": "assets/img/fever.jpg",
       "category": "body",
-      "order": 6,
+      "order": 4,
       "gendered": true,
       "speakPlus": "發燒"
     },
@@ -1055,7 +1073,7 @@
       "speak": "咳",
       "image": "assets/img/cough.jpg",
       "category": "body",
-      "order": 7,
+      "order": 5,
       "gendered": true,
       "speakPlus": "咳"
     },
@@ -1065,7 +1083,7 @@
       "speak": "暈",
       "image": "assets/img/dizzy.jpg",
       "category": "body",
-      "order": 10,
+      "order": 6,
       "gendered": true,
       "speakPlus": "暈"
     },
@@ -1075,7 +1093,7 @@
       "speak": "休息",
       "image": "assets/img/rest.jpg",
       "category": "body",
-      "order": 11,
+      "order": 8,
       "gendered": true,
       "speakPlus": "休息"
     },
@@ -1085,7 +1103,7 @@
       "speak": "見護士",
       "image": "assets/img/see-nurse.jpg",
       "category": "body",
-      "order": 8,
+      "order": 7,
       "gendered": true,
       "speakPlus": "護士"
     },
@@ -1719,6 +1737,567 @@
       "speakPlus": "船",
       "image": "assets/img/trans-boat.jpg",
       "gendered": false
+    },
+    {
+      "id": "bye-formal",
+      "category": "greet",
+      "order": 12,
+      "label": "再見",
+      "speak": "再見",
+      "speakPlus": "再見",
+      "image": "assets/img/bye-formal.jpg",
+      "gendered": false
+    },
+    {
+      "id": "teacher-morning",
+      "category": "greet",
+      "order": 13,
+      "label": "老師早",
+      "speak": "老師早",
+      "speakPlus": "老師早",
+      "image": "assets/img/teacher-morning.jpg",
+      "gendered": false
+    },
+    {
+      "id": "hello-all",
+      "category": "greet",
+      "order": 14,
+      "label": "大家好",
+      "speak": "大家好",
+      "speakPlus": "大家好",
+      "image": "assets/img/hello-all.jpg",
+      "gendered": false
+    },
+    {
+      "id": "see-tomorrow",
+      "category": "greet",
+      "order": 15,
+      "label": "聽日見",
+      "speak": "聽日見",
+      "speakPlus": "聽日見",
+      "image": "assets/img/see-tomorrow.jpg",
+      "gendered": false
+    },
+    {
+      "id": "who",
+      "category": "ask",
+      "order": 4,
+      "label": "邊個",
+      "speak": "邊個",
+      "speakPlus": "邊個",
+      "image": "assets/img/who.jpg",
+      "gendered": false
+    },
+    {
+      "id": "what",
+      "category": "ask",
+      "order": 5,
+      "label": "咩嘢",
+      "speak": "咩嘢",
+      "speakPlus": "咩嘢",
+      "image": "assets/img/what.jpg",
+      "gendered": false
+    },
+    {
+      "id": "why",
+      "category": "ask",
+      "order": 6,
+      "label": "點解",
+      "speak": "點解",
+      "speakPlus": "點解",
+      "image": "assets/img/why.jpg",
+      "gendered": false
+    },
+    {
+      "id": "when",
+      "category": "ask",
+      "order": 7,
+      "label": "幾時",
+      "speak": "幾時",
+      "speakPlus": "幾時",
+      "image": "assets/img/when.jpg",
+      "gendered": false
+    },
+    {
+      "id": "how-many",
+      "category": "ask",
+      "order": 8,
+      "label": "幾多",
+      "speak": "幾多",
+      "speakPlus": "幾多",
+      "image": "assets/img/how-many.jpg",
+      "gendered": false
+    },
+    {
+      "id": "ok-q",
+      "category": "ask",
+      "order": 9,
+      "label": "好唔好",
+      "speak": "好唔好呀",
+      "speakPlus": "好唔好呀",
+      "image": "assets/img/ok-q.jpg",
+      "gendered": false
+    },
+    {
+      "id": "like",
+      "category": "express",
+      "order": 1,
+      "label": "鍾意",
+      "speak": "鍾意",
+      "speakPlus": "鍾意",
+      "image": "assets/img/like.jpg",
+      "gendered": false
+    },
+    {
+      "id": "dislike",
+      "category": "express",
+      "order": 2,
+      "label": "唔鍾意",
+      "speak": "唔鍾意",
+      "speakPlus": "唔鍾意",
+      "image": "assets/img/dislike.jpg",
+      "gendered": false
+    },
+    {
+      "id": "more",
+      "category": "express",
+      "order": 3,
+      "label": "多啲",
+      "speak": "多啲",
+      "speakPlus": "多啲",
+      "image": "assets/img/more.jpg",
+      "gendered": false
+    },
+    {
+      "id": "less",
+      "category": "express",
+      "order": 4,
+      "label": "少啲",
+      "speak": "少啲",
+      "speakPlus": "少啲",
+      "image": "assets/img/less.jpg",
+      "gendered": false
+    },
+    {
+      "id": "faster",
+      "category": "express",
+      "order": 5,
+      "label": "快啲",
+      "speak": "快啲",
+      "speakPlus": "快啲",
+      "image": "assets/img/faster.jpg",
+      "gendered": false
+    },
+    {
+      "id": "slower",
+      "category": "express",
+      "order": 6,
+      "label": "慢啲",
+      "speak": "慢啲",
+      "speakPlus": "慢啲",
+      "image": "assets/img/slower.jpg",
+      "gendered": false
+    },
+    {
+      "id": "again",
+      "category": "express",
+      "order": 7,
+      "label": "再嚟",
+      "speak": "再嚟",
+      "speakPlus": "再嚟",
+      "image": "assets/img/again.jpg",
+      "gendered": false
+    },
+    {
+      "id": "not-understand",
+      "category": "express",
+      "order": 8,
+      "label": "唔明",
+      "speak": "唔明",
+      "speakPlus": "唔明",
+      "image": "assets/img/not-understand.jpg",
+      "gendered": false
+    },
+    {
+      "id": "understand",
+      "category": "express",
+      "order": 9,
+      "label": "明白",
+      "speak": "明白",
+      "speakPlus": "明白",
+      "image": "assets/img/understand.jpg",
+      "gendered": false
+    },
+    {
+      "id": "can-or-not",
+      "category": "express",
+      "order": 10,
+      "label": "得唔得",
+      "speak": "得唔得",
+      "speakPlus": "得唔得",
+      "image": "assets/img/can-or-not.jpg",
+      "gendered": false
+    },
+    {
+      "id": "together",
+      "category": "express",
+      "order": 11,
+      "label": "一齊",
+      "speak": "一齊",
+      "speakPlus": "一齊",
+      "image": "assets/img/together.jpg",
+      "gendered": false
+    },
+    {
+      "id": "wait-me",
+      "category": "express",
+      "order": 12,
+      "label": "等我",
+      "speak": "等我",
+      "speakPlus": "等我",
+      "image": "assets/img/wait-me.jpg",
+      "gendered": false
+    },
+    {
+      "id": "you-come",
+      "category": "express",
+      "order": 13,
+      "label": "你嚟",
+      "speak": "你嚟",
+      "speakPlus": "你嚟",
+      "image": "assets/img/you-come.jpg",
+      "gendered": false
+    },
+    {
+      "id": "i-go-first",
+      "category": "express",
+      "order": 14,
+      "label": "我走先",
+      "speak": "我走先",
+      "speakPlus": "我走先",
+      "image": "assets/img/i-go-first.jpg",
+      "gendered": false
+    },
+    {
+      "id": "far",
+      "category": "space",
+      "order": 1,
+      "label": "遠",
+      "speak": "遠",
+      "speakPlus": "遠",
+      "image": "assets/img/far.jpg",
+      "gendered": false
+    },
+    {
+      "id": "near",
+      "category": "space",
+      "order": 2,
+      "label": "近",
+      "speak": "近",
+      "speakPlus": "近",
+      "image": "assets/img/near.jpg",
+      "gendered": false
+    },
+    {
+      "id": "here",
+      "category": "space",
+      "order": 3,
+      "label": "呢度",
+      "speak": "呢度",
+      "speakPlus": "呢度",
+      "image": "assets/img/here.jpg",
+      "gendered": false
+    },
+    {
+      "id": "there",
+      "category": "space",
+      "order": 4,
+      "label": "嗰度",
+      "speak": "嗰度",
+      "speakPlus": "嗰度",
+      "image": "assets/img/there.jpg",
+      "gendered": false
+    },
+    {
+      "id": "up",
+      "category": "space",
+      "order": 5,
+      "label": "上",
+      "speak": "上",
+      "speakPlus": "上",
+      "image": "assets/img/up.jpg",
+      "gendered": false
+    },
+    {
+      "id": "down",
+      "category": "space",
+      "order": 6,
+      "label": "下",
+      "speak": "下",
+      "speakPlus": "下",
+      "image": "assets/img/down.jpg",
+      "gendered": false
+    },
+    {
+      "id": "inside",
+      "category": "space",
+      "order": 7,
+      "label": "入面",
+      "speak": "入面",
+      "speakPlus": "入面",
+      "image": "assets/img/inside.jpg",
+      "gendered": false
+    },
+    {
+      "id": "outside",
+      "category": "space",
+      "order": 8,
+      "label": "出面",
+      "speak": "出面",
+      "speakPlus": "出面",
+      "image": "assets/img/outside.jpg",
+      "gendered": false
+    },
+    {
+      "id": "left",
+      "category": "space",
+      "order": 9,
+      "label": "左",
+      "speak": "左",
+      "speakPlus": "左",
+      "image": "assets/img/left.jpg",
+      "gendered": false
+    },
+    {
+      "id": "right",
+      "category": "space",
+      "order": 10,
+      "label": "右",
+      "speak": "右",
+      "speakPlus": "右",
+      "image": "assets/img/right.jpg",
+      "gendered": false
+    },
+    {
+      "id": "middle",
+      "category": "space",
+      "order": 11,
+      "label": "中間",
+      "speak": "中間",
+      "speakPlus": "中間",
+      "image": "assets/img/middle.jpg",
+      "gendered": false
+    },
+    {
+      "id": "beside",
+      "category": "space",
+      "order": 12,
+      "label": "旁邊",
+      "speak": "旁邊",
+      "speakPlus": "旁邊",
+      "image": "assets/img/beside.jpg",
+      "gendered": false
+    },
+    {
+      "id": "correct",
+      "category": "reply",
+      "order": 2,
+      "label": "對",
+      "speak": "對",
+      "speakPlus": "對",
+      "image": "assets/img/correct.jpg",
+      "gendered": false
+    },
+    {
+      "id": "wrong",
+      "category": "reply",
+      "order": 3,
+      "label": "錯",
+      "speak": "錯",
+      "speakPlus": "錯",
+      "image": "assets/img/wrong.jpg",
+      "gendered": false,
+      "noGate": true
+    },
+    {
+      "id": "say-again",
+      "category": "express",
+      "order": 15,
+      "label": "再講",
+      "speak": "再講",
+      "speakPlus": "再講",
+      "image": "assets/img/again.jpg",
+      "gendered": false
+    },
+    {
+      "id": "louder",
+      "category": "express",
+      "order": 16,
+      "label": "大聲啲",
+      "speak": "大聲啲",
+      "speakPlus": "大聲啲",
+      "image": "assets/img/louder.jpg",
+      "gendered": false
+    },
+    {
+      "id": "softer",
+      "category": "express",
+      "order": 17,
+      "label": "細聲啲",
+      "speak": "細聲啲",
+      "speakPlus": "細聲啲",
+      "image": "assets/img/softer.jpg",
+      "gendered": false
+    },
+    {
+      "id": "ruler",
+      "category": "supplies",
+      "order": 12,
+      "label": "間尺",
+      "speak": "間尺",
+      "speakPlus": "間尺",
+      "image": "assets/img/ruler.jpg",
+      "gendered": false
+    },
+    {
+      "id": "pencil-case",
+      "category": "supplies",
+      "order": 13,
+      "label": "筆盒",
+      "speak": "筆盒",
+      "speakPlus": "筆盒",
+      "image": "assets/img/pencil-case.jpg",
+      "gendered": false
+    },
+    {
+      "id": "bored",
+      "category": "feel",
+      "order": 11,
+      "label": "無聊",
+      "speak": "無聊",
+      "speakPlus": "無聊",
+      "image": "assets/img/bored.jpg",
+      "gendered": true
+    },
+    {
+      "id": "excited",
+      "category": "feel",
+      "order": 12,
+      "label": "興奮",
+      "speak": "興奮",
+      "speakPlus": "興奮",
+      "image": "assets/img/excited.jpg",
+      "gendered": true
+    },
+    {
+      "id": "calm",
+      "category": "cope",
+      "order": 1,
+      "label": "靜一靜",
+      "speak": "靜一靜",
+      "speakPlus": "靜一靜",
+      "image": "assets/img/calm.jpg",
+      "gendered": false,
+      "noGate": true
+    },
+    {
+      "id": "breathe",
+      "category": "cope",
+      "order": 2,
+      "label": "深呼吸",
+      "speak": "深呼吸",
+      "speakPlus": "深呼吸",
+      "image": "assets/img/breathe.jpg",
+      "gendered": false,
+      "noGate": true
+    },
+    {
+      "id": "hug",
+      "category": "cope",
+      "order": 3,
+      "label": "抱抱",
+      "speak": "抱抱",
+      "speakPlus": "抱抱",
+      "image": "assets/img/hug.jpg",
+      "gendered": false,
+      "noGate": true
+    },
+    {
+      "id": "cope-rest",
+      "category": "cope",
+      "order": 4,
+      "label": "休息吓",
+      "speak": "休息吓",
+      "speakPlus": "休息吓",
+      "image": "assets/img/rest.jpg",
+      "gendered": false,
+      "noGate": true
+    },
+    {
+      "id": "cope-help",
+      "category": "cope",
+      "order": 5,
+      "label": "幫我",
+      "speak": "幫我",
+      "speakPlus": "幫我",
+      "image": "assets/img/help-me.jpg",
+      "gendered": false,
+      "noGate": true
+    },
+    {
+      "id": "cope-drink",
+      "category": "cope",
+      "order": 6,
+      "label": "飲水",
+      "speak": "飲水",
+      "speakPlus": "飲水",
+      "image": "assets/img/drink.jpg",
+      "gendered": false,
+      "noGate": true
+    },
+    {
+      "id": "cope-stop",
+      "category": "cope",
+      "order": 7,
+      "label": "停一停",
+      "speak": "停一停",
+      "speakPlus": "停一停",
+      "image": "assets/img/stop.jpg",
+      "gendered": false,
+      "noGate": true
+    },
+    {
+      "id": "cope-quiet",
+      "category": "cope",
+      "order": 8,
+      "label": "安靜啲",
+      "speak": "安靜啲",
+      "speakPlus": "安靜啲",
+      "image": "assets/img/be-quiet.jpg",
+      "gendered": false,
+      "noGate": true
+    },
+    {
+      "id": "cope-jacket",
+      "category": "cope",
+      "order": 9,
+      "label": "著外套",
+      "speak": "著外套",
+      "speakPlus": "著外套",
+      "image": "assets/img/jacket.jpg",
+      "gendered": false,
+      "noGate": true
+    },
+    {
+      "id": "cope-nothing",
+      "category": "cope",
+      "order": 10,
+      "label": "冇事",
+      "speak": "冇事",
+      "speakPlus": "冇事",
+      "image": "assets/img/nothing.jpg",
+      "gendered": false,
+      "noGate": true
     }
   ]
 }

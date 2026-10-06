@@ -65,6 +65,35 @@
     }
     /* —— 主體：頂部全範疇橫列 + 主區（學生無左欄）—— */
     .body { display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+
+    /* 情境快捷 */
+    .scene-bar {
+      display: flex; flex-wrap: wrap; gap: 6px; padding: 6px 8px 0;
+      background: #f7fafc; border-bottom: 1px solid #e2e8f0;
+    }
+    .scene-btn {
+      min-height: 40px; padding: 6px 12px; border-radius: 999px;
+      border: 3px solid #cbd5e0; background: #fff; font-weight: 900;
+      font-size: .95rem; color: #2d3748; cursor: pointer;
+    }
+    .scene-btn.on { border-color: #2b6cb0; background: #ebf8ff; color: #2b6cb0; }
+    .scene-btn:active { transform: scale(.96); }
+    /* 情緒處理列 */
+    .emo-bar {
+      display: none; align-items: center; gap: 8px; flex-wrap: wrap;
+      padding: 8px 10px; background: linear-gradient(90deg, #fff5f5, #ebf8ff);
+      border-bottom: 3px solid #fc8181;
+    }
+    .emo-bar.show { display: flex; }
+    .emo-bar .emo-lab { font-weight: 900; font-size: 1.05rem; color: #c53030; flex: 1; min-width: 8em; }
+    .emo-bar .emo-back {
+      min-height: 44px; padding: 8px 14px; border-radius: 999px;
+      border: 3px solid #2b6cb0; background: #fff; font-weight: 900; cursor: pointer;
+    }
+    .tab.pin-star .ico::after { content: ""; }
+    .tab.more-tab { border-style: dashed; background: #edf2f7 !important; }
+    .cell.emo-target { box-shadow: inset 0 0 0 4px #48bb78; }
+
     .cat-rail {
       flex: 0 0 auto;
       display: grid;
@@ -739,6 +768,16 @@
         </div>
       </header>
       <div class="body">
+        <div class="scene-bar" id="sceneBar" aria-label="情境">
+          <button type="button" class="scene-btn" data-scene="class">📚 上課</button>
+          <button type="button" class="scene-btn" data-scene="break">☀️ 小息</button>
+          <button type="button" class="scene-btn" data-scene="home">🏠 屋企</button>
+          <button type="button" class="scene-btn" data-scene="all">📋 全部</button>
+        </div>
+        <div class="emo-bar" id="emoBar" aria-label="情緒處理">
+          <span class="emo-lab" id="emoLab">感覺唔好？揀方法</span>
+          <button type="button" class="emo-back" id="emoBack">返回感覺</button>
+        </div>
         <div class="gate-bar" id="gateBar" aria-label="動詞閘">
           <span class="gttl">動詞</span>
           <div class="gate-btns" id="gateBtns"></div>
@@ -836,9 +875,42 @@
     const TAB_ICON = {
       need: "🙋", place: "📍", routine: "✋",
       greet: "👋", reply: "💬", social: "👋",
-      people: "👤", ask: "❓", feel: "😊", body: "🤒", activity: "🎨",
+      people: "👤", ask: "❓", feel: "😊", cope: "🌿", body: "🤒", activity: "🎨",
       house: "🏠", supplies: "✏️", calm: "🌿", want: "💬", say: "💬", help: "🆘",
+      food: "🍎", transport: "🚌", express: "🗣️", space: "↔️",
       story: "📖", desc: "📝", think: "💭"
+    };
+
+    /** 頂列釘死常用（其餘入「更多」） */
+    const PINNED_CATS = ["need", "place", "reply", "feel", "body", "greet"];
+
+    /** 負面情緒 → 處理詞（智能跳） */
+    const EMO_COPE = {
+      sad: ["calm","breathe","hug","cope-rest","cope-help","cope-drink","cope-stop","cope-nothing","teacher","comfy"],
+      angry: ["cope-stop","breathe","calm","cope-rest","cope-help","cope-quiet","be-quiet"],
+      scared: ["hug","cope-help","teacher","calm","breathe","cope-rest"],
+      uneasy: ["cope-help","teacher","calm","breathe","cope-rest","hug"],
+      tired: ["cope-rest","rest","cope-drink","cope-stop","sleepy"],
+      pain: ["rest","cope-help","see-nurse","medicine","cope-rest","unwell"],
+      noisy: ["cope-quiet","be-quiet","headphones","cope-stop","calm"],
+      bored: ["play","game","draw","sing","cope-help","again"],
+      hot: ["cope-drink","drink","cope-stop","rest"],
+      cold: ["cope-jacket","jacket","cope-drink","rest"],
+      unwell: ["rest","see-nurse","cope-help","medicine","cope-rest"]
+    };
+    const EMO_TRIGGER = {
+      sad: "sad", angry: "angry", scared: "scared", uneasy: "uneasy",
+      tired: "tired", pain: "pain", noisy: "noisy", bored: "bored",
+      hot: "hot", cold: "cold", unwell: "unwell",
+      "tummy-ache": "pain", headache: "pain", fever: "unwell", cough: "unwell"
+    };
+
+    /** 情境 → 預設 tab */
+    const SCENE_CAT = {
+      class: "reply",
+      break: "activity",
+      home: "house",
+      all: null
     };
 
     /** 試用：每 tab 只開前 N 格（未有本機隱詞記錄時） */
@@ -850,7 +922,8 @@
       { id: "gate-want", label: "我要", speak: "我要", gateTo: "need", gateAlso: ["supplies", "food"], hint: "我要 → 揀嘢／食" },
       { id: "gate-think", label: "我想", speak: "我想", gateTo: "activity", hint: "我想 → 揀活動" },
       { id: "gate-see", label: "見", speak: "見", gateTo: "people", hint: "見 → 揀人" },
-      { id: "gate-no", label: "唔", speak: "唔", gateTo: "reply", replyAllow: ["yes","ok","done-ok","same"], hint: "唔 → 係／得／一樣" }
+      { id: "gate-no", label: "唔", speak: "唔", gateTo: "reply", replyAllow: ["yes","correct","ok","done-ok","same"], hint: "唔 → 係／對／得／一樣" },
+      { id: "gate-with", label: "同", speak: "同", gateTo: "people", hint: "同 → 揀人" }
     ];
 
     /** 閘只收合法目標；cell.noGate 永不組（返屋企／校車／我／狀態格…） */
@@ -868,6 +941,7 @@
       }
       if (g.id === "gate-think") return c === "activity";
       if (g.id === "gate-see") return c === "people";
+      if (g.id === "gate-with") return c === "people" && !cell.noGate;
       if (g.id === "gate-no") {
         const allow = g.replyAllow || ["yes", "ok", "done-ok", "same"];
         return c === "reply" && allow.includes(cell.id);
@@ -898,6 +972,9 @@
     let abilityMode = "basic"; // basic | plus
     let plusCompose = true; // 高能：閘+目標串講
     let activeGate = null; // L1_GATES item or null
+    let emoFollow = null; // { fromId, fromLabel, ids:[] } | null
+    let sceneMode = "class"; // class|break|home|all
+    let showAllCats = false; // 更多 tab
     let usageSessionId = (typeof crypto !== "undefined" && crypto.randomUUID)
       ? crypto.randomUUID()
       : ("s" + Date.now() + "-" + Math.random().toString(16).slice(2));
@@ -1183,6 +1260,8 @@
       "unwell","headache","tummy-ache","hand-pain","foot-pain","tooth-pain","fever","cough","dizzy","rest","see-nurse",
       "neck-pain","back-pain","waist-pain","eye-pain","ear-pain","runny-nose","breathless","itchy","nauseous","diarrhea","medicine","see-doctor","leave-sick",
       "wake-up","brush-teeth","shower","sleep-bed","watch-tv","snack","enough"
+      "bored",
+      "excited",
     ]);
 
     function cellImage(cell) {
@@ -1235,19 +1314,43 @@
     function defaultTrialHidden(bd) {
       const hide = new Set();
       if (!bd || !Array.isArray(bd.cells)) return hide;
-      const by = {};
+      /* 情境 pack（校）：開核心，唔再盲目每 tab 前 8 */
+      const SHOW = new Set([
+        // need
+        "want","no-want","drink","eat","meal","hungry","sleepy","stop","help-me","hot","cold","toilet","no-do",
+        // place
+        "toilet-place","classroom","home","playground","bus",
+        // reply classroom
+        "yes","correct","wrong","no","ok","not-yet","dunno","later","finished",
+        // greet core 8
+        "morning","afternoon","good-night","hello","bye","thanks","please","sorry",
+        // feel + 新
+        "happy","sad","tired","scared","angry","uneasy","comfy","pain","noisy","nothing","bored","excited",
+        // body 急用 8
+        "headache","tummy-ache","unwell","fever","cough","dizzy","see-nurse","rest",
+        // cope 處理
+        "calm","breathe","hug","cope-rest","cope-help","cope-drink","cope-stop","cope-quiet","cope-jacket","cope-nothing",
+        // routine 常用
+        "sit","hand-up","wait","line-up","pack-up","be-quiet","lunch","recess","do-homework",
+        // people
+        "teacher","class-teacher","me","friend","nurse",
+        // activity
+        "draw","play","game","read","e-learning","ball",
+        // supplies
+        "pencil","eraser","book","tablet","bag","bottle","ruler","pencil-case","jacket",
+        // express 核心 + 聲量
+        "like","dislike","again","say-again","louder","softer","not-understand","understand","together","wait-me",
+        // house 核心
+        "bedroom-home","living-room","mom","dad","sleep-bed","watch-tv",
+        // food 常用
+        "food-rice","food-bread","food-noodles","drink-milk","food-fruit",
+        // ask 常用
+        "what-doing","where-go","may-i","ok-q"
+      ]);
       bd.cells.forEach(c => {
-        const k = c.category || "_";
-        (by[k] || (by[k] = [])).push(c);
+        if (!SHOW.has(c.id)) hide.add(c.id);
       });
-      Object.keys(by).forEach(k => {
-        const list = by[k].slice().sort((a, b) => (a.order || 0) - (b.order || 0));
-        // 屋企全開；食 F1 全開；車 T1 全開；身體急用 8；其他 tab 前 8
-        const keep = (k === "house" || k === "food" || k === "transport") ? 99
-          : (k === "body") ? 8
-          : TRIAL_KEEP_PER_TAB;
-        list.slice(keep).forEach(c => hide.add(c.id));
-      });
+      // 全開 tab 例外：若老師要車／邊，仍可自訂；試用預設 hide space 細位 + 多數 transport
       return hide;
     }
 
@@ -1703,6 +1806,12 @@
       if (!isGuest) {
         logUsage("profile_on", { label: p.label || activeProfileId, meta: { from: prev || "guest" } });
       }
+      emoFollow = null;
+      const ebar = document.getElementById("emoBar");
+      if (ebar) ebar.classList.remove("show");
+      // 跟情境預設 tab（上課→答話）
+      const jump = SCENE_CAT[sceneMode];
+      if (jump && board.categories.some(c => c.id === jump)) cat = jump;
       render();
       const nVis = board.cells.filter(c => !hiddenIds.has(c.id)).length;
       const abTag = isGuest ? "初能" : (abilityMode === "plus" ? "高能閘" : "初能");
@@ -1775,16 +1884,76 @@
     }
 
     function visibleCats() {
-      return [...board.categories]
+      if (emoFollow) {
+        return [{ id: "_cope", label: "處理", color: "#319795", order: 0 }];
+      }
+      let cats = [...board.categories]
         .sort((a, b) => a.order - b.order)
         .filter(c => cellsOfCat(c.id, true).length > 0);
+      if (!showAllCats && !teacher) {
+        const pinned = cats.filter(c => PINNED_CATS.includes(c.id));
+        const rest = cats.filter(c => !PINNED_CATS.includes(c.id));
+        cats = pinned;
+        if (rest.length) cats = cats.concat([{ id: "_more", label: "更多", color: "#718096", order: 99, _more: true }]);
+      }
+      return cats;
     }
 
     function cellsOfCat(id, onlyVisible = true) {
+      if (id === "_cope" && emoFollow) {
+        const map = {};
+        board.cells.forEach(c => { map[c.id] = c; });
+        // 處理模式：跟進詞強制可見（即使試用 hide）
+        return emoFollow.ids.map(i => map[i]).filter(Boolean);
+      }
+      if (id === "_more") return [];
       return board.cells
         .filter(c => c.category === id)
         .filter(c => !onlyVisible || !hiddenIds.has(c.id))
         .sort((a, b) => a.order - b.order);
+    }
+
+    function startEmoFollow(cell) {
+      const key = EMO_TRIGGER[cell.id];
+      if (!key || !EMO_COPE[key]) return false;
+      const ids = EMO_COPE[key].filter(id => board.cells.some(c => c.id === id));
+      if (!ids.length) return false;
+      emoFollow = { fromId: cell.id, fromLabel: cell.label, ids };
+      cat = "_cope"; page = 0;
+      const bar = document.getElementById("emoBar");
+      const lab = document.getElementById("emoLab");
+      if (lab) lab.textContent = cell.label + " → 揀方法處理";
+      if (bar) bar.classList.add("show");
+      toast("揀一個方法");
+      render();
+      return true;
+    }
+    function clearEmoFollow(backFeel) {
+      emoFollow = null;
+      const bar = document.getElementById("emoBar");
+      if (bar) bar.classList.remove("show");
+      if (backFeel) { cat = "feel"; page = 0; }
+      render();
+    }
+
+    function applyScene(scene) {
+      sceneMode = scene || "all";
+      showAllCats = (scene === "all");
+      emoFollow = null;
+      const bar = document.getElementById("emoBar");
+      if (bar) bar.classList.remove("show");
+      document.querySelectorAll(".scene-btn").forEach(b => {
+        b.classList.toggle("on", b.getAttribute("data-scene") === sceneMode);
+      });
+      const jump = SCENE_CAT[sceneMode];
+      if (jump && board.categories.some(c => c.id === jump)) cat = jump;
+      else if (!cat || cat === "_cope" || cat === "_more") {
+        const v = visibleCats().filter(c => c.id !== "_more");
+        cat = v[0] ? v[0].id : "need";
+      }
+      page = 0;
+      render();
+      toast(sceneMode === "class" ? "上課詞" : sceneMode === "break" ? "小息詞" : sceneMode === "home" ? "屋企詞" : "全部類");
     }
 
     function pagesOf(items) {
@@ -1954,9 +2123,24 @@
         if (c.id === cat) b.style.background = c.color || "#2b6cb0";
         else b.style.background = "#f0f4f8";
         b.onclick = () => {
+          if (c.id === "_more" || c._more) {
+            // 開全部 tab 揀選單
+            showAllCats = true;
+            renderTabs();
+            const btn = document.getElementById("btnMoreTabs");
+            if (typeof openTabPick === "function") openTabPick();
+            else {
+              // fallback: show all in rail
+              render();
+              toast("更多類別");
+            }
+            return;
+          }
+          if (emoFollow && c.id !== "_cope") clearEmoFollow(false);
           cat = c.id; page = 0; render();
           logUsage("tab_change", { categoryId: c.id, label: c.label });
         };
+        if (c.id === "_more") b.classList.add("more-tab");
         tabs.appendChild(b);
       });
       updateCatNav();
@@ -1983,7 +2167,7 @@
       cells.forEach(cell => {
         const el = document.createElement("button");
         el.type = "button";
-        el.className = "cell" + (editMode && teacher ? " edit-mode" : "");
+        el.className = "cell" + (editMode && teacher ? " edit-mode" : "") + (emoFollow ? " emo-target" : "");
         const src = cellDisplayImage(cell);
         const fb = (cellOverrides[cell.id] && cellOverrides[cell.id].image) || cell.image || src;
         const hasOv = !!cellOverrides[cell.id];
@@ -2045,6 +2229,21 @@
           }
           // 組完一組就清閘（下一擊重新揀動詞）
           if (useGate) clearActiveGate();
+          // 負面情緒／唔舒服 → 智能跳「處理」相關詞
+          if (!emoFollow && !useGate) {
+            const trig = EMO_TRIGGER[cell.id];
+            if (trig) {
+              setTimeout(() => startEmoFollow(cell), 320);
+            } else if (emoFollow && cell.category === "cope") {
+              // stayed
+            }
+          } else if (emoFollow && cell.id !== emoFollow.fromId) {
+            // 揀咗處理方法後收起跟進（保留可再講）
+            setTimeout(() => {
+              const bar = document.getElementById("emoBar");
+              if (bar) bar.classList.add("show");
+            }, 0);
+          }
         });
         grid.appendChild(el);
       });
@@ -2188,6 +2387,15 @@
     };
     document.getElementById("catPrev").onclick = () => shiftCategory(-1);
     document.getElementById("catNext").onclick = () => shiftCategory(1);
+    document.querySelectorAll(".scene-btn").forEach(b => {
+      b.onclick = () => applyScene(b.getAttribute("data-scene"));
+    });
+    const emoBack = document.getElementById("emoBack");
+    if (emoBack) emoBack.onclick = () => clearEmoFollow(true);
+    // default scene class highlight
+    document.querySelectorAll(".scene-btn").forEach(b => {
+      b.classList.toggle("on", b.getAttribute("data-scene") === "class");
+    });
     document.getElementById("btnDel").onclick = () => { sentence.pop(); renderMsg(); };
 
     // 清：長按完成先清（pointer capture 防 iPad 誤 leave 取消）
