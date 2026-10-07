@@ -434,6 +434,25 @@
       padding: 4px 8px; border-radius: 6px;
     }
     .tag.show { display: block; }
+    /* 範疇鎖 badge（學生可見） */
+    .cat-lock-badge {
+      display: none;
+      position: fixed; top: 8px; left: 50%; transform: translateX(-50%);
+      z-index: 42;
+      background: #c53030; color: #fff;
+      font-weight: 900; font-size: .95rem;
+      padding: 7px 16px; border-radius: 999px;
+      border: 3px solid #9b2c2c;
+      box-shadow: 0 4px 14px rgba(0,0,0,.22);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .cat-lock-badge.show { display: block; }
+    body.teacher-on .cat-lock-badge { top: 44px; }
+    body.cat-locked:not(.teacher-on) .scene-bar,
+    body.cat-locked:not(.teacher-on) .cat-rail { display: none !important; }
+    body.cat-locked:not(.teacher-on) .emo-bar { display: none !important; }
+    .mini.danger-on { background: #c53030 !important; border-color: #9b2c2c !important; color: #fff !important; }
     .who {
       position: fixed; top: 6px; left: 8px; z-index: 40;
       display: none; /* 學生藏；老師模式顯示 */
@@ -657,6 +676,7 @@
     <span id="whoLabel">訪客</span>
   </div>
   <div class="tag" id="tag">老師模式</div>
+  <div class="cat-lock-badge" id="catLockBadge" aria-live="polite">🔒 只：—</div>
   <div class="device-banner" id="deviceBanner">提示：電腦／iPad 最啱 · 手機畫面細，圖卡可能睇唔晒</div>
   <div class="device-tip" id="deviceTip" role="dialog" aria-labelledby="deviceTipTitle">
     <div class="device-tip-card">
@@ -818,6 +838,7 @@
               <div class="ttl" style="margin-top:6px">詞彙</div>
               <div class="row-btns">
                 <button type="button" class="mini wide" id="btnVocab">自訂詞</button>
+                <button type="button" class="mini wide" id="btnCatLock">🔒 只呢個範疇</button>
               </div>
               <div class="ttl" style="margin-top:6px">學生圖套</div>
               <div class="row-btns">
@@ -975,6 +996,8 @@
     let emoFollow = null; // { fromId, fromLabel, ids:[] } | null
     let sceneMode = "class"; // class|break|home|all
     let showAllCats = false; // 更多 tab
+    let catLock = false; // 只呢個範疇 ON/OFF
+    let catLockId = null; // 鎖死嘅 category id
     let usageSessionId = (typeof crypto !== "undefined" && crypto.randomUUID)
       ? crypto.randomUUID()
       : ("s" + Date.now() + "-" + Math.random().toString(16).slice(2));
@@ -1484,8 +1507,122 @@
       renderGateHint();
     }
 
+    function catLockKey() {
+      return "aac_catlock_" + (activeProfileId || "guest");
+    }
+    function catLockLabel() {
+      if (!catLockId || !board) return "—";
+      const c = board.categories.find(x => x.id === catLockId);
+      return (c && c.label) || catLockId;
+    }
+    function loadCatLock() {
+      catLock = false;
+      catLockId = null;
+      try {
+        const raw = sessionStorage.getItem(catLockKey());
+        if (!raw) return;
+        const o = JSON.parse(raw);
+        if (o && o.on && o.catId) {
+          catLock = true;
+          catLockId = o.catId;
+        }
+      } catch (_) {}
+    }
+    function saveCatLock() {
+      try {
+        if (catLock && catLockId) {
+          sessionStorage.setItem(catLockKey(), JSON.stringify({ on: true, catId: catLockId }));
+        } else {
+          sessionStorage.removeItem(catLockKey());
+        }
+      } catch (_) {}
+    }
+    function enforceCatLock() {
+      if (!catLock || !catLockId || !board) return;
+      if (!board.categories.some(c => c.id === catLockId)) {
+        catLock = false;
+        catLockId = null;
+        saveCatLock();
+        return;
+      }
+      cat = catLockId;
+      if (emoFollow) {
+        emoFollow = null;
+        const bar = document.getElementById("emoBar");
+        if (bar) bar.classList.remove("show");
+      }
+    }
+    function toggleCatLock() {
+      if (!teacher) return;
+      if (catLock) {
+        catLock = false;
+        catLockId = null;
+        saveCatLock();
+        render();
+        toast("已解除範疇鎖");
+        return;
+      }
+      if (!board) return;
+      if (!cat || cat === "_more" || cat === "_cope") {
+        toast("先揀一個範疇");
+        return;
+      }
+      if (!board.categories.some(c => c.id === cat)) {
+        toast("先揀一個範疇");
+        return;
+      }
+      catLock = true;
+      catLockId = cat;
+      emoFollow = null;
+      const bar = document.getElementById("emoBar");
+      if (bar) bar.classList.remove("show");
+      activeGate = null;
+      saveCatLock();
+      render();
+      toast("已鎖：只 " + catLockLabel());
+    }
+    function renderCatLockUI() {
+      const badge = document.getElementById("catLockBadge");
+      const btn = document.getElementById("btnCatLock");
+      document.body.classList.toggle("cat-locked", !!(catLock && catLockId));
+      if (badge) {
+        if (catLock && catLockId) {
+          badge.textContent = "🔒 只：" + catLockLabel();
+          badge.classList.add("show");
+        } else {
+          badge.textContent = "🔒 只：—";
+          badge.classList.remove("show");
+        }
+      }
+      if (btn) {
+        if (catLock && catLockId) {
+          btn.textContent = "🔓 解除 · " + catLockLabel();
+          btn.classList.add("danger-on", "on");
+        } else {
+          btn.textContent = "🔒 只呢個範疇";
+          btn.classList.remove("danger-on", "on");
+        }
+      }
+    }
+
     function activateGate(g) {
       if (abilityMode !== "plus" || !g) return;
+      if (catLock && catLockId) {
+        const okTo = g.gateTo === catLockId || (Array.isArray(g.gateAlso) && g.gateAlso.includes(catLockId));
+        if (!okTo) {
+          clearActiveGate();
+          toast("而家只開呢個範疇");
+          return;
+        }
+        // 鎖住：唔跳走，只開閘喺本 tab 組句
+        activeGate = g;
+        cat = catLockId;
+        page = 0;
+        render();
+        flashOk();
+        if (instantSpeak) speakText(g.speak);
+        return;
+      }
       activeGate = g;
       if (g.gateTo && board && board.categories.some(c => c.id === g.gateTo)) {
         cat = g.gateTo;
@@ -1795,6 +1932,7 @@
       loadGender();
       loadInstantSpeak();
       loadAbility();
+      loadCatLock();
       try {
         if (!isGuest) sessionStorage.setItem("aac_active_profile", activeProfileId);
         else sessionStorage.removeItem("aac_active_profile");
@@ -1809,9 +1947,13 @@
       emoFollow = null;
       const ebar = document.getElementById("emoBar");
       if (ebar) ebar.classList.remove("show");
-      // 跟情境預設 tab（上課→答話）
-      const jump = SCENE_CAT[sceneMode];
-      if (jump && board.categories.some(c => c.id === jump)) cat = jump;
+      // 跟情境預設 tab（上課→答話）；有範疇鎖則跟鎖
+      if (catLock && catLockId && board.categories.some(c => c.id === catLockId)) {
+        cat = catLockId;
+      } else {
+        const jump = SCENE_CAT[sceneMode];
+        if (jump && board.categories.some(c => c.id === jump)) cat = jump;
+      }
       render();
       const nVis = board.cells.filter(c => !hiddenIds.has(c.id)).length;
       const abTag = isGuest ? "初能" : (abilityMode === "plus" ? "高能閘" : "初能");
@@ -1887,6 +2029,10 @@
       if (emoFollow) {
         return [{ id: "_cope", label: "處理", color: "#319795", order: 0 }];
       }
+      if (catLock && catLockId && board) {
+        const locked = board.categories.find(c => c.id === catLockId);
+        if (locked) return [locked];
+      }
       let cats = [...board.categories]
         .sort((a, b) => a.order - b.order)
         .filter(c => cellsOfCat(c.id, true).length > 0);
@@ -1914,6 +2060,7 @@
     }
 
     function startEmoFollow(cell) {
+      if (catLock) return false; // 範疇鎖：唔跳去處理
       const key = EMO_TRIGGER[cell.id];
       if (!key || !EMO_COPE[key]) return false;
       const ids = EMO_COPE[key].filter(id => board.cells.some(c => c.id === id));
@@ -1937,6 +2084,10 @@
     }
 
     function applyScene(scene) {
+      if (catLock) {
+        toast(teacher ? "請先解除範疇鎖" : "而家只開呢個範疇");
+        return;
+      }
       sceneMode = scene || "all";
       showAllCats = (scene === "all");
       emoFollow = null;
@@ -2051,6 +2202,10 @@
     }
 
     function openTabPick() {
+      if (catLock && !teacher) {
+        toast("而家只開呢個範疇");
+        return;
+      }
       const gridEl = document.getElementById("tabPickGrid");
       if (!gridEl || !board) return;
       const cats = visibleCats();
@@ -2067,6 +2222,10 @@
         b.onclick = () => {
           cat = c.id;
           page = 0;
+          if (catLock && teacher && c.id !== "_more" && !c._more) {
+            catLockId = c.id;
+            saveCatLock();
+          }
           closeTabPick();
           render();
           logUsage("tab_change", { categoryId: c.id, label: c.label, meta: { via: "picker" } });
@@ -2077,6 +2236,10 @@
     }
 
     function shiftCategory(delta) {
+      if (catLock && !teacher) {
+        toast("而家只開呢個範疇");
+        return;
+      }
       const cats = visibleCats();
       if (!cats.length) return;
       let idx = Math.max(0, cats.findIndex(c => c.id === cat));
@@ -2084,6 +2247,10 @@
       const next = idx + delta;
       if (next < 0 || next >= cats.length) return;
       cat = cats[next].id;
+      if (catLock && teacher && cat !== "_more") {
+        catLockId = cat;
+        saveCatLock();
+      }
       page = 0;
       render();
       logUsage("tab_change", {
@@ -2123,8 +2290,16 @@
         if (c.id === cat) b.style.background = c.color || "#2b6cb0";
         else b.style.background = "#f0f4f8";
         b.onclick = () => {
+          if (catLock && !teacher) {
+            toast("而家只開呢個範疇");
+            return;
+          }
           if (c.id === "_more" || c._more) {
             // 開全部 tab 揀選單
+            if (catLock) {
+              toast(teacher ? "請先解除範疇鎖" : "而家只開呢個範疇");
+              return;
+            }
             showAllCats = true;
             renderTabs();
             const btn = document.getElementById("btnMoreTabs");
@@ -2137,7 +2312,12 @@
             return;
           }
           if (emoFollow && c.id !== "_cope") clearEmoFollow(false);
-          cat = c.id; page = 0; render();
+          cat = c.id; page = 0;
+          if (catLock && teacher) {
+            catLockId = c.id;
+            saveCatLock();
+          }
+          render();
           logUsage("tab_change", { categoryId: c.id, label: c.label });
         };
         if (c.id === "_more") b.classList.add("more-tab");
@@ -2280,10 +2460,12 @@
       tag.classList.toggle("show", teacher);
       who.classList.toggle("show", teacher);
       document.body.classList.toggle("teacher-on", teacher);
+      renderCatLockUI();
     }
 
     function render() {
       if (!board) return;
+      enforceCatLock();
       renderGateBar();
       renderGateHint();
       renderTabs();
@@ -2620,6 +2802,7 @@
       });
     }
     document.getElementById("btnVocab").onclick = openVocab;
+    document.getElementById("btnCatLock").onclick = () => toggleCatLock();
     document.getElementById("vocabDone").onclick = closeVocab;
     document.getElementById("vocabAllOn").onclick = () => {
       hiddenIds.clear();
